@@ -1,0 +1,64 @@
+{
+  "name": "accessify",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A modular, reusable web accessibility toolkit supporting WCAG 2.0/2.1 AA and Israeli Standard 5568",
+  "main": "dist/accessify.js",
+  "module": "dist/accessify.esm.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "dist/",
+    "types/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:rollup": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:a11y": "jest --testPathPattern=accessibility",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist coverage",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "screen-reader",
+    "keyboard-navigation",
+    "rtl",
+    "multilingual"
+  ],
+  "author": "Accessify Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/jest": "^29.5.8",
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "rollup": "^4.6.1",
+    "typescript": "^5.3.2"
+  },
+  "peerDependencies": {
+    "jquery": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "jquery": {
+      "optional": true
+    }
+  },
+  "browserslist": [
+    "Chrome >= 60",
+    "Firefox >= 55",
+    "Safari >= 12",
+    "Edge >= 79"
+  ]
+}

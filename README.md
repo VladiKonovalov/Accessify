@@ -2,6 +2,59 @@
 
 A comprehensive, modular web accessibility toolkit supporting WCAG 2.0/2.1 AA and Israeli Standard 5568 with full RTL support and multilingual capabilities.
 
+## What is Accessify?
+
+Accessify is a powerful, framework-agnostic JavaScript library that makes websites accessible to everyone. It provides a complete suite of accessibility features that can be easily integrated into any website, ensuring compliance with international accessibility standards while offering a modern, user-friendly interface.
+
+### Key Benefits:
+- **🎯 Universal Accessibility**: Supports users with visual, motor, cognitive, and hearing impairments
+- **🌍 Multilingual**: Full support for 6+ languages including RTL (Hebrew, Arabic)
+- **⚡ Easy Integration**: Drop-in solution that works with any website or framework
+- **🔧 Highly Configurable**: Modular design allows you to enable only the features you need
+- **📱 Responsive**: Works seamlessly across all devices and screen sizes
+- **♿ Standards Compliant**: Meets WCAG 2.1 AA and Israeli Standard 5568 requirements
+
+### Perfect For:
+- **Web Developers** who want to make their sites accessible without complex implementation
+- **Organizations** needing to meet accessibility compliance requirements
+- **Government Websites** requiring Israeli Standard 5568 compliance
+- **E-commerce Sites** wanting to serve customers with disabilities
+- **Educational Platforms** supporting diverse learning needs
+- **Healthcare Websites** ensuring information is accessible to all patients
+
+## Quick Start (30 seconds)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Accessible Website</title>
+    <script src="https://unpkg.com/accessify/dist/accessify.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <p>This website is now accessible to everyone!</p>
+    
+    <script>
+        // Initialize Accessify with default settings
+        const accessify = new Accessify();
+        accessify.init().then(() => {
+            console.log('Accessify is ready!');
+        });
+    </script>
+</body>
+</html>
+```
+
+That's it! Your website now has:
+- ✅ Text size adjustment (50%-300%)
+- ✅ High contrast modes
+- ✅ Keyboard navigation
+- ✅ Voice commands
+- ✅ Multilingual support (6 languages)
+- ✅ RTL support for Hebrew/Arabic
+- ✅ Modern accessibility dashboard
+
 ## Features
 
 ### 🎨 Visual Accessibility
