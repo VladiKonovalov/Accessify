@@ -35,6 +35,9 @@ export class VisualAccessibility {
       // Set up event listeners
       this._setupEventListeners();
 
+      // Initialize alt text generation
+      this._initializeAltTextGeneration();
+
       this.isInitialized = true;
       this.accessify.emit('visualAccessibilityInitialized');
 
@@ -638,5 +641,227 @@ export class VisualAccessibility {
     this.setCursor('default');
     
     this.accessify.emit('visualSettingsReset');
+  }
+
+  /**
+   * Initialize automatic alt text generation
+   */
+  _initializeAltTextGeneration() {
+    try {
+      // Check if alt text generation is enabled
+      const config = this.accessify.configManager.get('visual.altTextGeneration', { enabled: true });
+      
+      if (config.enabled) {
+        this._generateAltTextForImages();
+        this._observeNewImages();
+        this.currentStyles.set('altTextGeneration', true);
+        this.accessify.emit('altTextGenerationEnabled');
+      }
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Alt text generation initialization', 'component');
+    }
+  }
+
+  /**
+   * Generate alt text for existing images
+   */
+  _generateAltTextForImages() {
+    const images = document.querySelectorAll('img:not([alt])');
+    
+    images.forEach(img => {
+      this._generateAltTextForImage(img);
+    });
+  }
+
+  /**
+   * Generate alt text for a specific image
+   */
+  _generateAltTextForImage(img) {
+    try {
+      // Skip if already has alt text
+      if (img.getAttribute('alt') !== null) {
+        return;
+      }
+
+      // Generate alt text based on image properties
+      let altText = '';
+
+      // Use filename if available
+      const src = img.src || img.getAttribute('src');
+      if (src) {
+        const filename = src.split('/').pop().split('.')[0];
+        altText = filename.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      }
+
+      // Use title attribute if available
+      if (img.title) {
+        altText = img.title;
+      }
+
+      // Use aria-label if available
+      if (img.getAttribute('aria-label')) {
+        altText = img.getAttribute('aria-label');
+      }
+
+      // Use data-alt if available
+      if (img.getAttribute('data-alt')) {
+        altText = img.getAttribute('data-alt');
+      }
+
+      // Fallback to generic description
+      if (!altText) {
+        altText = 'Image';
+      }
+
+      // Set the alt text
+      img.setAttribute('alt', altText);
+      img.setAttribute('data-accessify-generated', 'true');
+
+      this.accessify.emit('altTextGenerated', { img, altText });
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Alt text generation for image', 'component');
+    }
+  }
+
+  /**
+   * Observe for new images and generate alt text
+   */
+  _observeNewImages() {
+    if (typeof MutationObserver !== 'undefined') {
+      this.imageObserver = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+          mutation.addedNodes.forEach(node => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              // Check if the added node is an image
+              if (node.tagName === 'IMG') {
+                this._generateAltTextForImage(node);
+              }
+              
+              // Check for images within the added node
+              const images = node.querySelectorAll && node.querySelectorAll('img');
+              if (images) {
+                images.forEach(img => this._generateAltTextForImage(img));
+              }
+            }
+          });
+        });
+      });
+
+      this.imageObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+  }
+
+  /**
+   * Validate color contrast ratio
+   */
+  validateColorContrast(foreground, background) {
+    try {
+      // Convert colors to RGB
+      const fgRgb = this._hexToRgb(foreground);
+      const bgRgb = this._hexToRgb(background);
+      
+      if (!fgRgb || !bgRgb) {
+        return { ratio: 0, level: 'fail', message: 'Invalid color format' };
+      }
+
+      // Calculate relative luminance
+      const fgLuminance = this._getRelativeLuminance(fgRgb);
+      const bgLuminance = this._getRelativeLuminance(bgRgb);
+
+      // Calculate contrast ratio
+      const lighter = Math.max(fgLuminance, bgLuminance);
+      const darker = Math.min(fgLuminance, bgLuminance);
+      const ratio = (lighter + 0.05) / (darker + 0.05);
+
+      // Determine compliance level
+      let level, message;
+      if (ratio >= 7) {
+        level = 'AAA';
+        message = 'Excellent contrast (AAA)';
+      } else if (ratio >= 4.5) {
+        level = 'AA';
+        message = 'Good contrast (AA)';
+      } else if (ratio >= 3) {
+        level = 'AA Large';
+        message = 'Acceptable for large text (AA Large)';
+      } else {
+        level = 'fail';
+        message = 'Insufficient contrast';
+      }
+
+      return { ratio: Math.round(ratio * 100) / 100, level, message };
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Color contrast validation', 'component');
+      return { ratio: 0, level: 'error', message: 'Error calculating contrast' };
+    }
+  }
+
+  /**
+   * Convert hex color to RGB
+   */
+  _hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  /**
+   * Calculate relative luminance
+   */
+  _getRelativeLuminance(rgb) {
+    const { r, g, b } = rgb;
+    
+    // Convert to sRGB
+    const rsRGB = r / 255;
+    const gsRGB = g / 255;
+    const bsRGB = b / 255;
+
+    // Apply gamma correction
+    const rLinear = rsRGB <= 0.03928 ? rsRGB / 12.92 : Math.pow((rsRGB + 0.055) / 1.055, 2.4);
+    const gLinear = gsRGB <= 0.03928 ? gsRGB / 12.92 : Math.pow((gsRGB + 0.055) / 1.055, 2.4);
+    const bLinear = bsRGB <= 0.03928 ? bsRGB / 12.92 : Math.pow((bsRGB + 0.055) / 1.055, 2.4);
+
+    return 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
+  }
+
+  /**
+   * Detect reduced motion preferences
+   */
+  detectReducedMotion() {
+    try {
+      if (window.matchMedia) {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        return prefersReducedMotion.matches;
+      }
+      return false;
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Reduced motion detection', 'component');
+      return false;
+    }
+  }
+
+  /**
+   * Apply reduced motion settings
+   */
+  applyReducedMotion() {
+    const prefersReducedMotion = this.detectReducedMotion();
+    
+    if (prefersReducedMotion) {
+      this.styleElement.textContent += `
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      `;
+      this.currentStyles.set('reducedMotion', true);
+      this.accessify.emit('reducedMotionApplied');
+    }
   }
 }

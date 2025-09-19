@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessify Integration Template</title>
+    
+    <!-- Accessify Integration Styles -->
+    <style>
+        /* ========================================
+           ACCESSIFY INTEGRATION STYLES
+           Copy these styles to your website's CSS
+           ======================================== */
+        
+        /* Dashboard Toggle Button */
+        .accessify-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #007AFF;
+            border: none;
+            border-radius: 16px;
+            width: 72px;
+            height: 72px;
+            color: white;
+            font-size: 40px !important;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+            z-index: 10001;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(0);
+            will-change: transform;
+        }
+        
+        .accessify-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.5);
+        }
+        
+        .accessify-toggle:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+        }
+        
+        .accessify-toggle::before {
+            content: "♿";
+        }
+        
+        /* Accessibility Controls Panel */
+        .accessify-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            width: 300px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transform: translateY(0);
+            will-change: transform;
+            box-sizing: border-box;
+        }
+        
+        .accessify-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .accessify-panel.hidden {
+            display: none;
+        }
+        
+        .accessify-panel h3 {
+            margin: 0 0 16px 0;
+            color: #1a1a1a;
+            font-size: 22px !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+        }
+        
+        .accessify-panel h3::before {
+            content: "♿";
+            font-size: 24px !important;
+            opacity: 0.8;
+        }
+        
+        /* Control Groups */
+        .accessify-control-group {
+            margin: 8px 0;
+            background: rgba(0, 0, 0, 0.02);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            flex-wrap: wrap;
+            transition: all 0.2s ease;
+        }
+        
+        .accessify-control-group:hover {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .accessify-control-group label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            font-size: 20px !important;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.8;
+        }
+        
+        .accessify-control-group label:hover {
+            background: rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .accessify-control-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .accessify-control-buttons {
+            display: flex;
+            gap: 4px;
+        }
+        
+        /* Range Slider */
+        .accessify-control-group input[type="range"] {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(0, 0, 0, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            min-width: 0;
+            cursor: pointer;
+        }
+        
+        .accessify-control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #007AFF;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .accessify-control-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Select Dropdown */
+        .accessify-control-group select {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: white;
+            color: #1a1a1a;
+            font-size: 20px !important;
+            min-width: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .accessify-control-group select:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .accessify-control-group select:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        .accessify-control-group select option {
+            background: white;
+            color: #1a1a1a;
+        }
+        
+        /* Buttons */
+        .accessify-control-group button {
+            background: rgba(0, 0, 0, 0.05);
+            color: #1a1a1a;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px !important;
+            font-weight: 500;
+            margin: 0;
+            transition: all 0.2s ease;
+            min-width: 44px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .accessify-control-group button:hover {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .accessify-control-group button:active {
+            transform: translateY(0);
+        }
+        
+        .accessify-control-group button:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        /* Tooltips */
+        .accessify-control-group label:hover::after,
+        .accessify-control-group button:hover::after {
+            content: attr(title);
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px !important;
+            white-space: nowrap;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            right: 100%;
+            margin-right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* RTL Tooltip positioning */
+        .accessify-rtl .accessify-control-group label:hover::after,
+        .accessify-rtl .accessify-control-group button:hover::after {
+            right: auto;
+            left: 100%;
+            margin-right: 0;
+            margin-left: 8px;
+        }
+        
+        /* RTL Support */
+        .accessify-rtl {
+            direction: rtl;
+        }
+        
+        .accessify-rtl .accessify-panel {
+            right: auto;
+            left: 20px;
+        }
+        
+        .accessify-rtl .accessify-toggle {
+            right: auto;
+            left: 20px;
+        }
+        
+        /* Isolate accessibility tool from text size changes */
+        .accessify-toggle,
+        .accessify-panel,
+        .accessify-panel * {
+            font-size: inherit !important;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .accessify-panel {
+                width: calc(100vw - 40px);
+                max-width: none;
+            }
+            
+            .accessify-toggle {
+                width: 64px;
+                height: 64px;
+                font-size: 36px !important;
+            }
+            
+            .accessify-panel h3 {
+                font-size: 20px !important;
+            }
+            
+            .accessify-control-group select,
+            .accessify-control-group button {
+                font-size: 18px !important;
+            }
+            
+            .accessify-control-group label {
+                font-size: 18px !important;
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .accessify-panel {
+                background: white;
+                border: 2px solid black;
+            }
+            
+            .accessify-toggle {
+                background: black;
+                border: 2px solid white;
+            }
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .accessify-toggle,
+            .accessify-panel,
+            .accessify-control-group,
+            .accessify-control-group button,
+            .accessify-control-group input[type="range"]::-webkit-slider-thumb {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         ACCESSIFY INTEGRATION HTML
+         Copy this HTML structure to your website
+         ======================================== -->
+    
+    <!-- Dashboard Toggle Button -->
+    <button class="accessify-toggle" id="accessify-toggle" onclick="accessifyToggleDashboard()" 
+            title="Toggle Accessibility Controls" aria-label="Toggle Accessibility Controls"></button>
+    
+    <!-- Accessibility Controls Panel -->
+    <div class="accessify-panel" id="accessify-panel">
+        <h3 id="accessify-title">Accessibility Controls</h3>
+        
+        <!-- Text Size Control -->
+        <div class="accessify-control-group">
+            <label for="accessify-text-size" title="Text Size - Adjust font size for better readability">A</label>
+            <div class="accessify-control-content">
+                <input type="range" id="accessify-text-size" min="0.5" max="3" step="0.1" value="1" 
+                       oninput="accessifySetTextSize(this.value)">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyIncreaseTextSize()" title="Increase Text Size">+</button>
+                    <button onclick="accessifyDecreaseTextSize()" title="Decrease Text Size">−</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contrast Control -->
+        <div class="accessify-control-group">
+            <label for="accessify-contrast" title="Contrast - Change color contrast for better visibility">◐</label>
+            <div class="accessify-control-content">
+                <select id="accessify-contrast" onchange="accessifySetContrast(this.value)">
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                    <option value="inverted">Inverted</option>
+                    <option value="grayscale">Grayscale</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Theme Control -->
+        <div class="accessify-control-group">
+            <label for="accessify-theme" title="Theme - Change visual appearance and colors">🎨</label>
+            <div class="accessify-control-content">
+                <select id="accessify-theme" onchange="accessifySetTheme(this.value)">
+                    <option value="default">Default</option>
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="colorblind-friendly">Colorblind Friendly</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Voice Commands -->
+        <div class="accessify-control-group">
+            <label title="Voice Commands - Control with your voice">🎤</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyToggleVoiceCommands()" title="Toggle Voice Commands">🎙</button>
+                    <button onclick="accessifyToggleSwitchNavigation()" title="Toggle Switch Navigation">⌨</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Language Control -->
+        <div class="accessify-control-group">
+            <label title="Language - Change interface language">🌐</label>
+            <div class="accessify-control-content">
+                <select id="accessify-language" onchange="accessifyChangeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="he">עברית</option>
+                    <option value="ar">العربية</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Testing Controls -->
+        <div class="accessify-control-group">
+            <label title="Accessibility Testing - Check website accessibility">✓</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyRunTests()" title="Run Tests">Test</button>
+                    <button onclick="accessifyGenerateReport()" title="Generate Report">Report</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset Controls -->
+        <div class="accessify-control-group">
+            <label title="Reset to Default - Restore all settings to default">↺</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyResetToDefault()" title="Reset to Default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Accessify Library -->
+    <script src="dist/accessify.min.js"></script>
+    
+    <!-- ========================================
+         ACCESSIFY INTEGRATION JAVASCRIPT
+         Copy this JavaScript to your website
+         ======================================== -->
+    <script>
+        // Accessify Integration JavaScript
+        // This script provides a clean interface for the accessibility tool
+        
+        let accessifyInstance = null;
+        let accessifyPanelVisible = true;
+        let accessifyCurrentLanguage = 'en';
+        
+        // Translation data - Easy to extend with more languages
+        const accessifyTranslations = {
+            en: {
+                title: "Accessibility Controls",
+                textSize: "Text Size",
+                contrast: "Contrast",
+                theme: "Theme",
+                voiceCommands: "Voice Commands",
+                language: "Language",
+                testing: "Accessibility Testing",
+                increaseText: "Increase Text Size",
+                decreaseText: "Decrease Text Size",
+                toggleVoice: "Toggle Voice Commands",
+                toggleSwitch: "Toggle Switch Navigation",
+                runTests: "Run Tests",
+                generateReport: "Generate Report",
+                reset: "Reset to Default",
+                // Contrast options
+                normal: "Normal",
+                high: "High",
+                inverted: "Inverted",
+                grayscale: "Grayscale",
+                // Theme options
+                default: "Default",
+                dark: "Dark",
+                light: "Light",
+                colorblindFriendly: "Colorblind Friendly"
+            },
+            he: {
+                title: "בקרות נגישות",
+                textSize: "גודל טקסט",
+                contrast: "ניגודיות",
+                theme: "ערכת נושא",
+                voiceCommands: "פקודות קול",
+                language: "שפה",
+                testing: "בדיקת נגישות",
+                increaseText: "הגדל טקסט",
+                decreaseText: "הקטן טקסט",
+                toggleVoice: "הפעל פקודות קול",
+                toggleSwitch: "הפעל ניווט מתג",
+                runTests: "הרץ בדיקות",
+                generateReport: "צור דוח",
+                reset: "איפוס לברירת מחדל",
+                normal: "רגיל",
+                high: "גבוה",
+                inverted: "הפוך",
+                grayscale: "גווני אפור",
+                default: "ברירת מחדל",
+                dark: "כהה",
+                light: "בהיר",
+                colorblindFriendly: "ידידותי לעיוורי צבעים"
+            },
+            ar: {
+                title: "أدوات التحكم في إمكانية الوصول",
+                textSize: "حجم النص",
+                contrast: "التباين",
+                theme: "المظهر",
+                voiceCommands: "الأوامر الصوتية",
+                language: "اللغة",
+                testing: "اختبار إمكانية الوصول",
+                increaseText: "تكبير النص",
+                decreaseText: "تصغير النص",
+                toggleVoice: "تبديل الأوامر الصوتية",
+                toggleSwitch: "تبديل التنقل بالمفتاح",
+                runTests: "تشغيل الاختبارات",
+                generateReport: "إنشاء تقرير",
+                reset: "إعادة تعيين للافتراضي",
+                normal: "عادي",
+                high: "عالي",
+                inverted: "معكوس",
+                grayscale: "تدرج رمادي",
+                default: "افتراضي",
+                dark: "داكن",
+                light: "فاتح",
+                colorblindFriendly: "صديق للمكفوفين لونياً"
+            },
+            es: {
+                title: "Controles de Accesibilidad",
+                textSize: "Tamaño de Texto",
+                contrast: "Contraste",
+                theme: "Tema",
+                voiceCommands: "Comandos de Voz",
+                language: "Idioma",
+                testing: "Pruebas de Accesibilidad",
+                increaseText: "Aumentar Texto",
+                decreaseText: "Disminuir Texto",
+                toggleVoice: "Alternar Comandos de Voz",
+                toggleSwitch: "Alternar Navegación por Interruptor",
+                runTests: "Ejecutar Pruebas",
+                generateReport: "Generar Informe",
+                reset: "Restablecer por Defecto",
+                normal: "Normal",
+                high: "Alto",
+                inverted: "Invertido",
+                grayscale: "Escala de Grises",
+                default: "Por Defecto",
+                dark: "Oscuro",
+                light: "Claro",
+                colorblindFriendly: "Amigable para Daltónicos"
+            },
+            fr: {
+                title: "Contrôles d'Accessibilité",
+                textSize: "Taille du Texte",
+                contrast: "Contraste",
+                theme: "Thème",
+                voiceCommands: "Commandes Vocales",
+                language: "Langue",
+                testing: "Tests d'Accessibilité",
+                increaseText: "Augmenter le Texte",
+                decreaseText: "Diminuer le Texte",
+                toggleVoice: "Basculer les Commandes Vocales",
+                toggleSwitch: "Basculer la Navigation par Interrupteur",
+                runTests: "Exécuter les Tests",
+                generateReport: "Générer un Rapport",
+                reset: "Réinitialiser par Défaut",
+                normal: "Normal",
+                high: "Élevé",
+                inverted: "Inversé",
+                grayscale: "Niveaux de Gris",
+                default: "Par Défaut",
+                dark: "Sombre",
+                light: "Clair",
+                colorblindFriendly: "Convivial pour les Daltoniens"
+            },
+            de: {
+                title: "Barrierefreiheits-Steuerung",
+                textSize: "Textgröße",
+                contrast: "Kontrast",
+                theme: "Design",
+                voiceCommands: "Sprachbefehle",
+                language: "Sprache",
+                testing: "Barrierefreiheits-Tests",
+                increaseText: "Text vergrößern",
+                decreaseText: "Text verkleinern",
+                toggleVoice: "Sprachbefehle umschalten",
+                toggleSwitch: "Schalter-Navigation umschalten",
+                runTests: "Tests ausführen",
+                generateReport: "Bericht erstellen",
+                reset: "Auf Standard zurücksetzen",
+                normal: "Normal",
+                high: "Hoch",
+                inverted: "Invertiert",
+                grayscale: "Graustufen",
+                default: "Standard",
+                dark: "Dunkel",
+                light: "Hell",
+                colorblindFriendly: "Farbenblind-freundlich"
+            }
+        };
+        
+        // Initialize Accessify
+        async function accessifyInit() {
+            try {
+                if (typeof Accessify === 'undefined') {
+                    console.error('Accessify library not found. Please include accessify.min.js');
+                    return;
+                }
+                
+                accessifyInstance = new Accessify({
+                    language: 'en',
+                    direction: 'ltr',
+                    theme: 'default',
+                    debug: false,
+                    visual: {
+                        textSize: { enabled: true },
+                        contrast: { enabled: true },
+                        themes: { enabled: true }
+                    },
+                    navigation: {
+                        keyboard: { enabled: true },
+                        skipLinks: { enabled: true }
+                    },
+                    reading: {
+                        textToSpeech: { enabled: true },
+                        fonts: { enabled: true }
+                    },
+                    motor: {
+                        targets: { enabled: true },
+                        voice: { enabled: true }
+                    },
+                    multilingual: {
+                        enabled: true,
+                        rtl: { enabled: true }
+                    },
+                    plugins: {
+                        enabled: true,
+                        builtIn: ['textToSpeech', 'voiceCommands', 'switchNavigation']
+                    }
+                });
+                
+                await accessifyInstance.init();
+                console.log('Accessify initialized successfully');
+                
+                // Set up event listeners
+                accessifySetupEventListeners();
+                
+            } catch (error) {
+                console.error('Failed to initialize Accessify:', error);
+            }
+        }
+        
+        // Set up event listeners
+        function accessifySetupEventListeners() {
+            // Text size control
+            const textSizeSlider = document.getElementById('accessify-text-size');
+            if (textSizeSlider) {
+                textSizeSlider.addEventListener('input', (e) => {
+                    if (accessifyInstance && accessifyInstance.visual) {
+                        accessifyInstance.visual.setTextSize(parseFloat(e.target.value));
+                    }
+                });
+            }
+            
+            // Listen for Accessify events
+            if (accessifyInstance) {
+                accessifyInstance.on('textSizeChanged', (size) => {
+                    const slider = document.getElementById('accessify-text-size');
+                    if (slider) slider.value = size;
+                });
+                
+                accessifyInstance.on('contrastModeChanged', (mode) => {
+                    const select = document.getElementById('accessify-contrast');
+                    if (select) select.value = mode;
+                });
+                
+                accessifyInstance.on('themeChanged', (theme) => {
+                    const select = document.getElementById('accessify-theme');
+                    if (select) select.value = theme;
+                });
+            }
+        }
+        
+        // Toggle dashboard visibility
+        function accessifyToggleDashboard() {
+            const panel = document.getElementById('accessify-panel');
+            const toggle = document.getElementById('accessify-toggle');
+            
+            if (accessifyPanelVisible) {
+                panel.classList.add('hidden');
+                toggle.style.transform = 'rotate(180deg)';
+                accessifyPanelVisible = false;
+            } else {
+                panel.classList.remove('hidden');
+                toggle.style.transform = 'rotate(0deg)';
+                accessifyPanelVisible = true;
+            }
+        }
+        
+        // Update translations
+        function accessifyUpdateTranslations() {
+            const t = accessifyTranslations[accessifyCurrentLanguage];
+            if (!t) {
+                console.warn(`Translation for ${accessifyCurrentLanguage} not found, using English`);
+                accessifyCurrentLanguage = 'en';
+                return accessifyUpdateTranslations();
+            }
+            
+            // Update title
+            const title = document.getElementById('accessify-title');
+            if (title) title.textContent = t.title;
+            
+            // Update tooltips
+            const labels = document.querySelectorAll('.accessify-control-group label');
+            labels.forEach(label => {
+                const title = label.getAttribute('title');
+                if (title) {
+                    if (title.includes('Text Size')) label.title = t.textSize;
+                    else if (title.includes('Contrast')) label.title = t.contrast;
+                    else if (title.includes('Theme')) label.title = t.theme;
+                    else if (title.includes('Voice Commands')) label.title = t.voiceCommands;
+                    else if (title.includes('Language')) label.title = t.language;
+                    else if (title.includes('Accessibility Testing')) label.title = t.testing;
+                    else if (title.includes('Reset to Default')) label.title = t.reset;
+                }
+            });
+            
+            // Update button tooltips
+            const buttons = document.querySelectorAll('.accessify-control-group button');
+            buttons.forEach(button => {
+                const title = button.getAttribute('title');
+                if (title) {
+                    if (title.includes('Increase Text Size')) button.title = t.increaseText;
+                    else if (title.includes('Decrease Text Size')) button.title = t.decreaseText;
+                    else if (title.includes('Toggle Voice Commands')) button.title = t.toggleVoice;
+                    else if (title.includes('Toggle Switch Navigation')) button.title = t.toggleSwitch;
+                    else if (title.includes('Run Tests')) button.title = t.runTests;
+                    else if (title.includes('Generate Report')) button.title = t.generateReport;
+                    else if (title.includes('Reset to Default')) button.title = t.reset;
+                }
+            });
+            
+            // Update contrast options
+            const contrastSelect = document.getElementById('accessify-contrast');
+            if (contrastSelect) {
+                const options = contrastSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    const value = option.value;
+                    if (value === 'normal') option.textContent = t.normal;
+                    else if (value === 'high') option.textContent = t.high;
+                    else if (value === 'inverted') option.textContent = t.inverted;
+                    else if (value === 'grayscale') option.textContent = t.grayscale;
+                });
+            }
+            
+            // Update theme options
+            const themeSelect = document.getElementById('accessify-theme');
+            if (themeSelect) {
+                const options = themeSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    const value = option.value;
+                    if (value === 'default') option.textContent = t.default;
+                    else if (value === 'dark') option.textContent = t.dark;
+                    else if (value === 'light') option.textContent = t.light;
+                    else if (value === 'colorblind-friendly') option.textContent = t.colorblindFriendly;
+                });
+            }
+            
+            // Update direction for RTL languages
+            if (accessifyCurrentLanguage === 'he' || accessifyCurrentLanguage === 'ar') {
+                document.documentElement.classList.add('accessify-rtl');
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', accessifyCurrentLanguage);
+            } else {
+                document.documentElement.classList.remove('accessify-rtl');
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', accessifyCurrentLanguage);
+            }
+        }
+        
+        // Language change function
+        function accessifyChangeLanguage(lang) {
+            if (!accessifyTranslations[lang]) {
+                console.warn(`Language ${lang} not supported, falling back to English`);
+                lang = 'en';
+            }
+            
+            accessifyCurrentLanguage = lang;
+            accessifyUpdateTranslations();
+            
+            // Update Accessify language if available
+            if (accessifyInstance && accessifyInstance.multilingual) {
+                accessifyInstance.multilingual.setLanguage(lang);
+            }
+        }
+        
+        // Visual accessibility functions
+        function accessifyIncreaseTextSize() {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.increaseTextSize();
+            }
+        }
+        
+        function accessifyDecreaseTextSize() {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.decreaseTextSize();
+            }
+        }
+        
+        function accessifySetTextSize(size) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setTextSize(parseFloat(size));
+            }
+        }
+        
+        function accessifySetContrast(mode) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setContrastMode(mode);
+            }
+        }
+        
+        function accessifySetTheme(theme) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setTheme(theme);
+            }
+        }
+        
+        // Voice commands
+        function accessifyToggleVoiceCommands() {
+            if (accessifyInstance && accessifyInstance.pluginManager) {
+                const voicePlugin = accessifyInstance.pluginManager.getPlugin('voiceCommands');
+                if (voicePlugin) {
+                    if (voicePlugin.isListening) {
+                        voicePlugin.stopListening();
+                    } else {
+                        voicePlugin.startListening();
+                    }
+                }
+            }
+        }
+        
+        function accessifyToggleSwitchNavigation() {
+            if (accessifyInstance && accessifyInstance.pluginManager) {
+                const switchPlugin = accessifyInstance.pluginManager.getPlugin('switchNavigation');
+                if (switchPlugin) {
+                    if (switchPlugin.isScanning) {
+                        switchPlugin.stopScanning();
+                    } else {
+                        switchPlugin.startScanning();
+                    }
+                }
+            }
+        }
+        
+        // Testing functions
+        function accessifyRunTests() {
+            if (accessifyInstance && accessifyInstance.testingUtils) {
+                accessifyInstance.testingUtils.runAccessibilityTests()
+                    .then(results => {
+                        console.log('Accessibility test results:', results);
+                        alert('Accessibility tests completed. Check console for results.');
+                    })
+                    .catch(error => {
+                        console.error('Accessibility tests failed:', error);
+                        alert('Accessibility tests failed. Check console for details.');
+                    });
+            } else {
+                alert('Testing functionality not available');
+            }
+        }
+        
+        function accessifyGenerateReport() {
+            if (accessifyInstance && accessifyInstance.testingUtils) {
+                try {
+                    const report = accessifyInstance.testingUtils.generateComplianceReport();
+                    console.log('Compliance report:', report);
+                    alert('Compliance report generated. Check console for details.');
+                } catch (error) {
+                    console.error('Report generation failed:', error);
+                    alert('Report generation failed. Check console for details.');
+                }
+            } else {
+                alert('Report generation not available');
+            }
+        }
+        
+        // Reset function
+        function accessifyResetToDefault() {
+            if (accessifyInstance) {
+                // Reset visual settings
+                if (accessifyInstance.visual) {
+                    accessifyInstance.visual.resetTextSize();
+                    accessifyInstance.visual.setContrastMode('normal');
+                    accessifyInstance.visual.setTheme('default');
+                }
+                
+                // Reset language to English
+                accessifyCurrentLanguage = 'en';
+                const languageSelect = document.getElementById('accessify-language');
+                if (languageSelect) languageSelect.value = 'en';
+                accessifyUpdateTranslations();
+                
+                // Reset Accessify language
+                if (accessifyInstance.multilingual) {
+                    accessifyInstance.multilingual.setLanguage('en');
+                }
+                
+                // Reset form controls
+                const textSizeSlider = document.getElementById('accessify-text-size');
+                const contrastSelect = document.getElementById('accessify-contrast');
+                const themeSelect = document.getElementById('accessify-theme');
+                
+                if (textSizeSlider) textSizeSlider.value = 1;
+                if (contrastSelect) contrastSelect.value = 'normal';
+                if (themeSelect) themeSelect.value = 'default';
+                
+                console.log('All settings reset to default');
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', accessifyInit);
+        
+        // Export functions for external use
+        window.accessifyToggleDashboard = accessifyToggleDashboard;
+        window.accessifyChangeLanguage = accessifyChangeLanguage;
+        window.accessifyIncreaseTextSize = accessifyIncreaseTextSize;
+        window.accessifyDecreaseTextSize = accessifyDecreaseTextSize;
+        window.accessifySetTextSize = accessifySetTextSize;
+        window.accessifySetContrast = accessifySetContrast;
+        window.accessifySetTheme = accessifySetTheme;
+        window.accessifyToggleVoiceCommands = accessifyToggleVoiceCommands;
+        window.accessifyToggleSwitchNavigation = accessifyToggleSwitchNavigation;
+        window.accessifyRunTests = accessifyRunTests;
+        window.accessifyGenerateReport = accessifyGenerateReport;
+        window.accessifyResetToDefault = accessifyResetToDefault;
+    </script>
+    
+    <!-- Demo Content (Remove this section when integrating) -->
+    <div style="padding: 40px; max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif;">
+        <h1>Accessify Integration Demo</h1>
+        <p>This is a clean implementation of the Accessify accessibility tool. The accessibility controls are in the top-right corner.</p>
+        
+        <h2>How to Integrate</h2>
+        <ol>
+            <li>Copy the CSS styles (marked with "ACCESSIFY INTEGRATION STYLES") to your website's CSS</li>
+            <li>Copy the HTML structure (marked with "ACCESSIFY INTEGRATION HTML") to your website</li>
+            <li>Copy the JavaScript code (marked with "ACCESSIFY INTEGRATION JAVASCRIPT") to your website</li>
+            <li>Include the Accessify library: <code>&lt;script src="path/to/accessify.min.js"&gt;&lt;/script&gt;</code></li>
+            <li>Remove this demo content section</li>
+        </ol>
+        
+        <h2>Features</h2>
+        <ul>
+            <li>Text size adjustment (50% to 300%)</li>
+            <li>Contrast modes (Normal, High, Inverted, Grayscale)</li>
+            <li>Theme switching (Default, Dark, Light, Colorblind Friendly)</li>
+            <li>Voice commands and switch navigation</li>
+            <li>Multilingual support (6 languages)</li>
+            <li>RTL support for Hebrew and Arabic</li>
+            <li>Accessibility testing and reporting</li>
+            <li>Responsive design</li>
+            <li>High contrast and reduced motion support</li>
+        </ul>
+        
+        <h2>Test Content</h2>
+        <p>This is some test content to demonstrate the accessibility features. Try adjusting the text size, contrast, and theme using the controls in the top-right corner.</p>
+        
+        <button onclick="alert('Button clicked!')">Test Button</button>
+        <a href="#" onclick="alert('Link clicked!'); return false;">Test Link</a>
+        
+        <h3>Form Elements</h3>
+        <form>
+            <label for="test-input">Test Input:</label>
+            <input type="text" id="test-input" placeholder="Type something here">
+            
+            <label for="test-select">Test Select:</label>
+            <select id="test-select">
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+            </select>
+            
+            <label for="test-textarea">Test Textarea:</label>
+            <textarea id="test-textarea" rows="3" placeholder="Enter some text"></textarea>
+        </form>
+    </div>
+</body>
+</html>

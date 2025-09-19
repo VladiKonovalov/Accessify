@@ -23,6 +23,7 @@ declare class Accessify {
   readonly reading: ReadingAccessibility;
   readonly motor: MotorAccessibility;
   readonly multilingual: MultilingualSupport;
+  readonly aria: ARIAEnhancement;
   
   // Methods
   init(): Promise<Accessify>;
@@ -524,6 +525,30 @@ declare class SwitchNavigationPlugin {
   setScanSpeed(speed: number): void;
   getStatus(): any;
   updateConfig(newConfig: any): void;
+}
+
+declare class ARIAEnhancement {
+  constructor(accessify: Accessify);
+  
+  readonly isInitialized: boolean;
+  readonly enhancedElements: Set<HTMLElement>;
+  readonly ariaObserver: MutationObserver | null;
+  
+  init(): Promise<void>;
+  destroy(): void;
+  enhanceElement(element: HTMLElement, attributes: Record<string, string>): void;
+  removeEnhancement(element: HTMLElement, attributes: string | string[]): void;
+  announce(message: string, priority?: 'polite' | 'assertive'): void;
+  getComplianceStatus(): {
+    enhancedElements: number;
+    liveRegions: {
+      polite: boolean;
+      assertive: boolean;
+    };
+    wcagCompliant: boolean;
+    israeliStandardCompliant: boolean;
+  };
+  reset(): void;
 }
 
 declare class TestingUtils {

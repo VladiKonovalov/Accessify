@@ -47,11 +47,18 @@ export class TestingUtils {
       version: '2.1',
       results: {},
       score: 0,
-      compliant: false
+      compliant: false,
+      details: {
+        perceivable: {},
+        operable: {},
+        understandable: {},
+        robust: {}
+      }
     };
 
     // Test 1: Text size adjustment
     tests.results.textSizeAdjustment = this._testTextSizeAdjustment();
+    tests.details.perceivable.textSizeAdjustment = tests.results.textSizeAdjustment;
     
     // Test 2: High contrast
     tests.results.highContrast = this._testHighContrast();
@@ -689,5 +696,363 @@ export class TestingUtils {
       passedTests: (results.wcag?.results ? Object.values(results.wcag.results).filter(r => r.passed).length : 0) +
                   (results.israeliStandard?.results ? Object.values(results.israeliStandard.results).filter(r => r.passed).length : 0)
     };
+  }
+
+  /**
+   * Test color contrast ratios
+   */
+  _testColorContrast() {
+    const results = {
+      passed: true,
+      violations: [],
+      recommendations: []
+    };
+
+    try {
+      // Get all text elements
+      const textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, label');
+      
+      textElements.forEach(element => {
+        const styles = window.getComputedStyle(element);
+        const color = styles.color;
+        const backgroundColor = styles.backgroundColor;
+        
+        if (color && backgroundColor && color !== 'rgba(0, 0, 0, 0)' && backgroundColor !== 'rgba(0, 0, 0, 0)') {
+          const contrast = this.accessify.visual?.validateColorContrast(color, backgroundColor);
+          
+          if (contrast && contrast.level === 'fail') {
+            results.passed = false;
+            results.violations.push({
+              element: element,
+              contrast: contrast.ratio,
+              message: contrast.message
+            });
+          }
+        }
+      });
+      
+      if (results.violations.length === 0) {
+        results.recommendations.push('All text elements meet WCAG AA contrast requirements');
+      } else {
+        results.recommendations.push(`Fix ${results.violations.length} contrast violations`);
+      }
+      
+    } catch (error) {
+      results.passed = false;
+      results.violations.push({
+        error: error.message,
+        message: 'Error testing color contrast'
+      });
+    }
+
+    return results;
+  }
+
+  /**
+   * Test focus indicators
+   */
+  _testFocusIndicators() {
+    const results = {
+      passed: true,
+      violations: [],
+      recommendations: []
+    };
+
+    try {
+      const focusableElements = document.querySelectorAll('a, button, input, select, textarea, [tabindex]');
+      
+      focusableElements.forEach(element => {
+        const styles = window.getComputedStyle(element, ':focus');
+        const outline = styles.outline;
+        const outlineWidth = styles.outlineWidth;
+        const boxShadow = styles.boxShadow;
+        
+        if (outline === 'none' && outlineWidth === '0px' && !boxShadow) {
+          results.passed = false;
+          results.violations.push({
+            element: element,
+            message: 'Element lacks visible focus indicator'
+          });
+        }
+      });
+      
+      if (results.violations.length === 0) {
+        results.recommendations.push('All focusable elements have visible focus indicators');
+      } else {
+        results.recommendations.push(`Add focus indicators to ${results.violations.length} elements`);
+      }
+      
+    } catch (error) {
+      results.passed = false;
+      results.violations.push({
+        error: error.message,
+        message: 'Error testing focus indicators'
+      });
+    }
+
+    return results;
+  }
+
+  /**
+   * Test ARIA implementation
+   */
+  _testARIAImplementation() {
+    const results = {
+      passed: true,
+      violations: [],
+      recommendations: []
+    };
+
+    try {
+      // Test for missing alt text
+      const images = document.querySelectorAll('img');
+      images.forEach(img => {
+        if (!img.getAttribute('alt') && !img.getAttribute('aria-label')) {
+          results.passed = false;
+          results.violations.push({
+            element: img,
+            message: 'Image missing alt text or aria-label'
+          });
+        }
+      });
+
+      // Test for proper form labels
+      const inputs = document.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        const id = input.id;
+        const label = document.querySelector(`label[for="${id}"]`);
+        const ariaLabel = input.getAttribute('aria-label');
+        const ariaLabelledby = input.getAttribute('aria-labelledby');
+        
+        if (!label && !ariaLabel && !ariaLabelledby) {
+          results.passed = false;
+          results.violations.push({
+            element: input,
+            message: 'Form element missing label or aria-label'
+          });
+        }
+      });
+
+      // Test for proper heading structure
+      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      let previousLevel = 0;
+      headings.forEach(heading => {
+        const level = parseInt(heading.tagName.charAt(1));
+        if (level > previousLevel + 1) {
+          results.passed = false;
+          results.violations.push({
+            element: heading,
+            message: `Heading level ${level} skips level ${previousLevel + 1}`
+          });
+        }
+        previousLevel = level;
+      });
+      
+      if (results.violations.length === 0) {
+        results.recommendations.push('ARIA implementation is compliant');
+      } else {
+        results.recommendations.push(`Fix ${results.violations.length} ARIA violations`);
+      }
+      
+    } catch (error) {
+      results.passed = false;
+      results.violations.push({
+        error: error.message,
+        message: 'Error testing ARIA implementation'
+      });
+    }
+
+    return results;
+  }
+
+  /**
+   * Test screen reader compatibility
+   */
+  _testScreenReaderCompatibility() {
+    const results = {
+      passed: true,
+      violations: [],
+      recommendations: []
+    };
+
+    try {
+      // Test for proper semantic HTML
+      const semanticElements = document.querySelectorAll('main, nav, section, article, aside, header, footer');
+      if (semanticElements.length === 0) {
+        results.passed = false;
+        results.violations.push({
+          message: 'No semantic HTML elements found'
+        });
+      }
+
+      // Test for proper landmark roles
+      const landmarks = document.querySelectorAll('[role="main"], [role="navigation"], [role="banner"], [role="contentinfo"]');
+      if (landmarks.length === 0 && semanticElements.length === 0) {
+        results.passed = false;
+        results.violations.push({
+          message: 'No landmark roles or semantic elements found'
+        });
+      }
+
+      // Test for proper list structure
+      const lists = document.querySelectorAll('ul, ol');
+      lists.forEach(list => {
+        const items = list.querySelectorAll('li');
+        if (items.length === 0) {
+          results.passed = false;
+          results.violations.push({
+            element: list,
+            message: 'List element has no list items'
+          });
+        }
+      });
+      
+      if (results.violations.length === 0) {
+        results.recommendations.push('Screen reader compatibility is good');
+      } else {
+        results.recommendations.push(`Fix ${results.violations.length} screen reader issues`);
+      }
+      
+    } catch (error) {
+      results.passed = false;
+      results.violations.push({
+        error: error.message,
+        message: 'Error testing screen reader compatibility'
+      });
+    }
+
+    return results;
+  }
+
+  /**
+   * Test RTL support
+   */
+  _testRTLSupport() {
+    const results = {
+      passed: true,
+      violations: [],
+      recommendations: []
+    };
+
+    try {
+      // Test for RTL language support
+      const rtlElements = document.querySelectorAll('[dir="rtl"], [lang="he"], [lang="ar"]');
+      if (rtlElements.length > 0) {
+        // Test for proper RTL styling
+        rtlElements.forEach(element => {
+          const styles = window.getComputedStyle(element);
+          const direction = styles.direction;
+          
+          if (direction !== 'rtl') {
+            results.passed = false;
+            results.violations.push({
+              element: element,
+              message: 'RTL element does not have RTL direction'
+            });
+          }
+        });
+      }
+
+      // Test for Hebrew/Arabic text support
+      const hebrewText = document.querySelectorAll('*');
+      let hasHebrewText = false;
+      hebrewText.forEach(element => {
+        if (element.textContent && /[\u0590-\u05FF]/.test(element.textContent)) {
+          hasHebrewText = true;
+        }
+      });
+
+      if (hasHebrewText) {
+        const htmlDir = document.documentElement.getAttribute('dir');
+        if (htmlDir !== 'rtl') {
+          results.recommendations.push('Consider setting dir="rtl" on html element for Hebrew text');
+        }
+      }
+      
+      if (results.violations.length === 0) {
+        results.recommendations.push('RTL support is properly implemented');
+      } else {
+        results.recommendations.push(`Fix ${results.violations.length} RTL issues`);
+      }
+      
+    } catch (error) {
+      results.passed = false;
+      results.violations.push({
+        error: error.message,
+        message: 'Error testing RTL support'
+      });
+    }
+
+    return results;
+  }
+
+  /**
+   * Test keyboard navigation
+   */
+  _testKeyboardNavigation() {
+    const results = {
+      passed: true,
+      violations: [],
+      recommendations: []
+    };
+
+    try {
+      const focusableElements = document.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const tabOrder = [];
+      
+      focusableElements.forEach(element => {
+        const tabIndex = parseInt(element.getAttribute('tabindex')) || 0;
+        tabOrder.push({ element, tabIndex });
+      });
+
+      // Sort by tab index
+      tabOrder.sort((a, b) => a.tabIndex - b.tabIndex);
+
+      // Test for logical tab order
+      let previousPosition = { x: -1, y: -1 };
+      tabOrder.forEach(({ element }) => {
+        const rect = element.getBoundingClientRect();
+        const currentPosition = { x: rect.left, y: rect.top };
+        
+        // Check if tab order follows visual order (roughly)
+        if (currentPosition.y < previousPosition.y - 50) {
+          results.passed = false;
+          results.violations.push({
+            element: element,
+            message: 'Tab order may not follow visual order'
+          });
+        }
+        
+        previousPosition = currentPosition;
+      });
+
+      // Test for keyboard traps
+      const modals = document.querySelectorAll('[role="dialog"], [role="modal"]');
+      modals.forEach(modal => {
+        const focusableInModal = modal.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableInModal.length === 0) {
+          results.passed = false;
+          results.violations.push({
+            element: modal,
+            message: 'Modal dialog has no focusable elements'
+          });
+        }
+      });
+      
+      if (results.violations.length === 0) {
+        results.recommendations.push('Keyboard navigation is properly implemented');
+      } else {
+        results.recommendations.push(`Fix ${results.violations.length} keyboard navigation issues`);
+      }
+      
+    } catch (error) {
+      results.passed = false;
+      results.violations.push({
+        error: error.message,
+        message: 'Error testing keyboard navigation'
+      });
+    }
+
+    return results;
   }
 }

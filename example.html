@@ -6,59 +6,74 @@
     <title>Accessify - Web Accessibility Toolkit Demo</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
+            color: #1a1a1a;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         h1 {
-            color: #333;
+            color: #1a1a1a;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-weight: 600;
+            font-size: 2.5rem;
         }
         
         .demo-section {
-            margin: 30px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #fafafa;
+            margin: 40px 0;
+            padding: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            background: #fafbfc;
         }
         
         .demo-section h2 {
-            color: #0066cc;
+            color: #007AFF;
             margin-top: 0;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
         
         .button {
-            background: #0066cc;
+            background: #007AFF;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 8px;
             cursor: pointer;
-            margin: 5px;
+            margin: 8px;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
         }
         
         .button:hover {
-            background: #0052a3;
+            background: #0056CC;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+        
+        .button:active {
+            transform: translateY(0);
         }
         
         .button:focus {
-            outline: 2px solid #ff6600;
-            outline-offset: 2px;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
         }
         
         .input-group {
@@ -100,23 +115,24 @@
             color: #e65100;
         }
         
+        /* Accessibility Controls - Easy to implement in other websites */
+        /* Copy this entire .accessibility-controls block to your website's CSS */
         .accessibility-controls {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             z-index: 10000;
-            width: 280px;
+            width: 300px;
             max-width: 90vw;
-            max-height: 90vh;
+            max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             transform: translateY(0);
             will-change: transform;
             box-sizing: border-box;
@@ -124,13 +140,13 @@
         
         .accessibility-controls:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
         }
         
         .accessibility-controls h3 {
             margin: 0 0 16px 0;
-            color: white;
-            font-size: 16px;
+            color: #1a1a1a;
+            font-size: 22px !important;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -141,22 +157,25 @@
         
         .accessibility-controls h3::before {
             content: "♿";
-            font-size: 18px;
+            font-size: 24px !important;
+            opacity: 0.8;
         }
         
+        /* Dashboard Toggle Button - Easy to implement in other websites */
+        /* Copy this entire .dashboard-toggle block to your website's CSS */
         .dashboard-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #007AFF;
             border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            border-radius: 16px;
+            width: 72px;
+            height: 72px;
             color: white;
-            font-size: 24px;
+            font-size: 40px !important;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
             z-index: 10001;
             transition: all 0.3s ease;
             display: flex;
@@ -167,8 +186,13 @@
         }
         
         .dashboard-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+        }
+        
+        .dashboard-toggle:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
         }
         
         .dashboard-toggle::before {
@@ -180,35 +204,43 @@
         }
         
         .control-group {
-            margin: 12px 0;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
+            margin: 8px 0;
+            background: rgba(0, 0, 0, 0.02);
+            padding: 12px;
             border-radius: 12px;
-            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             min-height: 48px;
             flex-wrap: wrap;
+            transition: all 0.2s ease;
+        }
+        
+        .control-group:hover {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.1);
         }
         
         .control-group label {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
-            font-size: 16px;
+            width: 36px;
+            height: 36px;
+            font-size: 20px !important;
             margin: 0;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
+            opacity: 0.8;
         }
         
         .control-group label:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transform: scale(1.05);
         }
         
         .control-group .control-content {
@@ -225,73 +257,147 @@
         
         .control-group input[type="range"] {
             flex: 1;
-            height: 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.2);
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(0, 0, 0, 0.1);
             outline: none;
             -webkit-appearance: none;
+            appearance: none;
             min-width: 0;
+            cursor: pointer;
         }
         
         .control-group input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: white;
+            background: #007AFF;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         
         .control-group select {
             flex: 1;
-            padding: 6px 8px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 12px;
-            backdrop-filter: blur(5px);
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: white;
+            color: #1a1a1a;
+            font-size: 20px !important;
             min-width: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .control-group select:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-group select:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
         
         .control-group select option {
-            background: #333;
-            color: white;
+            background: white;
+            color: #1a1a1a;
         }
         
         .control-group button {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 6px 8px;
-            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            color: #1a1a1a;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 20px !important;
             font-weight: 500;
             margin: 0;
             transition: all 0.2s ease;
-            backdrop-filter: blur(5px);
-            min-width: 28px;
-            height: 28px;
+            min-width: 44px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
         .control-group button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
         }
         
         .control-group button:active {
-            transform: scale(0.95);
+            transform: translateY(0);
+        }
+        
+        .control-group button:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        /* Remove default tooltips and prevent empty tooltip boxes */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Custom tooltip styles */
+        .control-group label:hover::after,
+        .control-group button:hover::after {
+            content: attr(title);
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px !important;
+            white-space: nowrap;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            right: 100%;
+            margin-right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* RTL Tooltip positioning */
+        .rtl-demo .control-group label:hover::after,
+        .rtl-demo .control-group button:hover::after,
+        [dir="rtl"] .control-group label:hover::after,
+        [dir="rtl"] .control-group button:hover::after {
+            right: auto;
+            left: 100%;
+            margin-right: 0;
+            margin-left: 8px;
         }
         
         .rtl-demo {
             direction: rtl;
             text-align: right;
+        }
+        
+        /* Isolate accessibility tool from text size changes */
+        .dashboard-toggle,
+        .accessibility-controls,
+        .accessibility-controls * {
+            font-size: inherit !important;
         }
         
         .hebrew-text {
@@ -480,6 +586,18 @@
     <a href="#navigation" class="skip-link">Skip to navigation</a>
     
     <!-- Accessibility Controls -->
+    <!-- 
+    IMPLEMENTATION GUIDE FOR OTHER WEBSITES:
+    
+    1. Copy the CSS blocks marked with "Easy to implement in other websites" comments
+    2. Copy the HTML structure below (dashboard toggle button and accessibility controls)
+    3. Copy the JavaScript translation system and functions
+    4. Include the Accessify library: <script src="path/to/accessify.min.js"></script>
+    5. Initialize with: const accessify = new Accessify(); await accessify.init();
+    
+    The system is designed to be self-contained and easy to integrate.
+    -->
+    
     <!-- Dashboard Toggle Button -->
     <button class="dashboard-toggle" id="dashboard-toggle" onclick="toggleDashboard()"></button>
     
@@ -488,19 +606,19 @@
         <h3>Accessibility Controls</h3>
         <!-- Text Size Control -->
         <div class="control-group">
-            <label for="text-size" title="Text Size - Adjust font size for better readability">🔍</label>
+            <label for="text-size" title="Text Size - Adjust font size for better readability">A</label>
             <div class="control-content">
                 <input type="range" id="text-size" min="0.5" max="3" step="0.1" value="1">
                 <div class="control-buttons">
                     <button onclick="increaseTextSize()" title="Increase Text Size - Make text larger">+</button>
-                    <button onclick="decreaseTextSize()" title="Decrease Text Size - Make text smaller">-</button>
+                    <button onclick="decreaseTextSize()" title="Decrease Text Size - Make text smaller">−</button>
                 </div>
             </div>
         </div>
-        
+
         <!-- Contrast Control -->
         <div class="control-group">
-            <label for="contrast" title="Contrast - Change color contrast for better visibility">🎨</label>
+            <label for="contrast" title="Contrast - Change color contrast for better visibility">◐</label>
             <div class="control-content">
                 <select id="contrast" onchange="setContrast(this.value)">
                     <option value="normal">Normal</option>
@@ -510,10 +628,10 @@
                 </select>
             </div>
         </div>
-        
+
         <!-- Theme Control -->
         <div class="control-group">
-            <label for="theme" title="Theme - Change visual appearance and colors">🎭</label>
+            <label for="theme" title="Theme - Change visual appearance and colors">🎨</label>
             <div class="control-content">
                 <select id="theme" onchange="setTheme(this.value)">
                     <option value="default">Default</option>
@@ -523,18 +641,18 @@
                 </select>
             </div>
         </div>
-        
+
         <!-- Voice Commands -->
         <div class="control-group">
             <label title="Voice Commands - Control with your voice">🎤</label>
             <div class="control-content">
                 <div class="control-buttons">
-                    <button onclick="toggleVoiceCommands()" title="Toggle Voice Commands - Start/stop voice control">🎙️</button>
-                    <button onclick="toggleSwitchNavigation()" title="Toggle Switch Navigation - Alternative input method">🔄</button>
+                    <button onclick="toggleVoiceCommands()" title="Toggle Voice Commands - Start/stop voice control">🎙</button>
+                    <button onclick="toggleSwitchNavigation()" title="Toggle Switch Navigation - Alternative input method">⌨</button>
                 </div>
             </div>
         </div>
-        
+
         <!-- Language Control -->
         <div class="control-group">
             <label title="Language - Change interface language">🌐</label>
@@ -549,14 +667,24 @@
                 </select>
             </div>
         </div>
-        
+
         <!-- Testing Controls -->
         <div class="control-group">
-            <label title="Accessibility Testing - Check website accessibility">🧪</label>
+            <label title="Accessibility Testing - Check website accessibility">✓</label>
             <div class="control-content">
                 <div class="control-buttons">
-                    <button onclick="runAccessibilityTests()" title="Run Tests - Check accessibility compliance">✅</button>
-                    <button onclick="generateReport()" title="Generate Report - Create accessibility report">📊</button>
+                    <button onclick="runAccessibilityTests()" title="Run Tests - Check accessibility compliance">Test</button>
+                    <button onclick="generateReport()" title="Generate Report - Create accessibility report">Report</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset Controls -->
+        <div class="control-group">
+            <label title="Reset to Default - Restore all settings to default">↺</label>
+            <div class="control-content">
+                <div class="control-buttons">
+                    <button onclick="resetToDefault()" title="Reset to Default - Restore all settings to default">Reset</button>
                 </div>
             </div>
         </div>
@@ -598,6 +726,12 @@
                     <button class="button">Button 1</button>
                     <button class="button">Button 2</button>
                     <a href="#" class="button">Link Button</a>
+                    
+                    <h3>Alt Text Generation Test</h3>
+                    <p>These images will automatically get alt text generated by Accessify:</p>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAwNjZjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U2FtcGxlIEltYWdlPC90ZXh0Pjwvc3ZnPg==" style="width: 100px; height: 100px; border: 1px solid #ccc; margin: 5px;" title="Sample Image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzMzY2M2NiIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R3JlZW4gSW1hZ2U8L3RleHQ+PC9zdmc+" style="width: 100px; height: 100px; border: 1px solid #ccc; margin: 5px;" data-alt="Green colored image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2ZmNjYwMCIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3JhbmdlIEltYWdlPC90ZXh0Pjwvc3ZnPg==" style="width: 100px; height: 100px; border: 1px solid #ccc; margin: 5px;">
                 </div>
             </section>
 
@@ -706,6 +840,42 @@
                 </div>
             </section>
 
+            <!-- ARIA Enhancement Demo -->
+            <section id="aria-demo" class="demo-section">
+                <h2>ARIA Enhancement Features</h2>
+                <p>Test the comprehensive ARIA labeling and accessibility enhancements.</p>
+                
+                <div class="test-content">
+                    <h3>Form Elements</h3>
+                    <p>These form elements will be automatically enhanced with proper ARIA attributes:</p>
+                    <form style="margin: 20px 0;">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                        
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4" cols="50"></textarea>
+                        
+                        <button type="submit">Submit</button>
+                    </form>
+                    
+                    <h3>Interactive Elements</h3>
+                    <p>These elements will be enhanced with proper roles and keyboard support:</p>
+                    <div onclick="alert('Clicked!')" style="display: inline-block; padding: 10px; background: #0066cc; color: white; cursor: pointer; margin: 5px; border-radius: 4px;">
+                        Clickable Div
+                    </div>
+                    <span onclick="alert('Span clicked!')" style="display: inline-block; padding: 10px; background: #33cc66; color: white; cursor: pointer; margin: 5px; border-radius: 4px;">
+                        Clickable Span
+                    </span>
+                    
+                    <h3>Live Regions</h3>
+                    <p>Test live region announcements:</p>
+                    <button class="button" onclick="testLiveRegions()">Test Live Regions</button>
+                </div>
+            </section>
+
             <!-- Testing Demo -->
             <section id="testing" class="demo-section">
                 <h2>Accessibility Testing & Compliance</h2>
@@ -718,6 +888,7 @@
                     <button onclick="runWCAGTests()">Run WCAG Tests</button>
                     <button onclick="runIsraeliStandardTests()">Run Israeli Standard Tests</button>
                     <button onclick="runAxeTests()">Run Axe Tests</button>
+                    <button onclick="runEnhancedComplianceTests()">Run Enhanced Tests</button>
                     
                     <div id="test-results" class="status" style="display: none;">
                         <h4>Test Results</h4>
@@ -761,7 +932,9 @@
         let dashboardVisible = true;
         let currentLanguage = 'en';
         
-        // Translation data
+        // Translation data - Easy to implement in other websites
+        // Add your own language translations by adding new objects to this translations object
+        // Each language should have all the keys listed in the English (en) object
         const translations = {
             en: {
                 title: "Accessibility Controls",
@@ -776,7 +949,45 @@
                 toggleVoice: "Toggle Voice Commands",
                 toggleSwitch: "Toggle Switch Navigation",
                 runTests: "Run Tests",
-                generateReport: "Generate Report"
+                generateReport: "Generate Report",
+                reset: "Reset to Default",
+                // Contrast options
+                normal: "Normal",
+                high: "High",
+                inverted: "Inverted",
+                grayscale: "Grayscale",
+                // Theme options
+                default: "Default",
+                dark: "Dark",
+                light: "Light",
+                colorblindFriendly: "Colorblind Friendly",
+                // Page content
+                pageTitle: "Accessify - Web Accessibility Toolkit Demo",
+                pageSubtitle: "This demo showcases the comprehensive accessibility features of Accessify, supporting WCAG 2.1 AA and Israeli Standard 5568.",
+                visualAccessibility: "Visual Accessibility",
+                navigationDemo: "Navigation",
+                readingSupport: "Reading Support",
+                motorMobility: "Motor & Mobility",
+                multilingualDemo: "Multilingual & RTL",
+                testingDemo: "Testing & Compliance",
+                // Visual section
+                visualTitle: "Visual Accessibility Features",
+                visualDesc: "Adjust text size, contrast, and visual elements for better readability.",
+                // Navigation section
+                navTitle: "Navigation & Interaction",
+                navDesc: "Test keyboard navigation, focus management, and alternative input methods.",
+                // Reading section
+                readingTitle: "Reading & Comprehension",
+                readingDesc: "Experience text-to-speech, dyslexia-friendly fonts, and reading aids.",
+                // Motor section
+                motorTitle: "Motor & Mobility Support",
+                motorDesc: "Test large targets, voice commands, and gesture alternatives.",
+                // Multilingual section
+                multiTitle: "Multilingual & RTL Support",
+                multiDesc: "Experience Hebrew, Arabic, and other language support with RTL layout.",
+                // Testing section
+                testTitle: "Testing & Compliance",
+                testDesc: "Run accessibility tests and generate compliance reports."
             },
             he: {
                 title: "בקרות נגישות",
@@ -791,7 +1002,45 @@
                 toggleVoice: "הפעל פקודות קול",
                 toggleSwitch: "הפעל ניווט מתג",
                 runTests: "הרץ בדיקות",
-                generateReport: "צור דוח"
+                generateReport: "צור דוח",
+                reset: "איפוס לברירת מחדל",
+                // Contrast options
+                normal: "רגיל",
+                high: "גבוה",
+                inverted: "הפוך",
+                grayscale: "גווני אפור",
+                // Theme options
+                default: "ברירת מחדל",
+                dark: "כהה",
+                light: "בהיר",
+                colorblindFriendly: "ידידותי לעיוורי צבעים",
+                // Page content
+                pageTitle: "Accessify - הדגמת ערכת נגישות אינטרנט",
+                pageSubtitle: "הדגמה זו מציגה את תכונות הנגישות המקיפות של Accessify, התומך בתקן WCAG 2.1 AA ובתקן הישראלי 5568.",
+                visualAccessibility: "נגישות חזותית",
+                navigationDemo: "ניווט",
+                readingSupport: "תמיכה בקריאה",
+                motorMobility: "מוטוריקה וניידות",
+                multilingualDemo: "רב-לשוני ו-RTL",
+                testingDemo: "בדיקות ותאימות",
+                // Visual section
+                visualTitle: "תכונות נגישות חזותית",
+                visualDesc: "התאם את גודל הטקסט, הניגודיות ואלמנטים חזותיים לקריאה טובה יותר.",
+                // Navigation section
+                navTitle: "ניווט ואינטראקציה",
+                navDesc: "בדוק ניווט במקלדת, ניהול פוקוס ושיטות קלט חלופיות.",
+                // Reading section
+                readingTitle: "קריאה והבנה",
+                readingDesc: "חווה טקסט-לדיבור, גופנים ידידותיים לדיסלקציה ועזרי קריאה.",
+                // Motor section
+                motorTitle: "תמיכה במוטוריקה וניידות",
+                motorDesc: "בדוק יעדים גדולים, פקודות קול וחלופות מחוות.",
+                // Multilingual section
+                multiTitle: "תמיכה רב-לשונית ו-RTL",
+                multiDesc: "חווה תמיכה בעברית, ערבית ושפות אחרות עם פריסת RTL.",
+                // Testing section
+                testTitle: "בדיקות ותאימות",
+                testDesc: "הרץ בדיקות נגישות וצור דוחות תאימות."
             },
             ar: {
                 title: "أدوات التحكم في إمكانية الوصول",
@@ -806,7 +1055,45 @@
                 toggleVoice: "تبديل الأوامر الصوتية",
                 toggleSwitch: "تبديل التنقل بالمفتاح",
                 runTests: "تشغيل الاختبارات",
-                generateReport: "إنشاء تقرير"
+                generateReport: "إنشاء تقرير",
+                reset: "إعادة تعيين للافتراضي",
+                // Contrast options
+                normal: "عادي",
+                high: "عالي",
+                inverted: "معكوس",
+                grayscale: "تدرج رمادي",
+                // Theme options
+                default: "افتراضي",
+                dark: "داكن",
+                light: "فاتح",
+                colorblindFriendly: "صديق للمكفوفين لونياً",
+                // Page content
+                pageTitle: "Accessify - عرض مجموعة أدوات إمكانية الوصول",
+                pageSubtitle: "يعرض هذا العرض التوضيحي ميزات إمكانية الوصول الشاملة لـ Accessify، مع دعم WCAG 2.1 AA والمعيار الإسرائيلي 5568.",
+                visualAccessibility: "إمكانية الوصول البصرية",
+                navigationDemo: "التنقل",
+                readingSupport: "دعم القراءة",
+                motorMobility: "الحركة والتنقل",
+                multilingualDemo: "متعدد اللغات وRTL",
+                testingDemo: "الاختبار والامتثال",
+                // Visual section
+                visualTitle: "ميزات إمكانية الوصول البصرية",
+                visualDesc: "اضبط حجم النص والتباين والعناصر البصرية لقراءة أفضل.",
+                // Navigation section
+                navTitle: "التنقل والتفاعل",
+                navDesc: "اختبر التنقل بلوحة المفاتيح وإدارة التركيز وطرق الإدخال البديلة.",
+                // Reading section
+                readingTitle: "القراءة والفهم",
+                readingDesc: "جرب تحويل النص إلى كلام والخطوط الصديقة لعسر القراءة ومساعدات القراءة.",
+                // Motor section
+                motorTitle: "دعم الحركة والتنقل",
+                motorDesc: "اختبر الأهداف الكبيرة والأوامر الصوتية وبدائل الإيماءات.",
+                // Multilingual section
+                multiTitle: "دعم متعدد اللغات وRTL",
+                multiDesc: "جرب دعم العبرية والعربية واللغات الأخرى مع تخطيط RTL.",
+                // Testing section
+                testTitle: "الاختبار والامتثال",
+                testDesc: "شغل اختبارات إمكانية الوصول وأنشئ تقارير الامتثال."
             },
             es: {
                 title: "Controles de Accesibilidad",
@@ -821,7 +1108,18 @@
                 toggleVoice: "Alternar Comandos de Voz",
                 toggleSwitch: "Alternar Navegación por Interruptor",
                 runTests: "Ejecutar Pruebas",
-                generateReport: "Generar Informe"
+                generateReport: "Generar Informe",
+                reset: "Restablecer por Defecto",
+                // Contrast options
+                normal: "Normal",
+                high: "Alto",
+                inverted: "Invertido",
+                grayscale: "Escala de Grises",
+                // Theme options
+                default: "Por Defecto",
+                dark: "Oscuro",
+                light: "Claro",
+                colorblindFriendly: "Amigable para Daltónicos"
             },
             fr: {
                 title: "Contrôles d'Accessibilité",
@@ -836,7 +1134,18 @@
                 toggleVoice: "Basculer les Commandes Vocales",
                 toggleSwitch: "Basculer la Navigation par Interrupteur",
                 runTests: "Exécuter les Tests",
-                generateReport: "Générer un Rapport"
+                generateReport: "Générer un Rapport",
+                reset: "Réinitialiser par Défaut",
+                // Contrast options
+                normal: "Normal",
+                high: "Élevé",
+                inverted: "Inversé",
+                grayscale: "Niveaux de Gris",
+                // Theme options
+                default: "Par Défaut",
+                dark: "Sombre",
+                light: "Clair",
+                colorblindFriendly: "Convivial pour les Daltoniens"
             },
             de: {
                 title: "Barrierefreiheits-Steuerung",
@@ -851,12 +1160,29 @@
                 toggleVoice: "Sprachbefehle umschalten",
                 toggleSwitch: "Schalter-Navigation umschalten",
                 runTests: "Tests ausführen",
-                generateReport: "Bericht erstellen"
+                generateReport: "Bericht erstellen",
+                reset: "Auf Standard zurücksetzen",
+                // Contrast options
+                normal: "Normal",
+                high: "Hoch",
+                inverted: "Invertiert",
+                grayscale: "Graustufen",
+                // Theme options
+                default: "Standard",
+                dark: "Dunkel",
+                light: "Hell",
+                colorblindFriendly: "Farbenblind-freundlich"
             }
         };
         
         // Language change function
         function changeLanguage(lang) {
+            // Check if the language is supported
+            if (!translations[lang]) {
+                console.warn(`Language ${lang} not supported, falling back to English`);
+                lang = 'en';
+            }
+            
             currentLanguage = lang;
             updateTranslations();
             
@@ -866,28 +1192,186 @@
             }
         }
         
-        // Update translations
+        // Update translations - This function translates all UI elements
+        // Easy to implement in other websites - just call this function when language changes
         function updateTranslations() {
-            const t = translations[currentLanguage];
+            let t = translations[currentLanguage];
             
-            // Update title
-            document.querySelector('.accessibility-controls h3').textContent = t.title;
+            // Safety check - if translation doesn't exist, fall back to English
+            if (!t) {
+                console.warn(`Translation for ${currentLanguage} not found, using English`);
+                currentLanguage = 'en';
+                t = translations[currentLanguage];
+                if (!t) {
+                    console.error('English translation not found!');
+                    return;
+                }
+            }
             
-            // Update tooltips
-            document.querySelector('label[for="text-size"]').title = t.textSize;
-            document.querySelector('label[for="contrast"]').title = t.contrast;
-            document.querySelector('label[for="theme"]').title = t.theme;
-            document.querySelector('label[title="Voice Commands"]').title = t.voiceCommands;
-            document.querySelector('label[title="Language"]').title = t.language;
-            document.querySelector('label[title="Accessibility Testing"]').title = t.testing;
+            // Update dashboard title
+            const dashboardTitle = document.querySelector('.accessibility-controls h3');
+            if (dashboardTitle) {
+                dashboardTitle.textContent = t.title;
+            }
             
-            // Update button tooltips
-            document.querySelector('button[onclick="increaseTextSize()"]').title = t.increaseText;
-            document.querySelector('button[onclick="decreaseTextSize()"]').title = t.decreaseText;
-            document.querySelector('button[onclick="toggleVoiceCommands()"]').title = t.toggleVoice;
-            document.querySelector('button[onclick="toggleSwitchNavigation()"]').title = t.toggleSwitch;
-            document.querySelector('button[onclick="runAccessibilityTests()"]').title = t.runTests;
-            document.querySelector('button[onclick="generateReport()"]').title = t.generateReport;
+            // Update tooltips with null checks
+            const textSizeLabel = document.querySelector('label[for="text-size"]');
+            if (textSizeLabel) textSizeLabel.title = t.textSize;
+            
+            const contrastLabel = document.querySelector('label[for="contrast"]');
+            if (contrastLabel) contrastLabel.title = t.contrast;
+            
+            const themeLabel = document.querySelector('label[for="theme"]');
+            if (themeLabel) themeLabel.title = t.theme;
+            
+            // Find labels by their content or other attributes
+            const labels = document.querySelectorAll('.control-group label');
+            labels.forEach(label => {
+                const title = label.getAttribute('title');
+                if (title) {
+                    if (title.includes('Voice Commands') || title.includes('🎤')) {
+                        label.title = t.voiceCommands;
+                    } else if (title.includes('Language') || title.includes('🌐')) {
+                        label.title = t.language;
+                    } else if (title.includes('Accessibility Testing') || title.includes('🧪')) {
+                        label.title = t.testing;
+                    } else if (title.includes('Reset to Default') || title.includes('🔄')) {
+                        label.title = t.reset;
+                    }
+                }
+            });
+            
+            // Update button tooltips with null checks
+            const increaseBtn = document.querySelector('button[onclick="increaseTextSize()"]');
+            if (increaseBtn) increaseBtn.title = t.increaseText;
+            
+            const decreaseBtn = document.querySelector('button[onclick="decreaseTextSize()"]');
+            if (decreaseBtn) decreaseBtn.title = t.decreaseText;
+            
+            const voiceBtn = document.querySelector('button[onclick="toggleVoiceCommands()"]');
+            if (voiceBtn) voiceBtn.title = t.toggleVoice;
+            
+            const switchBtn = document.querySelector('button[onclick="toggleSwitchNavigation()"]');
+            if (switchBtn) switchBtn.title = t.toggleSwitch;
+            
+            const testBtn = document.querySelector('button[onclick="runAccessibilityTests()"]');
+            if (testBtn) testBtn.title = t.runTests;
+            
+            const reportBtn = document.querySelector('button[onclick="generateReport()"]');
+            if (reportBtn) reportBtn.title = t.generateReport;
+            
+            const resetBtn = document.querySelector('button[onclick="resetToDefault()"]');
+            if (resetBtn) resetBtn.title = t.reset;
+            
+            // Update page content
+            const pageTitle = document.querySelector('h1');
+            if (pageTitle) pageTitle.textContent = t.pageTitle;
+            
+            const pageSubtitle = document.querySelector('header p');
+            if (pageSubtitle) pageSubtitle.textContent = t.pageSubtitle;
+            
+            // Update navigation links
+            const navLinks = document.querySelectorAll('nav a');
+            if (navLinks.length >= 6) {
+                navLinks[0].textContent = t.visualAccessibility;
+                navLinks[1].textContent = t.navigationDemo;
+                navLinks[2].textContent = t.readingSupport;
+                navLinks[3].textContent = t.motorMobility;
+                navLinks[4].textContent = t.multilingualDemo;
+                navLinks[5].textContent = t.testingDemo;
+            }
+            
+            // Update section titles and descriptions
+            const sections = document.querySelectorAll('section h2');
+            const sectionDescs = document.querySelectorAll('section p');
+            
+            if (sections.length >= 6) {
+                sections[0].textContent = t.visualTitle;
+                sections[1].textContent = t.navTitle;
+                sections[2].textContent = t.readingTitle;
+                sections[3].textContent = t.motorTitle;
+                sections[4].textContent = t.multiTitle;
+                sections[5].textContent = t.testTitle;
+            }
+            
+            if (sectionDescs.length >= 6) {
+                sectionDescs[0].textContent = t.visualDesc;
+                sectionDescs[1].textContent = t.navDesc;
+                sectionDescs[2].textContent = t.readingDesc;
+                sectionDescs[3].textContent = t.motorDesc;
+                sectionDescs[4].textContent = t.multiDesc;
+                sectionDescs[5].textContent = t.testDesc;
+            }
+            
+            // Update contrast options
+            const contrastSelect = document.getElementById('contrast');
+            if (contrastSelect) {
+                const options = contrastSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    const value = option.value;
+                    if (value === 'normal') option.textContent = t.normal;
+                    else if (value === 'high') option.textContent = t.high;
+                    else if (value === 'inverted') option.textContent = t.inverted;
+                    else if (value === 'grayscale') option.textContent = t.grayscale;
+                });
+            }
+            
+            // Update theme options
+            const themeSelect = document.getElementById('theme');
+            if (themeSelect) {
+                const options = themeSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    const value = option.value;
+                    if (value === 'default') option.textContent = t.default;
+                    else if (value === 'dark') option.textContent = t.dark;
+                    else if (value === 'light') option.textContent = t.light;
+                    else if (value === 'colorblind-friendly') option.textContent = t.colorblindFriendly;
+                });
+            }
+            
+            // Update direction for RTL languages
+            if (currentLanguage === 'he' || currentLanguage === 'ar') {
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', currentLanguage);
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', currentLanguage);
+            }
+        }
+        
+        // Reset to default function
+        function resetToDefault() {
+            if (accessify) {
+                // Reset visual settings
+                if (accessify.visual) {
+                    accessify.visual.resetTextSize();
+                    accessify.visual.setContrastMode('normal');
+                    accessify.visual.setTheme('default');
+                    accessify.visual.setBrightness(1.0);
+                }
+                
+                // Reset reading settings
+                if (accessify.reading) {
+                    accessify.reading.reset();
+                }
+                
+                // Reset language to English
+                currentLanguage = 'en';
+                document.getElementById('language').value = 'en';
+                updateTranslations();
+                
+                // Reset Accessify language
+                if (accessify.multilingual) {
+                    accessify.multilingual.setLanguage('en');
+                }
+                
+                // Reset form controls
+                document.getElementById('text-size').value = 1;
+                document.getElementById('contrast').value = 'normal';
+                document.getElementById('theme').value = 'default';
+                
+                console.log('All settings reset to default');
+            }
         }
         
         // Dashboard toggle function
@@ -1150,6 +1634,114 @@
         
         function generateComplianceReport() {
             generateReport();
+        }
+        
+        // New ARIA Enhancement Functions
+        function testLiveRegions() {
+            if (accessify && accessify.aria) {
+                accessify.aria.announce('This is a test announcement from Accessify live regions!', 'polite');
+                setTimeout(() => {
+                    accessify.aria.announce('This is an assertive announcement!', 'assertive');
+                }, 1000);
+            } else {
+                showError('ARIA enhancement not available');
+            }
+        }
+        
+        // Enhanced testing functions
+        function runWCAGTests() {
+            if (accessify && accessify.testingUtils) {
+                accessify.testingUtils.runWCAGTests().then(results => {
+                    displayTestResults({ wcag: results });
+                }).catch(error => {
+                    showError('WCAG tests failed: ' + error.message);
+                });
+            } else {
+                showError('Testing utils not available');
+            }
+        }
+        
+        function runIsraeliStandardTests() {
+            if (accessify && accessify.testingUtils) {
+                accessify.testingUtils.runIsraeliStandardTests().then(results => {
+                    displayTestResults({ israeliStandard: results });
+                }).catch(error => {
+                    showError('Israeli Standard tests failed: ' + error.message);
+                });
+            } else {
+                showError('Testing utils not available');
+            }
+        }
+        
+        function runAxeTests() {
+            if (accessify && accessify.testingUtils) {
+                accessify.testingUtils.runAxeTests().then(results => {
+                    displayTestResults({ axe: results });
+                }).catch(error => {
+                    showError('Axe tests failed: ' + error.message);
+                });
+            } else {
+                showError('Testing utils not available');
+            }
+        }
+        
+        // Enhanced compliance testing
+        function runEnhancedComplianceTests() {
+            if (accessify && accessify.testingUtils) {
+                const tests = [
+                    { name: 'Color Contrast', test: () => accessify.testingUtils._testColorContrast() },
+                    { name: 'Focus Indicators', test: () => accessify.testingUtils._testFocusIndicators() },
+                    { name: 'ARIA Implementation', test: () => accessify.testingUtils._testARIAImplementation() },
+                    { name: 'Screen Reader Compatibility', test: () => accessify.testingUtils._testScreenReaderCompatibility() },
+                    { name: 'RTL Support', test: () => accessify.testingUtils._testRTLSupport() },
+                    { name: 'Keyboard Navigation', test: () => accessify.testingUtils._testKeyboardNavigation() }
+                ];
+                
+                const results = {};
+                tests.forEach(({ name, test }) => {
+                    try {
+                        results[name] = test();
+                    } catch (error) {
+                        results[name] = { passed: false, error: error.message };
+                    }
+                });
+                
+                displayEnhancedTestResults(results);
+            } else {
+                showError('Enhanced testing not available');
+            }
+        }
+        
+        function displayEnhancedTestResults(results) {
+            const resultsDiv = document.getElementById('test-results');
+            const outputDiv = document.getElementById('test-output');
+            
+            let html = '<h4>Enhanced Test Results</h4>';
+            
+            Object.entries(results).forEach(([testName, result]) => {
+                html += `<h5>${testName}</h5>`;
+                html += `<p>Status: ${result.passed ? '✅ Pass' : '❌ Fail'}</p>`;
+                
+                if (result.violations && result.violations.length > 0) {
+                    html += `<p>Violations: ${result.violations.length}</p>`;
+                    html += '<ul>';
+                    result.violations.forEach(violation => {
+                        html += `<li>${violation.message}</li>`;
+                    });
+                    html += '</ul>';
+                }
+                
+                if (result.recommendations && result.recommendations.length > 0) {
+                    html += '<p>Recommendations:</p><ul>';
+                    result.recommendations.forEach(rec => {
+                        html += `<li>${rec}</li>`;
+                    });
+                    html += '</ul>';
+                }
+            });
+            
+            outputDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
         }
         
         function displayTestResults(results) {

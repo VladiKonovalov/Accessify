@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accessify Minimal Integration</title>
+    <style>
+        /* Minimal Accessify Styles */
+        .accessify-toggle {
+            position: fixed; top: 20px; right: 20px; width: 72px; height: 72px;
+            background: #007AFF; border: none; border-radius: 16px; color: white;
+            font-size: 40px !important; cursor: pointer; z-index: 10001;
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .accessify-toggle::before { content: "♿"; }
+        .accessify-panel {
+            position: fixed; top: 20px; right: 20px; width: 300px; max-width: 90vw;
+            background: white; border: 1px solid rgba(0,0,0,0.15); border-radius: 16px;
+            padding: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 10000; font-family: system-ui, sans-serif;
+        }
+        .accessify-panel.hidden { display: none; }
+        .accessify-control { margin: 8px 0; padding: 12px; background: #f8f9fa;
+            border-radius: 8px; display: flex; align-items: center; gap: 12px; }
+        .accessify-control label { width: 36px; height: 36px; background: #e9ecef;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-size: 20px !important; }
+        .accessify-control select, .accessify-control input { flex: 1; padding: 12px;
+            border: 1px solid #ddd; border-radius: 4px; font-size: 20px !important; }
+        .accessify-control button { padding: 12px 16px; background: #f8f9fa;
+            border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 20px !important; }
+        /* Isolate from text size changes */
+        .accessify-toggle, .accessify-panel, .accessify-panel * { font-size: inherit !important; }
+        /* RTL Support */
+        .accessify-rtl .accessify-panel { right: auto; left: 20px; }
+        .accessify-rtl .accessify-toggle { right: auto; left: 20px; }
+        @media (max-width: 768px) {
+            .accessify-panel { width: calc(100vw - 40px); }
+            .accessify-toggle { width: 64px; height: 64px; font-size: 36px !important; }
+            .accessify-control select, .accessify-control button { font-size: 18px !important; }
+            .accessify-control label { font-size: 18px !important; width: 32px; height: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessify Controls -->
+    <button class="accessify-toggle" onclick="togglePanel()" title="Accessibility Controls">♿</button>
+    <div class="accessify-panel" id="panel">
+        <h3>♿ Accessibility</h3>
+        
+        <div class="accessify-control">
+            <label>A</label>
+            <input type="range" min="0.5" max="3" step="0.1" value="1" oninput="setTextSize(this.value)">
+            <button onclick="increaseText()">+</button>
+            <button onclick="decreaseText()">-</button>
+        </div>
+        
+        <div class="accessify-control">
+            <label>◐</label>
+            <select onchange="setContrast(this.value)">
+                <option value="normal">Normal</option>
+                <option value="high">High</option>
+                <option value="inverted">Inverted</option>
+                <option value="grayscale">Grayscale</option>
+            </select>
+        </div>
+        
+        <div class="accessify-control">
+            <label>🎨</label>
+            <select onchange="setTheme(this.value)">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+                <option value="colorblind">Colorblind</option>
+            </select>
+        </div>
+        
+        <div class="accessify-control">
+            <label>🌐</label>
+            <select onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="he">עברית</option>
+                <option value="ar">العربية</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+        
+        <div class="accessify-control">
+            <label>✓</label>
+            <button onclick="runTests()">Test</button>
+            <button onclick="resetAll()">Reset</button>
+        </div>
+    </div>
+
+    <!-- Include Accessify Library -->
+    <script src="dist/accessify.min.js"></script>
+    
+    <script>
+        // Minimal Accessify Integration
+        let accessify = null;
+        let panelVisible = true;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                accessify = new Accessify({ debug: false });
+                await accessify.init();
+                console.log('Accessify ready');
+            } catch (e) {
+                console.error('Accessify failed:', e);
+            }
+        });
+        
+        // Panel toggle
+        function togglePanel() {
+            const panel = document.getElementById('panel');
+            panelVisible = !panelVisible;
+            panel.classList.toggle('hidden', !panelVisible);
+        }
+        
+        // Text size
+        function setTextSize(size) {
+            if (accessify?.visual) accessify.visual.setTextSize(parseFloat(size));
+        }
+        function increaseText() {
+            if (accessify?.visual) accessify.visual.increaseTextSize();
+        }
+        function decreaseText() {
+            if (accessify?.visual) accessify.visual.decreaseTextSize();
+        }
+        
+        // Contrast
+        function setContrast(mode) {
+            if (accessify?.visual) accessify.visual.setContrastMode(mode);
+        }
+        
+        // Theme
+        function setTheme(theme) {
+            if (accessify?.visual) accessify.visual.setTheme(theme);
+        }
+        
+        // Language
+        function setLanguage(lang) {
+            if (accessify?.multilingual) accessify.multilingual.setLanguage(lang);
+        }
+        
+        // Testing
+        function runTests() {
+            if (accessify?.testingUtils) {
+                accessify.testingUtils.runAccessibilityTests()
+                    .then(r => alert('Tests completed. Check console.'))
+                    .catch(e => alert('Tests failed. Check console.'));
+            } else {
+                alert('Testing not available');
+            }
+        }
+        
+        // Reset
+        function resetAll() {
+            if (accessify?.visual) {
+                accessify.visual.resetTextSize();
+                accessify.visual.setContrastMode('normal');
+                accessify.visual.setTheme('default');
+            }
+            document.querySelector('input[type="range"]').value = 1;
+            document.querySelector('select').selectedIndex = 0;
+        }
+    </script>
+    
+    <!-- Demo Content -->
+    <div style="padding: 40px; max-width: 600px; margin: 0 auto;">
+        <h1>Minimal Accessify Integration</h1>
+        <p>This is a minimal implementation with just the essential accessibility features.</p>
+        <p>Click the ♿ button in the top-right corner to access the controls.</p>
+        
+        <h2>Features</h2>
+        <ul>
+            <li>Text size adjustment</li>
+            <li>Contrast modes</li>
+            <li>Theme switching</li>
+            <li>Language selection</li>
+            <li>Accessibility testing</li>
+        </ul>
+        
+        <button onclick="alert('Test button')">Test Button</button>
+        <input type="text" placeholder="Test input">
+    </div>
+</body>
+</html>

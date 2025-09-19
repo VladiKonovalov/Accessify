@@ -18,6 +18,7 @@ import { NavigationAccessibility } from './components/NavigationAccessibility.js
 import { ReadingAccessibility } from './components/ReadingAccessibility.js';
 import { MotorAccessibility } from './components/MotorAccessibility.js';
 import { MultilingualSupport } from './components/MultilingualSupport.js';
+import { ARIAEnhancement } from './components/ARIAEnhancement.js';
 
 // Built-in plugins
 import { TextToSpeechPlugin } from './plugins/TextToSpeechPlugin.js';
@@ -46,6 +47,7 @@ class Accessify {
     this.reading = new ReadingAccessibility(this);
     this.motor = new MotorAccessibility(this);
     this.multilingual = new MultilingualSupport(this);
+    this.aria = new ARIAEnhancement(this);
     
     // Register built-in plugins
     this._registerBuiltInPlugins();
@@ -82,6 +84,7 @@ class Accessify {
       await this.navigation.init();
       await this.reading.init();
       await this.motor.init();
+      await this.aria.init();
       
       // Initialize plugins
       await this.pluginManager.init();
@@ -107,6 +110,7 @@ class Accessify {
       }
 
       // Destroy components in reverse order
+      this.aria.destroy();
       this.motor.destroy();
       this.reading.destroy();
       this.navigation.destroy();

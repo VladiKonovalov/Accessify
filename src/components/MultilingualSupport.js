@@ -38,6 +38,9 @@ export class MultilingualSupport {
       // Load translations
       await this._loadTranslations();
 
+      // Initialize voice recognition for RTL languages
+      this._initializeRTLVoiceRecognition();
+
       this.isInitialized = true;
       this.accessify.emit('multilingualSupportInitialized');
 
@@ -564,5 +567,229 @@ export class MultilingualSupport {
     this.setDirection('ltr');
     
     this.accessify.emit('multilingualSettingsReset');
+  }
+
+  /**
+   * Initialize RTL voice recognition
+   */
+  _initializeRTLVoiceRecognition() {
+    try {
+      // Hebrew voice commands
+      this.hebrewCommands = {
+        'גדל טקסט': () => this.accessify.visual?.increaseTextSize(),
+        'הקטן טקסט': () => this.accessify.visual?.decreaseTextSize(),
+        'ניגודיות גבוהה': () => this.accessify.visual?.setContrastMode('high'),
+        'ניגודיות רגילה': () => this.accessify.visual?.setContrastMode('normal'),
+        'ערכת נושא כהה': () => this.accessify.visual?.setTheme('dark'),
+        'ערכת נושא בהירה': () => this.accessify.visual?.setTheme('light'),
+        'קרא טקסט': () => this._speakSelectedText('he'),
+        'עצור קריאה': () => this.accessify.reading?.stop(),
+        'ניווט למעלה': () => this._navigateUp(),
+        'ניווט למטה': () => this._navigateDown(),
+        'ניווט שמאלה': () => this._navigateLeft(),
+        'ניווט ימינה': () => this._navigateRight(),
+        'סגור': () => this._closeCurrentElement(),
+        'פתח': () => this._openCurrentElement(),
+        'חזור': () => window.history.back(),
+        'קדימה': () => window.history.forward()
+      };
+
+      // Arabic voice commands
+      this.arabicCommands = {
+        'كبر النص': () => this.accessify.visual?.increaseTextSize(),
+        'صغر النص': () => this.accessify.visual?.decreaseTextSize(),
+        'تباين عالي': () => this.accessify.visual?.setContrastMode('high'),
+        'تباين عادي': () => this.accessify.visual?.setContrastMode('normal'),
+        'مظهر داكن': () => this.accessify.visual?.setTheme('dark'),
+        'مظهر فاتح': () => this.accessify.visual?.setTheme('light'),
+        'اقرأ النص': () => this._speakSelectedText('ar'),
+        'توقف عن القراءة': () => this.accessify.reading?.stop(),
+        'انتقل لأعلى': () => this._navigateUp(),
+        'انتقل لأسفل': () => this._navigateDown(),
+        'انتقل لليسار': () => this._navigateLeft(),
+        'انتقل لليمين': () => this._navigateRight(),
+        'إغلاق': () => this._closeCurrentElement(),
+        'فتح': () => this._openCurrentElement(),
+        'رجوع': () => window.history.back(),
+        'تقدم': () => window.history.forward()
+      };
+
+      this.accessify.emit('rtlVoiceRecognitionInitialized');
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'RTL voice recognition initialization', 'component');
+    }
+  }
+
+  /**
+   * Process voice command for current language
+   */
+  processVoiceCommand(command) {
+    try {
+      const normalizedCommand = command.toLowerCase().trim();
+      
+      if (this.currentLanguage === 'he' && this.hebrewCommands[normalizedCommand]) {
+        this.hebrewCommands[normalizedCommand]();
+        this.accessify.emit('hebrewVoiceCommand', command);
+        return true;
+      } else if (this.currentLanguage === 'ar' && this.arabicCommands[normalizedCommand]) {
+        this.arabicCommands[normalizedCommand]();
+        this.accessify.emit('arabicVoiceCommand', command);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Voice command processing', 'component');
+      return false;
+    }
+  }
+
+  /**
+   * Speak selected text in current language
+   */
+  _speakSelectedText(language) {
+    try {
+      const selection = window.getSelection();
+      const text = selection.toString().trim();
+      
+      if (text && this.accessify.reading) {
+        this.accessify.reading.speak(text, {
+          lang: language,
+          rate: 0.9,
+          pitch: 1.0,
+          volume: 1.0
+        });
+      }
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Text-to-speech in RTL language', 'component');
+    }
+  }
+
+  /**
+   * Navigate up
+   */
+  _navigateUp() {
+    const currentElement = document.activeElement;
+    const focusableElements = this._getFocusableElements();
+    const currentIndex = focusableElements.indexOf(currentElement);
+    
+    if (currentIndex > 0) {
+      focusableElements[currentIndex - 1].focus();
+    }
+  }
+
+  /**
+   * Navigate down
+   */
+  _navigateDown() {
+    const currentElement = document.activeElement;
+    const focusableElements = this._getFocusableElements();
+    const currentIndex = focusableElements.indexOf(currentElement);
+    
+    if (currentIndex < focusableElements.length - 1) {
+      focusableElements[currentIndex + 1].focus();
+    }
+  }
+
+  /**
+   * Navigate left (RTL-aware)
+   */
+  _navigateLeft() {
+    if (this.currentDirection === 'rtl') {
+      this._navigateDown();
+    } else {
+      this._navigateUp();
+    }
+  }
+
+  /**
+   * Navigate right (RTL-aware)
+   */
+  _navigateRight() {
+    if (this.currentDirection === 'rtl') {
+      this._navigateUp();
+    } else {
+      this._navigateDown();
+    }
+  }
+
+  /**
+   * Close current element
+   */
+  _closeCurrentElement() {
+    const currentElement = document.activeElement;
+    
+    // Try to find close button or escape functionality
+    const closeButton = currentElement.closest('[role="dialog"], [role="modal"]')?.querySelector('[aria-label*="close"], [aria-label*="סגור"], [aria-label*="إغلاق"]');
+    if (closeButton) {
+      closeButton.click();
+    } else {
+      // Send escape key
+      currentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    }
+  }
+
+  /**
+   * Open current element
+   */
+  _openCurrentElement() {
+    const currentElement = document.activeElement;
+    
+    if (currentElement.tagName === 'BUTTON' || currentElement.getAttribute('role') === 'button') {
+      currentElement.click();
+    } else if (currentElement.tagName === 'A') {
+      currentElement.click();
+    } else {
+      // Send enter key
+      currentElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    }
+  }
+
+  /**
+   * Get all focusable elements
+   */
+  _getFocusableElements() {
+    const focusableSelectors = [
+      'a[href]',
+      'button:not([disabled])',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])',
+      '[contenteditable="true"]'
+    ];
+    
+    return Array.from(document.querySelectorAll(focusableSelectors.join(', ')));
+  }
+
+  /**
+   * Get available voice commands for current language
+   */
+  getAvailableVoiceCommands() {
+    if (this.currentLanguage === 'he') {
+      return Object.keys(this.hebrewCommands);
+    } else if (this.currentLanguage === 'ar') {
+      return Object.keys(this.arabicCommands);
+    }
+    return [];
+  }
+
+  /**
+   * Add custom voice command
+   */
+  addCustomVoiceCommand(command, action, language = null) {
+    try {
+      const lang = language || this.currentLanguage;
+      
+      if (lang === 'he') {
+        this.hebrewCommands[command] = action;
+      } else if (lang === 'ar') {
+        this.arabicCommands[command] = action;
+      }
+      
+      this.accessify.emit('customVoiceCommandAdded', { command, language: lang });
+    } catch (error) {
+      this.accessify.errorHandler.handle(error, 'Custom voice command addition', 'component');
+    }
   }
 }
