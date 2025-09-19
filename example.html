@@ -199,6 +199,61 @@
             content: "♿";
         }
         
+        /* Pin button for accessibility controls */
+        .pin-button {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.2s ease;
+            z-index: 10002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pin-button:hover {
+            background: rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        
+        .pin-button.pinned {
+            background: #007AFF;
+            color: white;
+        }
+        
+        .pin-button::before {
+            content: "📌";
+        }
+        
+        .pin-button.pinned::before {
+            content: "📍";
+        }
+        
+        /* Pinned state styles */
+        .accessibility-controls.pinned {
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            transform: translateY(0) !important;
+            z-index: 10000 !important;
+        }
+        
+        /* Dashboard toggle pinned state */
+        .dashboard-toggle.pinned {
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            transform: translateY(0) !important;
+        }
+        
         .accessibility-controls.hidden {
             display: none;
         }
@@ -430,6 +485,39 @@
             outline-offset: 2px;
         }
         
+        .test-buttons {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .test-buttons .button {
+            margin: 5px 0;
+        }
+        
+        .test-buttons a {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .test-buttons a:hover {
+            background: #0056CC;
+            transform: translateY(-1px);
+        }
+        
+        .test-buttons a:focus {
+            outline: 2px solid #ff6600;
+            outline-offset: 2px;
+        }
+        
         .form-demo {
             background: white;
             padding: 20px;
@@ -578,6 +666,15 @@
                 border: 2px solid black;
             }
         }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        #animated-box {
+            animation: spin 2s linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -603,6 +700,7 @@
     
     <!-- Accessibility Controls Dashboard -->
     <div class="accessibility-controls" id="accessibility-controls">
+        <button class="pin-button" id="pin-button" title="Pin/Unpin Panel - Keep panel visible while scrolling"></button>
         <h3>Accessibility Controls</h3>
         <!-- Text Size Control -->
         <div class="control-group">
@@ -639,6 +737,123 @@
                     <option value="light">Light</option>
                     <option value="colorblind-friendly">Colorblind Friendly</option>
                 </select>
+            </div>
+        </div>
+
+        <!-- Focus Enhancement -->
+        <div class="control-group">
+            <label for="focus-style" title="Focus Enhancement - Highlight focus indicators">🎯</label>
+            <div class="control-content">
+                <select id="focus-style" onchange="setFocusStyle(this.value)">
+                    <option value="standard">Standard</option>
+                    <option value="highlight">Highlight</option>
+                    <option value="glow">Glow</option>
+                    <option value="thick">Thick</option>
+                    <option value="dotted">Dotted</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Link Underlining -->
+        <div class="control-group">
+            <label for="link-style" title="Link Underlining - Emphasize links">🔗</label>
+            <div class="control-content">
+                <select id="link-style" onchange="setLinkUnderlining(this.value)">
+                    <option value="none">None</option>
+                    <option value="always">Always</option>
+                    <option value="hover">Hover</option>
+                    <option value="enhanced">Enhanced</option>
+                    <option value="double">Double</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Cursor Enhancement -->
+        <div class="control-group">
+            <label for="cursor-style" title="Cursor Enhancement - Larger cursor options">🖱️</label>
+            <div class="control-content">
+                <select id="cursor-style" onchange="setCursor(this.value)">
+                    <option value="default">Default</option>
+                    <option value="large">Large</option>
+                    <option value="extra-large">Extra Large</option>
+                    <option value="high-contrast">High Contrast</option>
+                    <option value="crosshair">Crosshair</option>
+                    <option value="pointer-large">Large Pointer</option>
+                    <option value="text-large">Large Text Cursor</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Reading Guide -->
+        <div class="control-group">
+            <label title="Reading Guide - Reading ruler and text highlighting">📖</label>
+            <div class="control-content">
+                <div class="control-buttons">
+                    <button onclick="toggleReadingRuler()" title="Toggle Reading Ruler - Show/hide reading ruler">📏</button>
+                    <button onclick="toggleTextHighlighting()" title="Toggle Text Highlighting - Highlight important text">🖍️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stop Animations -->
+        <div class="control-group">
+            <label title="Stop Animations - Pause moving elements">⏸️</label>
+            <div class="control-content">
+                <div class="control-buttons">
+                    <button onclick="toggleAnimations()" title="Toggle Animations - Stop/resume all animations">🎬</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen Reader Optimization -->
+        <div class="control-group">
+            <label title="Screen Reader - Screen reader optimization">🔊</label>
+            <div class="control-content">
+                <div class="control-buttons">
+                    <button onclick="toggleScreenReader()" title="Toggle Screen Reader Announcements - Enable/disable announcements">📢</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Navigation -->
+        <div class="control-group">
+            <label title="Enhanced Navigation - Advanced keyboard support">⌨️</label>
+            <div class="control-content">
+                <div class="control-buttons">
+                    <button onclick="toggleTabOrder()" title="Toggle Tab Order Visualization - Show keyboard navigation order">🔢</button>
+                    <button onclick="toggleGridOverlay()" title="Toggle Grid Overlay - Show visual grid system">🔲</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Adjustments -->
+        <div class="control-group">
+            <label for="color-filter" title="Color Adjustments - Color filters for colorblind users">🌈</label>
+            <div class="control-content">
+                <select id="color-filter" onchange="setColorFilter(this.value)">
+                    <option value="none">None</option>
+                    <option value="protanopia">Protanopia</option>
+                    <option value="deuteranopia">Deuteranopia</option>
+                    <option value="tritanopia">Tritanopia</option>
+                    <option value="achromatopsia">Achromatopsia</option>
+                    <option value="high-contrast">High Contrast</option>
+                    <option value="invert">Invert</option>
+                    <option value="sepia">Sepia</option>
+                    <option value="blue-light">Blue Light</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Saturation Control -->
+        <div class="control-group">
+            <label for="saturation" title="Saturation - Adjust color intensity">🎨</label>
+            <div class="control-content">
+                <input type="range" id="saturation" min="0" max="2" step="0.1" value="1" oninput="setSaturation(this.value)">
+                <div class="control-buttons">
+                    <button onclick="setSaturation(0.5)" title="Low Saturation">-</button>
+                    <button onclick="setSaturation(1)" title="Normal Saturation">○</button>
+                    <button onclick="setSaturation(2)" title="High Saturation">+</button>
+                </div>
             </div>
         </div>
 
@@ -706,50 +921,139 @@
         </nav>
 
         <main id="main-content">
-            <!-- Visual Accessibility Demo -->
-            <section id="visual" class="demo-section">
-                <h2>Visual Accessibility Features</h2>
-                <p>Test the visual accessibility features including text size adjustment, contrast modes, and themes.</p>
+            <!-- Keyboard Shortcuts Guide -->
+            <section class="demo-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <h2 style="color: white;">⌨️ Keyboard Shortcuts</h2>
+                <p style="color: rgba(255,255,255,0.9);">Quick access to all accessibility features using Alt + [key] combinations:</p>
                 
-                <div class="test-content">
-                    <h3>Text Size Test</h3>
-                    <p>This text should be adjustable from 50% to 300% of its original size. Use the controls above or keyboard shortcuts (Alt + Plus/Minus) to adjust.</p>
-                    
-                    <h3>Contrast Test</h3>
-                    <p>This section tests different contrast modes. Try switching between normal, high contrast, inverted, and grayscale modes.</p>
-                    
-                    <h3>Color Test</h3>
-                    <p>This text should be readable in all color themes. The colorblind-friendly theme uses colors that are distinguishable for people with color vision deficiencies.</p>
-                    
-                    <h3>Focus Indicators</h3>
-                    <p>Tab through the following elements to see enhanced focus indicators:</p>
-                    <button class="button">Button 1</button>
-                    <button class="button">Button 2</button>
-                    <a href="#" class="button">Link Button</a>
-                    
-                    <h3>Alt Text Generation Test</h3>
-                    <p>These images will automatically get alt text generated by Accessify:</p>
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAwNjZjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U2FtcGxlIEltYWdlPC90ZXh0Pjwvc3ZnPg==" style="width: 100px; height: 100px; border: 1px solid #ccc; margin: 5px;" title="Sample Image">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzMzY2M2NiIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R3JlZW4gSW1hZ2U8L3RleHQ+PC9zdmc+" style="width: 100px; height: 100px; border: 1px solid #ccc; margin: 5px;" data-alt="Green colored image">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2ZmNjYwMCIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T3JhbmdlIEltYWdlPC90ZXh0Pjwvc3ZnPg==" style="width: 100px; height: 100px; border: 1px solid #ccc; margin: 5px;">
+                <div class="test-content" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div>
+                            <h3 style="color: white;">🎯 Visual Controls</h3>
+                            <ul style="color: rgba(255,255,255,0.9);">
+                                <li><strong>Alt + +/-</strong> - Increase/decrease text size</li>
+                                <li><strong>Alt + C</strong> - Toggle contrast modes</li>
+                                <li><strong>Alt + F</strong> - Cycle focus indicator styles</li>
+                                <li><strong>Alt + L</strong> - Cycle link underlining styles</li>
+                                <li><strong>Alt + C</strong> - Cycle cursor styles</li>
+                                <li><strong>Alt + A</strong> - Toggle animations (stop/resume)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="color: white;">📖 Reading & Navigation</h3>
+                            <ul style="color: rgba(255,255,255,0.9);">
+                                <li><strong>Alt + R</strong> - Toggle reading ruler</li>
+                                <li><strong>Alt + H</strong> - Toggle text highlighting</li>
+                                <li><strong>Alt + S</strong> - Toggle screen reader announcements</li>
+                                <li><strong>Alt + T</strong> - Toggle tab order visualization</li>
+                                <li><strong>Alt + G</strong> - Toggle grid overlay</li>
+                                <li><strong>Alt + P</strong> - Pin/Unpin accessibility panel</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="test-buttons">
+                        <button class="button" onclick="showKeyboardShortcutsDemo()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);">Test Keyboard Shortcuts</button>
+                        <button class="button" onclick="showAllFeaturesDemo()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);">Demo All Features</button>
+                    </div>
                 </div>
             </section>
 
-            <!-- Navigation Demo -->
-            <section id="navigation-demo" class="demo-section">
-                <h2>Navigation Accessibility</h2>
-                <p>Test keyboard navigation, skip links, and focus management.</p>
+            <!-- Enhanced Visual Accessibility Demo -->
+            <section id="visual" class="demo-section">
+                <h2>Enhanced Visual Accessibility Features</h2>
+                <p>Test all the enhanced visual accessibility features including focus enhancement, link underlining, cursor options, and color adjustments.</p>
                 
                 <div class="test-content">
-                    <h3>Keyboard Navigation</h3>
-                    <p>Use the Tab key to navigate through the following form elements. The focus should be clearly visible and follow a logical order.</p>
+                    <h3>🎯 Focus Enhancement Test</h3>
+                    <p><strong>What it does:</strong> Makes focus indicators more visible for keyboard navigation.</p>
+                    <p><strong>How to test:</strong> Use the dropdown above to change focus styles, then press Tab to navigate through elements.</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="setFocusStyle('highlight')">Test Highlight Focus</button>
+                        <button class="button" onclick="setFocusStyle('glow')">Test Glow Focus</button>
+                        <button class="button" onclick="setFocusStyle('thick')">Test Thick Focus</button>
+                    </div>
+                    
+                    <h3>🔗 Link Underlining Test</h3>
+                    <p><strong>What it does:</strong> Makes links more visible by adding underlines and emphasis.</p>
+                    <p><strong>How to test:</strong> Use the dropdown above to change link styles, then hover over these links:</p>
+                    <div class="test-buttons">
+                        <a href="#" onclick="alert('Link clicked!'); return false;">Test Link 1</a>
+                        <a href="#" onclick="alert('Link clicked!'); return false;">Test Link 2</a>
+                        <button class="button" onclick="setLinkUnderlining('always')">Always Underline</button>
+                        <button class="button" onclick="setLinkUnderlining('enhanced')">Enhanced Underline</button>
+                    </div>
+                    
+                    <h3>🖱️ Cursor Enhancement Test</h3>
+                    <p><strong>What it does:</strong> Provides larger, more visible cursor options for better visibility.</p>
+                    <p><strong>How to test:</strong> Use the dropdown above to change cursor styles and move your mouse around.</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="setCursor('large')">Large Cursor</button>
+                        <button class="button" onclick="setCursor('extra-large')">Extra Large Cursor</button>
+                        <button class="button" onclick="setCursor('high-contrast')">High Contrast Cursor</button>
+                    </div>
+                    
+                    <h3>🌈 Color Adjustments Test</h3>
+                    <p><strong>What it does:</strong> Provides color filters for colorblind users and visual preferences.</p>
+                    <p><strong>How to test:</strong> Use the dropdown above to apply different color filters:</p>
+                    <div style="display: flex; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                        <div style="background: #ff0000; color: white; padding: 20px; border-radius: 8px; min-width: 100px; text-align: center;">Red</div>
+                        <div style="background: #00ff00; color: black; padding: 20px; border-radius: 8px; min-width: 100px; text-align: center;">Green</div>
+                        <div style="background: #0000ff; color: white; padding: 20px; border-radius: 8px; min-width: 100px; text-align: center;">Blue</div>
+                        <div style="background: #ffff00; color: black; padding: 20px; border-radius: 8px; min-width: 100px; text-align: center;">Yellow</div>
+                    </div>
+                    <div class="test-buttons">
+                        <button class="button" onclick="setColorFilter('protanopia')">Protanopia Filter</button>
+                        <button class="button" onclick="setColorFilter('deuteranopia')">Deuteranopia Filter</button>
+                        <button class="button" onclick="setColorFilter('high-contrast')">High Contrast</button>
+                        <button class="button" onclick="setColorFilter('invert')">Invert Colors</button>
+                    </div>
+                    
+                    <h3>🎨 Saturation Control Test</h3>
+                    <p><strong>What it does:</strong> Adjusts color intensity for better visibility or visual comfort.</p>
+                    <p><strong>How to test:</strong> Use the slider above or buttons to adjust saturation:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="setSaturation(0.5)">Low Saturation</button>
+                        <button class="button" onclick="setSaturation(1)">Normal Saturation</button>
+                        <button class="button" onclick="setSaturation(2)">High Saturation</button>
+                    </div>
+                    
+                    <h3>⏸️ Stop Animations Test</h3>
+                    <p><strong>What it does:</strong> Pauses all animations and transitions for users with vestibular disorders.</p>
+                    <p><strong>How to test:</strong> Click the animation button below, then use the "Stop Animations" button above:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="toggleAnimations()">Toggle Animations</button>
+                        <div id="animated-box" style="width: 100px; height: 100px; background: #007AFF; border-radius: 50%; animation: spin 2s linear infinite; display: inline-block; margin-left: 20px;"></div>
+                    </div>
+                    
+                    <h3>📖 Reading Guide Test</h3>
+                    <p><strong>What it does:</strong> Provides reading ruler and text highlighting for better reading comprehension.</p>
+                    <p><strong>How to test:</strong> Use the reading guide buttons above, then move your mouse over this text:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="toggleReadingRuler()">Toggle Reading Ruler</button>
+                        <button class="button" onclick="toggleTextHighlighting()">Toggle Text Highlighting</button>
+                    </div>
+                    <p style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #007AFF;">
+                        This is a sample paragraph for testing the reading guide features. The reading ruler will help you track lines while reading, and text highlighting will make important content more visible. Try using both features together for the best reading experience.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Enhanced Navigation Demo -->
+            <section id="navigation-demo" class="demo-section">
+                <h2>Enhanced Navigation Accessibility</h2>
+                <p>Test enhanced keyboard navigation, tab order visualization, grid overlay, and focus management.</p>
+                
+                <div class="test-content">
+                    <h3>⌨️ Enhanced Keyboard Navigation</h3>
+                    <p><strong>What it does:</strong> Provides advanced keyboard navigation with improved focus indicators and shortcuts.</p>
+                    <p><strong>How to test:</strong> Use Tab to navigate through elements. Notice the enhanced focus indicators.</p>
                     
                     <div class="form-demo">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" aria-required="true">
+                        <input type="text" id="name" name="name" aria-required="true" placeholder="Enter your name">
                         
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" aria-required="true">
+                        <input type="email" id="email" name="email" aria-required="true" placeholder="Enter your email">
                         
                         <label for="country">Country:</label>
                         <select id="country" name="country">
@@ -761,14 +1065,56 @@
                         </select>
                         
                         <label for="message">Message:</label>
-                        <textarea id="message" name="message" rows="4" aria-required="true"></textarea>
+                        <textarea id="message" name="message" rows="4" aria-required="true" placeholder="Enter your message"></textarea>
                         
-                        <button type="submit">Submit</button>
+                        <button type="submit">Submit Form</button>
                         <button type="button" onclick="openModal()">Open Modal</button>
                     </div>
                     
-                    <h3>Skip Links</h3>
-                    <p>Press Alt + S to skip to the main content, or use the skip links at the top of the page.</p>
+                    <h3>🔢 Tab Order Visualization</h3>
+                    <p><strong>What it does:</strong> Shows numbered indicators on focusable elements to visualize keyboard navigation order.</p>
+                    <p><strong>How to test:</strong> Click the "Show Tab Order" button below, then press Tab to see the navigation sequence:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="toggleTabOrder()">Toggle Tab Order Visualization</button>
+                        <button class="button" onclick="showTabOrderDemo()">Show Tab Order Demo</button>
+                    </div>
+                    
+                    <h3>🔲 Grid Overlay</h3>
+                    <p><strong>What it does:</strong> Displays a visual grid system to help understand page layout and structure.</p>
+                    <p><strong>How to test:</strong> Click the "Toggle Grid Overlay" button below to see the grid system:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="toggleGridOverlay()">Toggle Grid Overlay</button>
+                        <button class="button" onclick="showGridDemo()">Show Grid Demo</button>
+                    </div>
+                    
+                    <h3>📢 Screen Reader Optimization</h3>
+                    <p><strong>What it does:</strong> Provides enhanced screen reader support with live regions and announcements.</p>
+                    <p><strong>How to test:</strong> Use the screen reader button above, then click the test buttons below:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="toggleScreenReader()">Toggle Screen Reader</button>
+                        <button class="button" onclick="testScreenReaderAnnouncement()">Test Announcement</button>
+                        <button class="button" onclick="testLiveRegion()">Test Live Region</button>
+                    </div>
+                    
+                    <h3>⏭️ Skip Links</h3>
+                    <p><strong>What it does:</strong> Allows keyboard users to skip directly to main content or navigation.</p>
+                    <p><strong>How to test:</strong> Press Tab from the top of the page to see skip links, or use Alt + S shortcut.</p>
+                    
+                    <h3>🎯 Focus Management</h3>
+                    <p><strong>What it does:</strong> Manages focus properly in modals and dynamic content.</p>
+                    <p><strong>How to test:</strong> Open the modal below and try to navigate with Tab - focus should stay trapped inside:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="openModal()">Open Modal (Focus Trap Test)</button>
+                        <button class="button" onclick="testFocusManagement()">Test Focus Management</button>
+                    </div>
+                    
+                    <h3>📌 Pin Panel Feature</h3>
+                    <p><strong>What it does:</strong> Allows you to pin the accessibility panel so it follows you while scrolling.</p>
+                    <p><strong>How to test:</strong> Click the pin button (📌) in the top-left corner of the accessibility panel, then scroll down the page:</p>
+                    <div class="test-buttons">
+                        <button class="button" onclick="togglePin(event)">Toggle Pin Panel</button>
+                        <button class="button" onclick="testPinFeature()">Test Pin Feature</button>
+                    </div>
                 </div>
             </section>
 
@@ -931,6 +1277,7 @@
         let accessify;
         let dashboardVisible = true;
         let currentLanguage = 'en';
+        let isPinned = false;
         
         // Translation data - Easy to implement in other websites
         // Add your own language translations by adding new objects to this translations object
@@ -1390,6 +1737,65 @@
             }
         }
         
+        // Pin/Unpin function
+        function togglePin(event) {
+            // Prevent event bubbling to avoid triggering dashboard toggle
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+            
+            const dashboard = document.getElementById('accessibility-controls');
+            const toggle = document.getElementById('dashboard-toggle');
+            const pinButton = document.getElementById('pin-button');
+            
+            isPinned = !isPinned;
+            
+            if (isPinned) {
+                // Pin the panel - make it follow scroll
+                dashboard.classList.add('pinned');
+                toggle.classList.add('pinned');
+                pinButton.classList.add('pinned');
+                pinButton.title = 'Unpin Panel - Return to normal positioning';
+                showStatus('Accessibility panel pinned - will follow while scrolling');
+                
+                // Store pin state in localStorage
+                localStorage.setItem('accessify-pinned', 'true');
+            } else {
+                // Unpin the panel - return to normal positioning
+                dashboard.classList.remove('pinned');
+                toggle.classList.remove('pinned');
+                pinButton.classList.remove('pinned');
+                pinButton.title = 'Pin Panel - Keep panel visible while scrolling';
+                showStatus('Accessibility panel unpinned - normal positioning restored');
+                
+                // Remove pin state from localStorage
+                localStorage.removeItem('accessify-pinned');
+            }
+            
+            return false; // Prevent any default behavior
+        }
+        
+        // Check for saved pin state on page load
+        function checkSavedPinState() {
+            const savedPinState = localStorage.getItem('accessify-pinned');
+            if (savedPinState === 'true') {
+                // Apply pinned state without triggering the toggle function
+                const dashboard = document.getElementById('accessibility-controls');
+                const toggle = document.getElementById('dashboard-toggle');
+                const pinButton = document.getElementById('pin-button');
+                
+                isPinned = true;
+                dashboard.classList.add('pinned');
+                toggle.classList.add('pinned');
+                pinButton.classList.add('pinned');
+                pinButton.title = 'Unpin Panel - Return to normal positioning';
+                
+                showStatus('Accessibility panel restored to pinned state');
+            }
+        }
+        
         async function initAccessify() {
             try {
                 accessify = new Accessify({
@@ -1400,11 +1806,21 @@
                     visual: {
                         textSize: { enabled: true },
                         contrast: { enabled: true },
-                        themes: { enabled: true }
+                        themes: { enabled: true },
+                        focusIndicators: { enabled: true },
+                        linkUnderlining: { enabled: true },
+                        cursors: { enabled: true },
+                        colorFilters: { enabled: true },
+                        saturation: { enabled: true }
                     },
                     navigation: {
                         keyboard: { enabled: true },
-                        skipLinks: { enabled: true }
+                        skipLinks: { enabled: true },
+                        focus: { 
+                            enabled: true,
+                            visualizeTabOrder: false,
+                            gridOverlay: { enabled: false }
+                        }
                     },
                     reading: {
                         textToSpeech: { enabled: true },
@@ -1417,6 +1833,16 @@
                     multilingual: {
                         enabled: true,
                         rtl: { enabled: true }
+                    },
+                    readingGuide: {
+                        enabled: true,
+                        readingRuler: { enabled: true },
+                        textHighlighting: { enabled: true }
+                    },
+                    screenReader: {
+                        enabled: true,
+                        announcements: { enabled: true },
+                        ariaEnhancements: { enabled: true }
                     },
                     plugins: {
                         enabled: true,
@@ -1432,6 +1858,9 @@
                 
                 // Set up event listeners
                 setupEventListeners();
+                
+                // Set up pin button event listener
+                setupPinButton();
                 
             } catch (error) {
                 console.error('Failed to initialize Accessify:', error);
@@ -1471,6 +1900,34 @@
             });
         }
         
+        function setupPinButton() {
+            const pinButton = document.getElementById('pin-button');
+            if (pinButton) {
+                // Remove any existing event listeners
+                pinButton.onclick = null;
+                
+                // Add click event listener with proper event handling
+                pinButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+                    togglePin(event);
+                    return false;
+                });
+                
+                // Add mouse event listeners to prevent bubbling
+                pinButton.addEventListener('mousedown', function(event) {
+                    event.stopPropagation();
+                });
+                
+                pinButton.addEventListener('mouseup', function(event) {
+                    event.stopPropagation();
+                });
+                
+                console.log('Pin button event listeners set up successfully');
+            }
+        }
+        
         // Visual accessibility functions
         function increaseTextSize() {
             console.log('increaseTextSize called', { accessify: !!accessify, visual: !!(accessify && accessify.visual) });
@@ -1503,6 +1960,224 @@
             } else {
                 console.warn('Accessify not initialized yet');
             }
+        }
+
+        // New enhanced accessibility functions
+        function setFocusStyle(style) {
+            if (accessify && accessify.visual) {
+                accessify.visual.setFocusIndicator(style);
+                showStatus(`Focus style changed to ${style}`);
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function setLinkUnderlining(style) {
+            if (accessify && accessify.visual) {
+                accessify.visual.setLinkUnderlining(style);
+                showStatus(`Link underlining changed to ${style}`);
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function setCursor(cursorType) {
+            if (accessify && accessify.visual) {
+                accessify.visual.setCursor(cursorType);
+                showStatus(`Cursor changed to ${cursorType}`);
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function setColorFilter(filter) {
+            if (accessify && accessify.visual) {
+                accessify.visual.setColorFilter(filter);
+                showStatus(`Color filter changed to ${filter}`);
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function setSaturation(level) {
+            if (accessify && accessify.visual) {
+                accessify.visual.setSaturation(parseFloat(level));
+                showStatus(`Saturation changed to ${level}`);
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function toggleReadingRuler() {
+            if (accessify && accessify.readingGuide) {
+                accessify.readingGuide.toggleReadingRuler();
+                showStatus('Reading ruler toggled');
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function toggleTextHighlighting() {
+            if (accessify && accessify.readingGuide) {
+                accessify.readingGuide.toggleTextHighlighting();
+                showStatus('Text highlighting toggled');
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function toggleAnimations() {
+            if (accessify && accessify.visual) {
+                accessify.visual.toggleAnimations();
+                showStatus('Animations toggled');
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function toggleScreenReader() {
+            if (accessify && accessify.screenReader) {
+                const isEnabled = accessify.configManager.get('screenReader.announcements.enabled');
+                accessify.configManager.set('screenReader.announcements.enabled', !isEnabled);
+                accessify.screenReader.announce(`Screen reader announcements ${!isEnabled ? 'enabled' : 'disabled'}`, 'polite', 'normal');
+                showStatus(`Screen reader announcements ${!isEnabled ? 'enabled' : 'disabled'}`);
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function toggleTabOrder() {
+            if (accessify && accessify.navigation) {
+                const isEnabled = accessify.configManager.get('navigation.focus.visualizeTabOrder');
+                accessify.configManager.set('navigation.focus.visualizeTabOrder', !isEnabled);
+                
+                if (!isEnabled) {
+                    accessify.navigation._showTabOrder();
+                    showStatus('Tab order visualization enabled');
+                } else {
+                    accessify.navigation._hideTabOrder();
+                    showStatus('Tab order visualization disabled');
+                }
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        function toggleGridOverlay() {
+            if (accessify && accessify.navigation) {
+                const isEnabled = accessify.configManager.get('navigation.gridOverlay.enabled');
+                accessify.configManager.set('navigation.gridOverlay.enabled', !isEnabled);
+                
+                if (!isEnabled) {
+                    accessify.navigation._showGridOverlay();
+                    showStatus('Grid overlay enabled');
+                } else {
+                    accessify.navigation._hideGridOverlay();
+                    showStatus('Grid overlay disabled');
+                }
+            } else {
+                console.warn('Accessify not initialized yet');
+            }
+        }
+
+        // Demo functions for testing
+        function showTabOrderDemo() {
+            if (accessify && accessify.navigation) {
+                accessify.navigation._showTabOrder();
+                showStatus('Tab order demo activated - press Tab to see navigation sequence');
+            }
+        }
+
+        function showGridDemo() {
+            if (accessify && accessify.navigation) {
+                accessify.navigation._showGridOverlay();
+                showStatus('Grid overlay demo activated');
+            }
+        }
+
+        function testScreenReaderAnnouncement() {
+            if (accessify && accessify.screenReader) {
+                accessify.screenReader.announce('This is a test announcement from the enhanced screen reader feature!', 'polite', 'status');
+                showStatus('Screen reader announcement sent');
+            }
+        }
+
+        function testLiveRegion() {
+            if (accessify && accessify.screenReader) {
+                accessify.screenReader.announce('Live region test: This content has been dynamically updated!', 'assertive', 'log');
+                showStatus('Live region test activated');
+            }
+        }
+
+        function testFocusManagement() {
+            if (accessify && accessify.navigation) {
+                const firstButton = document.querySelector('.button');
+                if (firstButton) {
+                    firstButton.focus();
+                    showStatus('Focus management test: Focus set to first button');
+                }
+            }
+        }
+
+        function testPinFeature() {
+            showStatus('Pin feature test: Pin the panel and scroll to see it follow you');
+            alert('Pin Feature Test:\n\n1. Click the pin button (📌) in the accessibility panel\n2. Scroll down the page\n3. Notice the panel follows you\n4. Click the pin button again (📍) to unpin\n5. The panel returns to normal positioning\n\nThis feature is especially useful for long pages!');
+        }
+
+        // Demo functions for keyboard shortcuts
+        function showKeyboardShortcutsDemo() {
+            showStatus('Keyboard shortcuts demo: Try pressing Alt + R for reading ruler, Alt + A for animations, Alt + P for pin panel');
+            alert('Keyboard Shortcuts Demo:\n\nTry these shortcuts:\n• Alt + R - Toggle reading ruler\n• Alt + A - Toggle animations\n• Alt + F - Cycle focus styles\n• Alt + L - Cycle link underlining\n• Alt + T - Show tab order\n• Alt + G - Show grid overlay\n• Alt + P - Pin/Unpin accessibility panel\n\nPress any Alt + key combination to test!');
+        }
+
+        function showAllFeaturesDemo() {
+            if (!accessify) {
+                showError('Accessify not initialized yet');
+                return;
+            }
+
+            showStatus('Running comprehensive demo of all enhanced features...');
+            
+            // Demo sequence
+            setTimeout(() => {
+                setFocusStyle('highlight');
+                showStatus('Demo: Focus style set to highlight');
+            }, 1000);
+            
+            setTimeout(() => {
+                setLinkUnderlining('always');
+                showStatus('Demo: Link underlining set to always');
+            }, 2000);
+            
+            setTimeout(() => {
+                setCursor('large');
+                showStatus('Demo: Cursor set to large');
+            }, 3000);
+            
+            setTimeout(() => {
+                toggleReadingRuler();
+                showStatus('Demo: Reading ruler activated');
+            }, 4000);
+            
+            setTimeout(() => {
+                toggleTabOrder();
+                showStatus('Demo: Tab order visualization activated');
+            }, 5000);
+            
+            setTimeout(() => {
+                toggleGridOverlay();
+                showStatus('Demo: Grid overlay activated');
+            }, 6000);
+            
+            setTimeout(() => {
+                setColorFilter('high-contrast');
+                showStatus('Demo: High contrast filter applied');
+            }, 7000);
+            
+            setTimeout(() => {
+                showStatus('Demo complete! All enhanced features have been demonstrated.');
+                alert('Enhanced Features Demo Complete!\n\nAll accessibility features have been demonstrated:\n✓ Focus enhancement\n✓ Link underlining\n✓ Cursor enhancement\n✓ Reading ruler\n✓ Tab order visualization\n✓ Grid overlay\n✓ Color filters\n\nYou can now test each feature individually using the controls above or keyboard shortcuts!');
+            }, 8000);
         }
         
         // Reading accessibility functions
@@ -1852,7 +2527,10 @@
         }
         
         // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', initAccessify);
+        document.addEventListener('DOMContentLoaded', function() {
+            initAccessify();
+            checkSavedPinState();
+        });
         
         // Close modal when clicking outside
         window.onclick = function(event) {

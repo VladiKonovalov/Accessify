@@ -175,6 +175,131 @@ export class VisualAccessibility {
   }
 
   /**
+   * Set color filter
+   */
+  setColorFilter(filter) {
+    const availableFilters = this.accessify.configManager.get('visual.colorFilters.available');
+    
+    if (!availableFilters.includes(filter)) {
+      throw new Error(`Invalid color filter: ${filter}`);
+    }
+
+    this.accessify.configManager.set('visual.colorFilters.current', filter);
+    this._applyColorFilter(filter);
+    
+    this.accessify.emit('colorFilterChanged', filter);
+  }
+
+  /**
+   * Apply color filter
+   */
+  _applyColorFilter(filter) {
+    let css = '';
+    
+    switch (filter) {
+      case 'protanopia':
+        css = `
+          * {
+            filter: url(#protanopia) !important;
+          }
+        `;
+        break;
+        
+      case 'deuteranopia':
+        css = `
+          * {
+            filter: url(#deuteranopia) !important;
+          }
+        `;
+        break;
+        
+      case 'tritanopia':
+        css = `
+          * {
+            filter: url(#tritanopia) !important;
+          }
+        `;
+        break;
+        
+      case 'achromatopsia':
+        css = `
+          * {
+            filter: grayscale(100%) !important;
+          }
+        `;
+        break;
+        
+      case 'high-contrast':
+        css = `
+          * {
+            filter: contrast(200%) brightness(150%) !important;
+          }
+        `;
+        break;
+        
+      case 'invert':
+        css = `
+          * {
+            filter: invert(100%) !important;
+          }
+        `;
+        break;
+        
+      case 'sepia':
+        css = `
+          * {
+            filter: sepia(100%) !important;
+          }
+        `;
+        break;
+        
+      case 'blue-light':
+        css = `
+          * {
+            filter: hue-rotate(180deg) saturate(150%) !important;
+          }
+        `;
+        break;
+        
+      default: // 'none'
+        css = `
+          * {
+            filter: none !important;
+          }
+        `;
+        break;
+    }
+    
+    this._addStyle('color-filter', css);
+  }
+
+  /**
+   * Set saturation level
+   */
+  setSaturation(level) {
+    const config = this.accessify.configManager.get('visual.saturation');
+    const clampedLevel = Math.max(config.min, Math.min(config.max, level));
+    
+    this.accessify.configManager.set('visual.saturation.current', clampedLevel);
+    this._applySaturation(clampedLevel);
+    
+    this.accessify.emit('saturationChanged', clampedLevel);
+  }
+
+  /**
+   * Apply saturation
+   */
+  _applySaturation(level) {
+    const css = `
+      * {
+        filter: saturate(${level}) !important;
+      }
+    `;
+    
+    this._addStyle('saturation', css);
+  }
+
+  /**
    * Set cursor type
    */
   setCursor(cursorType) {
@@ -199,6 +324,97 @@ export class VisualAccessibility {
     this._applyFocusIndicators(config);
     
     this.accessify.emit('focusIndicatorChanged', style);
+  }
+
+  /**
+   * Set link underlining style
+   */
+  setLinkUnderlining(style) {
+    const config = this.accessify.configManager.get('visual.linkUnderlining');
+    this.accessify.configManager.set('visual.linkUnderlining.style', style);
+    this._applyLinkUnderlining(config);
+    
+    this.accessify.emit('linkUnderliningChanged', style);
+  }
+
+  /**
+   * Apply link underlining
+   */
+  _applyLinkUnderlining(config) {
+    let css = '';
+    
+    switch (config.style) {
+      case 'always':
+        css = `
+          a {
+            text-decoration: underline !important;
+            text-decoration-thickness: ${config.thickness}px !important;
+            text-underline-offset: ${config.offset}px !important;
+            text-decoration-color: ${config.color} !important;
+          }
+          
+          a:hover {
+            text-decoration-thickness: ${config.thickness * 1.5}px !important;
+          }
+        `;
+        break;
+        
+      case 'hover':
+        css = `
+          a {
+            text-decoration: none !important;
+          }
+          
+          a:hover {
+            text-decoration: underline !important;
+            text-decoration-thickness: ${config.thickness}px !important;
+            text-underline-offset: ${config.offset}px !important;
+            text-decoration-color: ${config.color} !important;
+          }
+        `;
+        break;
+        
+      case 'enhanced':
+        css = `
+          a {
+            text-decoration: underline !important;
+            text-decoration-thickness: ${config.thickness}px !important;
+            text-underline-offset: ${config.offset}px !important;
+            text-decoration-color: ${config.color} !important;
+            border-bottom: 1px solid transparent !important;
+            transition: all 0.2s ease !important;
+          }
+          
+          a:hover {
+            text-decoration-thickness: ${config.thickness * 2}px !important;
+            border-bottom-color: ${config.color} !important;
+            background-color: rgba(255, 255, 0, 0.1) !important;
+          }
+        `;
+        break;
+        
+      case 'double':
+        css = `
+          a {
+            text-decoration: underline !important;
+            text-decoration-style: double !important;
+            text-decoration-thickness: ${config.thickness}px !important;
+            text-underline-offset: ${config.offset}px !important;
+            text-decoration-color: ${config.color} !important;
+          }
+        `;
+        break;
+        
+      default: // 'none'
+        css = `
+          a {
+            text-decoration: none !important;
+          }
+        `;
+        break;
+    }
+    
+    this._addStyle('link-underlining', css);
   }
 
   /**
@@ -402,10 +618,42 @@ export class VisualAccessibility {
         `;
         break;
         
+      case 'extra-large':
+        css = `
+          * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="black"/></svg>'), auto !important;
+          }
+        `;
+        break;
+        
       case 'high-contrast':
         css = `
           * {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="white" stroke="black" stroke-width="2"/></svg>'), auto !important;
+          }
+        `;
+        break;
+        
+      case 'crosshair':
+        css = `
+          * {
+            cursor: crosshair !important;
+          }
+        `;
+        break;
+        
+      case 'pointer-large':
+        css = `
+          * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M2 2 L2 22 L8 16 L14 22 L14 2 Z" fill="black"/></svg>'), auto !important;
+          }
+        `;
+        break;
+        
+      case 'text-large':
+        css = `
+          * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32"><line x1="12" y1="2" x2="12" y2="30" stroke="black" stroke-width="3"/></svg>'), auto !important;
           }
         `;
         break;
@@ -427,25 +675,87 @@ export class VisualAccessibility {
    * Apply focus indicators
    */
   _applyFocusIndicators(config) {
-    const css = `
-      *:focus {
-        outline: ${config.thickness} solid ${config.color} !important;
-        outline-offset: 2px !important;
-      }
-      
-      *:focus-visible {
-        outline: ${config.thickness} solid ${config.color} !important;
-        outline-offset: 2px !important;
-      }
-      
+    let css = '';
+    
+    // Enhanced focus indicators with multiple styles
+    switch (config.style) {
+      case 'highlight':
+        css = `
+          *:focus,
+          *:focus-visible {
+            outline: ${config.thickness}px solid ${config.color} !important;
+            outline-offset: 2px !important;
+            background-color: rgba(255, 255, 0, 0.2) !important;
+            box-shadow: 0 0 0 ${config.thickness}px ${config.color}, 0 0 10px rgba(255, 255, 0, 0.5) !important;
+            border-radius: 3px !important;
+          }
+        `;
+        break;
+        
+      case 'glow':
+        css = `
+          *:focus,
+          *:focus-visible {
+            outline: none !important;
+            box-shadow: 0 0 0 ${config.thickness}px ${config.color}, 0 0 20px ${config.color} !important;
+            border-radius: 3px !important;
+          }
+        `;
+        break;
+        
+      case 'thick':
+        css = `
+          *:focus,
+          *:focus-visible {
+            outline: ${config.thickness * 2}px solid ${config.color} !important;
+            outline-offset: 3px !important;
+            border-radius: 3px !important;
+          }
+        `;
+        break;
+        
+      case 'dotted':
+        css = `
+          *:focus,
+          *:focus-visible {
+            outline: ${config.thickness}px dotted ${config.color} !important;
+            outline-offset: 2px !important;
+            border-radius: 3px !important;
+          }
+        `;
+        break;
+        
+      default: // 'standard'
+        css = `
+          *:focus,
+          *:focus-visible {
+            outline: ${config.thickness}px solid ${config.color} !important;
+            outline-offset: 2px !important;
+          }
+        `;
+        break;
+    }
+    
+    // Enhanced focus for specific elements
+    css += `
       button:focus,
       input:focus,
       textarea:focus,
       select:focus,
-      a:focus {
-        outline: ${config.thickness} solid ${config.color} !important;
-        outline-offset: 2px !important;
-        box-shadow: 0 0 0 ${config.thickness} ${config.color} !important;
+      a:focus,
+      [role="button"]:focus,
+      [tabindex]:focus {
+        ${css.includes('outline: none') ? '' : 'outline: ' + config.thickness + 'px solid ' + config.color + ' !important;'}
+        ${css.includes('outline: none') ? '' : 'outline-offset: 2px !important;'}
+        border-radius: 3px !important;
+      }
+      
+      /* Focus enhancement for better visibility */
+      .accessify-focus-enhanced *:focus,
+      .accessify-focus-enhanced *:focus-visible {
+        transform: scale(1.02) !important;
+        transition: all 0.2s ease !important;
+        z-index: 9999 !important;
       }
     `;
     
@@ -862,6 +1172,61 @@ export class VisualAccessibility {
       `;
       this.currentStyles.set('reducedMotion', true);
       this.accessify.emit('reducedMotionApplied');
+    }
+  }
+
+  /**
+   * Stop all animations
+   */
+  stopAnimations() {
+    const css = `
+      *, *::before, *::after {
+        animation-play-state: paused !important;
+        transition: none !important;
+        transform: none !important;
+      }
+      
+      /* Pause specific animation types */
+      .accessify-paused * {
+        animation-play-state: paused !important;
+      }
+      
+      /* Stop scrolling animations */
+      html {
+        scroll-behavior: auto !important;
+      }
+      
+      /* Stop video animations if any */
+      video, iframe {
+        animation-play-state: paused !important;
+      }
+      
+      /* Stop gif animations */
+      img[src$=".gif"] {
+        animation-play-state: paused !important;
+      }
+    `;
+    
+    this._addStyle('stop-animations', css);
+    this.accessify.emit('animationsStopped');
+  }
+
+  /**
+   * Resume animations
+   */
+  resumeAnimations() {
+    this._removeStyle('stop-animations');
+    this.accessify.emit('animationsResumed');
+  }
+
+  /**
+   * Toggle animations
+   */
+  toggleAnimations() {
+    if (this.currentStyles.has('stop-animations')) {
+      this.resumeAnimations();
+    } else {
+      this.stopAnimations();
     }
   }
 }

@@ -26,10 +26,28 @@ The accessibility tool will automatically appear on your website with a ♿ butt
 
 ## 🎯 Features
 
+### Visual Accessibility
 - **Text Size Control** - Adjust font size (0.5x to 3x)
 - **Contrast Modes** - Normal, High, Inverted, Grayscale
 - **Theme Options** - Default, Dark, Light, Colorblind-friendly
+- **Focus Enhancement** - Highlight focus indicators with multiple styles (standard, highlight, glow, thick, dotted)
+- **Link Underlining** - Emphasize links with configurable underlining options
+- **Cursor Enhancement** - Larger cursor options (large, extra-large, high-contrast, crosshair, pointer-large, text-large)
+- **Color Adjustments** - Color filters for colorblind users (protanopia, deuteranopia, tritanopia, achromatopsia)
+- **Stop Animations** - Pause moving elements and reduce motion for users with vestibular disorders
+
+### Reading & Navigation
+- **Reading Guide** - Reading ruler component with positioning controls and text highlighting
+- **Screen Reader Optimization** - Comprehensive screen reader support with live regions
+- **Enhanced Keyboard Navigation** - Improved keyboard support with advanced shortcuts
+- **Tab Order Visualization** - Visual indicators showing keyboard navigation order
+- **Grid Overlay** - Visual grid system for layout understanding
+
+### Language & Internationalization
 - **Language Support** - English, Hebrew (RTL), Arabic (RTL), Spanish, French, German
+- **RTL Support** - Full right-to-left language compatibility
+
+### Testing & Compliance
 - **Accessibility Testing** - Built-in WCAG 2.1 AA compliance testing
 - **Mobile Responsive** - Works on all devices
 
@@ -40,6 +58,20 @@ The accessibility tool will automatically appear on your website with a ♿ butt
 3. **Changes apply instantly** to your website
 4. **Run tests** to check accessibility compliance
 5. **Reset** to restore default settings
+
+## ⌨️ Keyboard Shortcuts
+
+- **Alt + +/-** - Increase/decrease text size
+- **Alt + C** - Toggle contrast modes
+- **Alt + R** - Toggle reading ruler
+- **Alt + H** - Toggle text highlighting
+- **Alt + A** - Toggle animations (stop/resume)
+- **Alt + L** - Cycle link underlining styles
+- **Alt + F** - Cycle focus indicator styles
+- **Alt + C** - Cycle cursor styles
+- **Alt + S** - Toggle screen reader announcements
+- **Alt + T** - Toggle tab order visualization
+- **Alt + G** - Toggle grid overlay
 
 ## 🔧 Customization
 

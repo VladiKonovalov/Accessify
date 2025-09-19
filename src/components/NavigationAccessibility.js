@@ -484,6 +484,49 @@ export class NavigationAccessibility {
     this.registerShortcut(config.toggleHighContrast, () => {
       this.accessify.visual.setContrastMode('high');
     });
+
+    // Enhanced keyboard shortcuts
+    this.registerShortcut('Alt+r', () => {
+      if (this.accessify.readingGuide) {
+        this.accessify.readingGuide.toggleReadingRuler();
+      }
+    });
+    
+    this.registerShortcut('Alt+h', () => {
+      if (this.accessify.readingGuide) {
+        this.accessify.readingGuide.toggleTextHighlighting();
+      }
+    });
+    
+    this.registerShortcut('Alt+a', () => {
+      if (this.accessify.visual) {
+        this.accessify.visual.toggleAnimations();
+      }
+    });
+    
+    this.registerShortcut('Alt+l', () => {
+      this._toggleLinkUnderlining();
+    });
+    
+    this.registerShortcut('Alt+f', () => {
+      this._cycleFocusStyles();
+    });
+    
+    this.registerShortcut('Alt+c', () => {
+      this._cycleCursorStyles();
+    });
+    
+    this.registerShortcut('Alt+s', () => {
+      this._toggleScreenReaderAnnouncements();
+    });
+    
+    this.registerShortcut('Alt+t', () => {
+      this._toggleTabOrder();
+    });
+    
+    this.registerShortcut('Alt+g', () => {
+      this._toggleGridOverlay();
+    });
   }
 
   /**
@@ -632,5 +675,172 @@ export class NavigationAccessibility {
       focus: this.accessify.configManager.get('navigation.focus'),
       skipLinks: this.accessify.configManager.get('navigation.skipLinks')
     };
+  }
+
+  /**
+   * Toggle link underlining
+   */
+  _toggleLinkUnderlining() {
+    if (this.accessify.visual) {
+      const currentStyle = this.accessify.configManager.get('visual.linkUnderlining.style');
+      const styles = ['none', 'always', 'hover', 'enhanced', 'double'];
+      const currentIndex = styles.indexOf(currentStyle);
+      const nextIndex = (currentIndex + 1) % styles.length;
+      this.accessify.visual.setLinkUnderlining(styles[nextIndex]);
+    }
+  }
+
+  /**
+   * Cycle through focus styles
+   */
+  _cycleFocusStyles() {
+    if (this.accessify.visual) {
+      const currentStyle = this.accessify.configManager.get('visual.focusIndicators.style');
+      const styles = ['standard', 'highlight', 'glow', 'thick', 'dotted'];
+      const currentIndex = styles.indexOf(currentStyle);
+      const nextIndex = (currentIndex + 1) % styles.length;
+      this.accessify.visual.setFocusIndicator(styles[nextIndex]);
+    }
+  }
+
+  /**
+   * Cycle through cursor styles
+   */
+  _cycleCursorStyles() {
+    if (this.accessify.visual) {
+      const currentStyle = this.accessify.configManager.get('visual.cursors.current');
+      const styles = ['default', 'large', 'extra-large', 'high-contrast', 'crosshair', 'pointer-large', 'text-large'];
+      const currentIndex = styles.indexOf(currentStyle);
+      const nextIndex = (currentIndex + 1) % styles.length;
+      this.accessify.visual.setCursor(styles[nextIndex]);
+    }
+  }
+
+  /**
+   * Toggle screen reader announcements
+   */
+  _toggleScreenReaderAnnouncements() {
+    if (this.accessify.screenReader) {
+      const isEnabled = this.accessify.configManager.get('screenReader.announcements.enabled');
+      this.accessify.configManager.set('screenReader.announcements.enabled', !isEnabled);
+      this.accessify.screenReader.announce(`Screen reader announcements ${!isEnabled ? 'enabled' : 'disabled'}`, 'polite', 'normal');
+    }
+  }
+
+  /**
+   * Toggle tab order visualization
+   */
+  _toggleTabOrder() {
+    const isEnabled = this.accessify.configManager.get('navigation.focus.visualizeTabOrder');
+    this.accessify.configManager.set('navigation.focus.visualizeTabOrder', !isEnabled);
+    
+    if (!isEnabled) {
+      this._showTabOrder();
+    } else {
+      this._hideTabOrder();
+    }
+  }
+
+  /**
+   * Show tab order visualization
+   */
+  _showTabOrder() {
+    const focusableElements = document.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    
+    focusableElements.forEach((element, index) => {
+      if (!element.querySelector('.accessify-tab-order-indicator')) {
+        const indicator = document.createElement('div');
+        indicator.className = 'accessify-tab-order-indicator';
+        indicator.textContent = index + 1;
+        indicator.style.cssText = `
+          position: absolute;
+          top: -5px;
+          left: -5px;
+          background: #ff0000;
+          color: white;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: bold;
+          z-index: 10000;
+          pointer-events: none;
+        `;
+        
+        element.style.position = 'relative';
+        element.appendChild(indicator);
+      }
+    });
+    
+    this.accessify.emit('tabOrderShown');
+  }
+
+  /**
+   * Hide tab order visualization
+   */
+  _hideTabOrder() {
+    const indicators = document.querySelectorAll('.accessify-tab-order-indicator');
+    indicators.forEach(indicator => {
+      indicator.remove();
+    });
+    
+    this.accessify.emit('tabOrderHidden');
+  }
+
+  /**
+   * Toggle grid overlay
+   */
+  _toggleGridOverlay() {
+    const isEnabled = this.accessify.configManager.get('navigation.gridOverlay.enabled');
+    this.accessify.configManager.set('navigation.gridOverlay.enabled', !isEnabled);
+    
+    if (!isEnabled) {
+      this._showGridOverlay();
+    } else {
+      this._hideGridOverlay();
+    }
+  }
+
+  /**
+   * Show grid overlay
+   */
+  _showGridOverlay() {
+    if (!document.getElementById('accessify-grid-overlay')) {
+      const gridOverlay = document.createElement('div');
+      gridOverlay.id = 'accessify-grid-overlay';
+      gridOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        background-image: 
+          linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+        background-size: 20px 20px;
+        opacity: 0.5;
+      `;
+      
+      document.body.appendChild(gridOverlay);
+    }
+    
+    this.accessify.emit('gridOverlayShown');
+  }
+
+  /**
+   * Hide grid overlay
+   */
+  _hideGridOverlay() {
+    const gridOverlay = document.getElementById('accessify-grid-overlay');
+    if (gridOverlay) {
+      gridOverlay.remove();
+    }
+    
+    this.accessify.emit('gridOverlayHidden');
   }
 }

@@ -185,13 +185,32 @@ export class ConfigManager {
         cursors: {
           enabled: true,
           current: 'default',
-          available: ['default', 'large', 'high-contrast']
+          available: ['default', 'large', 'extra-large', 'high-contrast', 'crosshair', 'pointer-large', 'text-large']
         },
         focusIndicators: {
           enabled: true,
-          style: 'outline',
+          style: 'standard',
           color: '#0066cc',
-          thickness: '2px'
+          thickness: 2
+        },
+        linkUnderlining: {
+          enabled: true,
+          style: 'none',
+          color: '#0066cc',
+          thickness: 2,
+          offset: 2
+        },
+        colorFilters: {
+          enabled: true,
+          current: 'none',
+          available: ['none', 'protanopia', 'deuteranopia', 'tritanopia', 'achromatopsia', 'high-contrast', 'invert', 'sepia', 'blue-light']
+        },
+        saturation: {
+          enabled: true,
+          min: 0.0,
+          max: 2.0,
+          step: 0.1,
+          current: 1.0
         }
       },
 
@@ -283,6 +302,45 @@ export class ConfigManager {
         rtl: {
           enabled: true,
           autoDetect: true
+        }
+      },
+
+      // Reading guide
+      readingGuide: {
+        enabled: true,
+        readingRuler: {
+          enabled: true,
+          height: 60,
+          color: '#ff0000',
+          opacity: 0.1
+        },
+        textHighlighting: {
+          enabled: true,
+          color: 'rgba(255, 255, 0, 0.3)'
+        },
+        textMasking: {
+          enabled: true,
+          color: 'rgba(0, 0, 0, 0.8)'
+        }
+      },
+
+      // Screen reader optimization
+      screenReader: {
+        enabled: true,
+        announcements: {
+          enabled: true,
+          types: ['polite', 'assertive', 'status', 'log']
+        },
+        ariaEnhancements: {
+          enabled: true,
+          autoEnhance: true
+        },
+        liveRegions: {
+          enabled: true,
+          polite: true,
+          assertive: true,
+          status: true,
+          log: true
         }
       },
 

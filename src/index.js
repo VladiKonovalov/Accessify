@@ -19,6 +19,8 @@ import { ReadingAccessibility } from './components/ReadingAccessibility.js';
 import { MotorAccessibility } from './components/MotorAccessibility.js';
 import { MultilingualSupport } from './components/MultilingualSupport.js';
 import { ARIAEnhancement } from './components/ARIAEnhancement.js';
+import { ReadingGuide } from './components/ReadingGuide.js';
+import { ScreenReaderOptimization } from './components/ScreenReaderOptimization.js';
 
 // Built-in plugins
 import { TextToSpeechPlugin } from './plugins/TextToSpeechPlugin.js';
@@ -48,6 +50,8 @@ class Accessify {
     this.motor = new MotorAccessibility(this);
     this.multilingual = new MultilingualSupport(this);
     this.aria = new ARIAEnhancement(this);
+    this.readingGuide = new ReadingGuide(this);
+    this.screenReader = new ScreenReaderOptimization(this);
     
     // Register built-in plugins
     this._registerBuiltInPlugins();
@@ -85,6 +89,8 @@ class Accessify {
       await this.reading.init();
       await this.motor.init();
       await this.aria.init();
+      await this.readingGuide.init();
+      await this.screenReader.init();
       
       // Initialize plugins
       await this.pluginManager.init();
@@ -110,6 +116,8 @@ class Accessify {
       }
 
       // Destroy components in reverse order
+      this.screenReader.destroy();
+      this.readingGuide.destroy();
       this.aria.destroy();
       this.motor.destroy();
       this.reading.destroy();
@@ -192,7 +200,10 @@ class Accessify {
       navigation: this.navigation,
       reading: this.reading,
       motor: this.motor,
-      multilingual: this.multilingual
+      multilingual: this.multilingual,
+      aria: this.aria,
+      readingGuide: this.readingGuide,
+      screenReader: this.screenReader
     };
     return components[name];
   }
@@ -264,7 +275,10 @@ class Accessify {
       navigation: this.navigation.getComplianceStatus(),
       reading: this.reading.getComplianceStatus(),
       motor: this.motor.getComplianceStatus(),
-      multilingual: this.multilingual.getComplianceStatus()
+      multilingual: this.multilingual.getComplianceStatus(),
+      aria: this.aria.getComplianceStatus(),
+      readingGuide: this.readingGuide.getComplianceStatus(),
+      screenReader: this.screenReader.getComplianceStatus()
     };
   }
 

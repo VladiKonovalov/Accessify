@@ -404,6 +404,124 @@
             </div>
         </div>
 
+        <!-- Focus Enhancement -->
+        <div class="accessify-control-group">
+            <label for="accessify-focus" title="Focus Enhancement - Highlight focus indicators">🎯</label>
+            <div class="accessify-control-content">
+                <select id="accessify-focus" onchange="accessifySetFocusStyle(this.value)">
+                    <option value="standard">Standard</option>
+                    <option value="highlight">Highlight</option>
+                    <option value="glow">Glow</option>
+                    <option value="thick">Thick</option>
+                    <option value="dotted">Dotted</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Link Underlining -->
+        <div class="accessify-control-group">
+            <label for="accessify-links" title="Link Underlining - Emphasize links">🔗</label>
+            <div class="accessify-control-content">
+                <select id="accessify-links" onchange="accessifySetLinkUnderlining(this.value)">
+                    <option value="none">None</option>
+                    <option value="always">Always</option>
+                    <option value="hover">Hover</option>
+                    <option value="enhanced">Enhanced</option>
+                    <option value="double">Double</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Cursor Enhancement -->
+        <div class="accessify-control-group">
+            <label for="accessify-cursor" title="Cursor Enhancement - Larger cursor options">🖱️</label>
+            <div class="accessify-control-content">
+                <select id="accessify-cursor" onchange="accessifySetCursor(this.value)">
+                    <option value="default">Default</option>
+                    <option value="large">Large</option>
+                    <option value="extra-large">Extra Large</option>
+                    <option value="high-contrast">High Contrast</option>
+                    <option value="crosshair">Crosshair</option>
+                    <option value="pointer-large">Large Pointer</option>
+                    <option value="text-large">Large Text Cursor</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Reading Guide -->
+        <div class="accessify-control-group">
+            <label title="Reading Guide - Reading ruler and text highlighting">📖</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyToggleReadingRuler()" title="Toggle Reading Ruler">📏</button>
+                    <button onclick="accessifyToggleTextHighlighting()" title="Toggle Text Highlighting">🖍️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stop Animations -->
+        <div class="accessify-control-group">
+            <label title="Stop Animations - Pause moving elements">⏸️</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyToggleAnimations()" title="Toggle Animations">🎬</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen Reader Optimization -->
+        <div class="accessify-control-group">
+            <label title="Screen Reader - Screen reader optimization">🔊</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyToggleScreenReader()" title="Toggle Screen Reader Announcements">📢</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Navigation -->
+        <div class="accessify-control-group">
+            <label title="Enhanced Navigation - Advanced keyboard support">⌨️</label>
+            <div class="accessify-control-content">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifyToggleTabOrder()" title="Toggle Tab Order Visualization">🔢</button>
+                    <button onclick="accessifyToggleGridOverlay()" title="Toggle Grid Overlay">🔲</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Adjustments -->
+        <div class="accessify-control-group">
+            <label for="accessify-color-filter" title="Color Adjustments - Color filters for colorblind users">🌈</label>
+            <div class="accessify-control-content">
+                <select id="accessify-color-filter" onchange="accessifySetColorFilter(this.value)">
+                    <option value="none">None</option>
+                    <option value="protanopia">Protanopia</option>
+                    <option value="deuteranopia">Deuteranopia</option>
+                    <option value="tritanopia">Tritanopia</option>
+                    <option value="achromatopsia">Achromatopsia</option>
+                    <option value="high-contrast">High Contrast</option>
+                    <option value="invert">Invert</option>
+                    <option value="sepia">Sepia</option>
+                    <option value="blue-light">Blue Light</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Saturation Control -->
+        <div class="accessify-control-group">
+            <label for="accessify-saturation" title="Saturation - Adjust color intensity">🎨</label>
+            <div class="accessify-control-content">
+                <input type="range" id="accessify-saturation" min="0" max="2" step="0.1" value="1" 
+                       oninput="accessifySetSaturation(this.value)">
+                <div class="accessify-control-buttons">
+                    <button onclick="accessifySetSaturation(0.5)" title="Low Saturation">-</button>
+                    <button onclick="accessifySetSaturation(1)" title="Normal Saturation">○</button>
+                    <button onclick="accessifySetSaturation(2)" title="High Saturation">+</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Voice Commands -->
         <div class="accessify-control-group">
             <label title="Voice Commands - Control with your voice">🎤</label>
@@ -633,11 +751,21 @@
                     visual: {
                         textSize: { enabled: true },
                         contrast: { enabled: true },
-                        themes: { enabled: true }
+                        themes: { enabled: true },
+                        focusIndicators: { enabled: true },
+                        linkUnderlining: { enabled: true },
+                        cursors: { enabled: true },
+                        colorFilters: { enabled: true },
+                        saturation: { enabled: true }
                     },
                     navigation: {
                         keyboard: { enabled: true },
-                        skipLinks: { enabled: true }
+                        skipLinks: { enabled: true },
+                        focus: { 
+                            enabled: true,
+                            visualizeTabOrder: false,
+                            gridOverlay: { enabled: false }
+                        }
                     },
                     reading: {
                         textToSpeech: { enabled: true },
@@ -650,6 +778,16 @@
                     multilingual: {
                         enabled: true,
                         rtl: { enabled: true }
+                    },
+                    readingGuide: {
+                        enabled: true,
+                        readingRuler: { enabled: true },
+                        textHighlighting: { enabled: true }
+                    },
+                    screenReader: {
+                        enabled: true,
+                        announcements: { enabled: true },
+                        ariaEnhancements: { enabled: true }
                     },
                     plugins: {
                         enabled: true,
@@ -695,6 +833,63 @@
                 accessifyInstance.on('themeChanged', (theme) => {
                     const select = document.getElementById('accessify-theme');
                     if (select) select.value = theme;
+                });
+
+                accessifyInstance.on('focusIndicatorChanged', (style) => {
+                    const select = document.getElementById('accessify-focus');
+                    if (select) select.value = style;
+                });
+
+                accessifyInstance.on('linkUnderliningChanged', (style) => {
+                    const select = document.getElementById('accessify-links');
+                    if (select) select.value = style;
+                });
+
+                accessifyInstance.on('cursorChanged', (cursorType) => {
+                    const select = document.getElementById('accessify-cursor');
+                    if (select) select.value = cursorType;
+                });
+
+                accessifyInstance.on('colorFilterChanged', (filter) => {
+                    const select = document.getElementById('accessify-color-filter');
+                    if (select) select.value = filter;
+                });
+
+                accessifyInstance.on('saturationChanged', (level) => {
+                    const slider = document.getElementById('accessify-saturation');
+                    if (slider) slider.value = level;
+                });
+
+                accessifyInstance.on('readingRulerShown', () => {
+                    console.log('Reading ruler activated');
+                });
+
+                accessifyInstance.on('readingRulerHidden', () => {
+                    console.log('Reading ruler deactivated');
+                });
+
+                accessifyInstance.on('animationsStopped', () => {
+                    console.log('Animations stopped');
+                });
+
+                accessifyInstance.on('animationsResumed', () => {
+                    console.log('Animations resumed');
+                });
+
+                accessifyInstance.on('tabOrderShown', () => {
+                    console.log('Tab order visualization enabled');
+                });
+
+                accessifyInstance.on('tabOrderHidden', () => {
+                    console.log('Tab order visualization disabled');
+                });
+
+                accessifyInstance.on('gridOverlayShown', () => {
+                    console.log('Grid overlay enabled');
+                });
+
+                accessifyInstance.on('gridOverlayHidden', () => {
+                    console.log('Grid overlay disabled');
                 });
             }
         }
@@ -842,6 +1037,89 @@
                 accessifyInstance.visual.setTheme(theme);
             }
         }
+
+        // New enhanced accessibility functions
+        function accessifySetFocusStyle(style) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setFocusIndicator(style);
+            }
+        }
+
+        function accessifySetLinkUnderlining(style) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setLinkUnderlining(style);
+            }
+        }
+
+        function accessifySetCursor(cursorType) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setCursor(cursorType);
+            }
+        }
+
+        function accessifyToggleReadingRuler() {
+            if (accessifyInstance && accessifyInstance.readingGuide) {
+                accessifyInstance.readingGuide.toggleReadingRuler();
+            }
+        }
+
+        function accessifyToggleTextHighlighting() {
+            if (accessifyInstance && accessifyInstance.readingGuide) {
+                accessifyInstance.readingGuide.toggleTextHighlighting();
+            }
+        }
+
+        function accessifyToggleAnimations() {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.toggleAnimations();
+            }
+        }
+
+        function accessifyToggleScreenReader() {
+            if (accessifyInstance && accessifyInstance.screenReader) {
+                const isEnabled = accessifyInstance.configManager.get('screenReader.announcements.enabled');
+                accessifyInstance.configManager.set('screenReader.announcements.enabled', !isEnabled);
+                accessifyInstance.screenReader.announce(`Screen reader announcements ${!isEnabled ? 'enabled' : 'disabled'}`, 'polite', 'normal');
+            }
+        }
+
+        function accessifyToggleTabOrder() {
+            if (accessifyInstance && accessifyInstance.navigation) {
+                const isEnabled = accessifyInstance.configManager.get('navigation.focus.visualizeTabOrder');
+                accessifyInstance.configManager.set('navigation.focus.visualizeTabOrder', !isEnabled);
+                
+                if (!isEnabled) {
+                    accessifyInstance.navigation._showTabOrder();
+                } else {
+                    accessifyInstance.navigation._hideTabOrder();
+                }
+            }
+        }
+
+        function accessifyToggleGridOverlay() {
+            if (accessifyInstance && accessifyInstance.navigation) {
+                const isEnabled = accessifyInstance.configManager.get('navigation.gridOverlay.enabled');
+                accessifyInstance.configManager.set('navigation.gridOverlay.enabled', !isEnabled);
+                
+                if (!isEnabled) {
+                    accessifyInstance.navigation._showGridOverlay();
+                } else {
+                    accessifyInstance.navigation._hideGridOverlay();
+                }
+            }
+        }
+
+        function accessifySetColorFilter(filter) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setColorFilter(filter);
+            }
+        }
+
+        function accessifySetSaturation(level) {
+            if (accessifyInstance && accessifyInstance.visual) {
+                accessifyInstance.visual.setSaturation(parseFloat(level));
+            }
+        }
         
         // Voice commands
         function accessifyToggleVoiceCommands() {
@@ -947,6 +1225,17 @@
         window.accessifySetTextSize = accessifySetTextSize;
         window.accessifySetContrast = accessifySetContrast;
         window.accessifySetTheme = accessifySetTheme;
+        window.accessifySetFocusStyle = accessifySetFocusStyle;
+        window.accessifySetLinkUnderlining = accessifySetLinkUnderlining;
+        window.accessifySetCursor = accessifySetCursor;
+        window.accessifyToggleReadingRuler = accessifyToggleReadingRuler;
+        window.accessifyToggleTextHighlighting = accessifyToggleTextHighlighting;
+        window.accessifyToggleAnimations = accessifyToggleAnimations;
+        window.accessifyToggleScreenReader = accessifyToggleScreenReader;
+        window.accessifyToggleTabOrder = accessifyToggleTabOrder;
+        window.accessifyToggleGridOverlay = accessifyToggleGridOverlay;
+        window.accessifySetColorFilter = accessifySetColorFilter;
+        window.accessifySetSaturation = accessifySetSaturation;
         window.accessifyToggleVoiceCommands = accessifyToggleVoiceCommands;
         window.accessifyToggleSwitchNavigation = accessifyToggleSwitchNavigation;
         window.accessifyRunTests = accessifyRunTests;
@@ -968,40 +1257,113 @@
             <li>Remove this demo content section</li>
         </ol>
         
-        <h2>Features</h2>
+        <h2>Enhanced Features</h2>
         <ul>
-            <li>Text size adjustment (50% to 300%)</li>
-            <li>Contrast modes (Normal, High, Inverted, Grayscale)</li>
-            <li>Theme switching (Default, Dark, Light, Colorblind Friendly)</li>
-            <li>Voice commands and switch navigation</li>
-            <li>Multilingual support (6 languages)</li>
-            <li>RTL support for Hebrew and Arabic</li>
-            <li>Accessibility testing and reporting</li>
-            <li>Responsive design</li>
-            <li>High contrast and reduced motion support</li>
+            <li><strong>Text Size Control</strong> - Adjust font size (50% to 300%)</li>
+            <li><strong>Focus Enhancement</strong> - Multiple focus indicator styles (standard, highlight, glow, thick, dotted)</li>
+            <li><strong>Link Underlining</strong> - Emphasize links with configurable underlining options</li>
+            <li><strong>Cursor Enhancement</strong> - Larger cursor options for better visibility</li>
+            <li><strong>Reading Guide</strong> - Reading ruler and text highlighting for better comprehension</li>
+            <li><strong>Stop Animations</strong> - Pause moving elements for vestibular disorder support</li>
+            <li><strong>Screen Reader Optimization</strong> - Comprehensive screen reader support with live regions</li>
+            <li><strong>Enhanced Navigation</strong> - Tab order visualization and grid overlay</li>
+            <li><strong>Color Adjustments</strong> - Color filters for colorblind users (protanopia, deuteranopia, tritanopia, achromatopsia)</li>
+            <li><strong>Contrast Modes</strong> - Normal, High, Inverted, Grayscale</li>
+            <li><strong>Theme Switching</strong> - Default, Dark, Light, Colorblind Friendly</li>
+            <li><strong>Voice Commands</strong> - Control with your voice</li>
+            <li><strong>Switch Navigation</strong> - Alternative input methods</li>
+            <li><strong>Multilingual Support</strong> - 6 languages with RTL support</li>
+            <li><strong>Accessibility Testing</strong> - Built-in WCAG 2.1 AA compliance testing</li>
+            <li><strong>Responsive Design</strong> - Works on all devices</li>
+            <li><strong>Keyboard Shortcuts</strong> - Alt + [key] shortcuts for quick access</li>
         </ul>
         
+        <h2>Keyboard Shortcuts</h2>
+        <p>Use these keyboard shortcuts for quick access to accessibility features:</p>
+        <ul>
+            <li><strong>Alt + +/-</strong> - Increase/decrease text size</li>
+            <li><strong>Alt + C</strong> - Toggle contrast modes</li>
+            <li><strong>Alt + R</strong> - Toggle reading ruler</li>
+            <li><strong>Alt + H</strong> - Toggle text highlighting</li>
+            <li><strong>Alt + A</strong> - Toggle animations (stop/resume)</li>
+            <li><strong>Alt + L</strong> - Cycle link underlining styles</li>
+            <li><strong>Alt + F</strong> - Cycle focus indicator styles</li>
+            <li><strong>Alt + C</strong> - Cycle cursor styles</li>
+            <li><strong>Alt + S</strong> - Toggle screen reader announcements</li>
+            <li><strong>Alt + T</strong> - Toggle tab order visualization</li>
+            <li><strong>Alt + G</strong> - Toggle grid overlay</li>
+        </ul>
+
         <h2>Test Content</h2>
-        <p>This is some test content to demonstrate the accessibility features. Try adjusting the text size, contrast, and theme using the controls in the top-right corner.</p>
+        <p>This is some test content to demonstrate the accessibility features. Try adjusting the text size, contrast, theme, and other settings using the controls in the top-right corner or keyboard shortcuts.</p>
         
         <button onclick="alert('Button clicked!')">Test Button</button>
         <a href="#" onclick="alert('Link clicked!'); return false;">Test Link</a>
         
+        <h3>Interactive Elements</h3>
+        <div style="margin: 20px 0;">
+            <button onclick="alert('Button clicked!')">Test Button</button>
+            <a href="#" onclick="alert('Link clicked!'); return false;">Test Link</a>
+            <button onclick="alert('Another button!')">Another Button</button>
+        </div>
+
+        <h3>Focus Testing</h3>
+        <p>Try using the Tab key to navigate through these elements and test the focus enhancement features:</p>
+        <div style="margin: 20px 0;">
+            <input type="text" placeholder="Tab to this input" style="margin: 5px; padding: 8px;">
+            <button onclick="alert('Focused button!')">Focusable Button</button>
+            <select style="margin: 5px; padding: 8px;">
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+            </select>
+            <a href="#" onclick="alert('Focused link!'); return false;">Focusable Link</a>
+        </div>
+
+        <h3>Reading Content</h3>
+        <p>This is a longer paragraph to test the reading guide features. Try using the reading ruler (Alt + R) to highlight this text and improve readability. The reading guide can help users with dyslexia or reading difficulties focus on specific lines of text.</p>
+        
+        <p>Here's another paragraph with more content to demonstrate text highlighting and masking features. You can use the text highlighting button to make important content more visible, or use the reading ruler to focus on specific sections.</p>
+
         <h3>Form Elements</h3>
-        <form>
+        <form style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
             <label for="test-input">Test Input:</label>
-            <input type="text" id="test-input" placeholder="Type something here">
+            <input type="text" id="test-input" placeholder="Type something here" style="width: 100%; margin: 5px 0; padding: 8px;">
             
             <label for="test-select">Test Select:</label>
-            <select id="test-select">
+            <select id="test-select" style="width: 100%; margin: 5px 0; padding: 8px;">
                 <option value="option1">Option 1</option>
                 <option value="option2">Option 2</option>
                 <option value="option3">Option 3</option>
             </select>
             
             <label for="test-textarea">Test Textarea:</label>
-            <textarea id="test-textarea" rows="3" placeholder="Enter some text"></textarea>
+            <textarea id="test-textarea" rows="3" placeholder="Enter some text" style="width: 100%; margin: 5px 0; padding: 8px;"></textarea>
+            
+            <button type="submit" onclick="alert('Form submitted!'); return false;">Submit Form</button>
         </form>
+
+        <h3>Color Testing</h3>
+        <p>This section demonstrates color adjustments and filters. Try different color filters to see how they affect the appearance:</p>
+        <div style="display: flex; gap: 20px; margin: 20px 0;">
+            <div style="background: #ff0000; color: white; padding: 20px; border-radius: 8px;">Red</div>
+            <div style="background: #00ff00; color: black; padding: 20px; border-radius: 8px;">Green</div>
+            <div style="background: #0000ff; color: white; padding: 20px; border-radius: 8px;">Blue</div>
+            <div style="background: #ffff00; color: black; padding: 20px; border-radius: 8px;">Yellow</div>
+        </div>
+
+        <h3>Animation Testing</h3>
+        <div style="margin: 20px 0;">
+            <div style="width: 100px; height: 100px; background: #007AFF; border-radius: 50%; animation: spin 2s linear infinite; display: inline-block;"></div>
+            <p style="display: inline-block; margin-left: 20px;">This spinning circle tests the animation stop feature. Use Alt + A to pause/resume animations.</p>
+        </div>
+        
+        <style>
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        </style>
     </div>
 </body>
 </html>
