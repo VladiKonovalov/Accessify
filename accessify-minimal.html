@@ -59,22 +59,67 @@
             border: 1px solid #ddd; border-radius: 4px; font-size: 20px !important; }
         .accessify-control button { padding: 12px 16px; background: #f8f9fa;
             border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 20px !important; }
-        /* Isolate from text size changes */
-        .accessify-toggle, .accessify-panel, .accessify-panel * { font-size: inherit !important; }
+        /* Isolate from text size changes - use fixed font sizes */
+        .accessify-toggle {
+            font-size: 40px !important;
+        }
+        
+        .accessify-panel {
+            font-size: 14px !important;
+        }
+        
+        .accessify-panel h3 {
+            font-size: 18px !important;
+            margin: 0 0 12px 0;
+        }
+        
+        .accessify-control {
+            font-size: 14px !important;
+        }
+        
+        .accessify-control label {
+            font-size: 20px !important;
+        }
+        
+        .accessify-control select,
+        .accessify-control input,
+        .accessify-control button {
+            font-size: 14px !important;
+        }
         /* RTL Support */
         .accessify-rtl .accessify-panel { right: auto !important; left: 20px !important; }
         .accessify-rtl .accessify-toggle { right: auto !important; left: 20px !important; }
         @media (max-width: 768px) {
-            .accessify-panel { width: calc(100vw - 40px); }
-            .accessify-toggle { width: 64px; height: 64px; font-size: 36px !important; }
-            .accessify-control select, .accessify-control button { font-size: 18px !important; }
-            .accessify-control label { font-size: 18px !important; width: 32px; height: 32px; }
+            .accessify-panel { 
+                width: calc(100vw - 40px);
+                font-size: 13px !important;
+            }
+            .accessify-toggle { 
+                width: 64px; 
+                height: 64px; 
+                font-size: 36px !important; 
+            }
+            .accessify-panel h3 {
+                font-size: 16px !important;
+            }
+            .accessify-control {
+                font-size: 13px !important;
+            }
+            .accessify-control select, 
+            .accessify-control button { 
+                font-size: 13px !important; 
+            }
+            .accessify-control label { 
+                font-size: 18px !important; 
+                width: 32px; 
+                height: 32px; 
+            }
         }
     </style>
 </head>
 <body>
     <!-- Accessify Controls -->
-    <button class="accessify-toggle" onclick="togglePanel()" title="Accessibility Controls">♿</button>
+    <button class="accessify-toggle" onclick="togglePanel()" title="Accessibility Controls" aria-label="Toggle Accessibility Controls"></button>
     <div class="accessify-panel" id="panel">
         <h3>♿ Accessibility</h3>
         
