@@ -28,9 +28,26 @@
         }
         
         /* Prevent any parent from affecting fixed positioning */
-        .accessify-toggle,
+        .accessify-toggle {
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            left: auto !important;
+            bottom: auto !important;
+        }
+        
         .accessify-panel {
             position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            left: auto !important;
+            bottom: auto !important;
+        }
+        
+        /* Protect color boxes from contrast/theme overrides */
+        .color-test-box {
+            background-color: inherit !important;
+            color: inherit !important;
         }
         .accessify-panel.hidden { display: none; }
         .accessify-control { margin: 8px 0; padding: 12px; background: #f8f9fa;
@@ -243,18 +260,18 @@
         <h2>Color Testing</h2>
         <p>Use the color filter dropdown above to test how colors appear for users with different types of color blindness:</p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 20px 0;">
-            <div style="background: #FF0000; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Red</div>
-            <div style="background: #00FF00; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Green</div>
-            <div style="background: #0000FF; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Blue</div>
-            <div style="background: #FFFF00; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Yellow</div>
-            <div style="background: #FF00FF; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Magenta</div>
-            <div style="background: #00FFFF; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Cyan</div>
-            <div style="background: #FFA500; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Orange</div>
-            <div style="background: #800080; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Purple</div>
-            <div style="background: #FFC0CB; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Pink</div>
-            <div style="background: #A52A2A; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Brown</div>
-            <div style="background: #808080; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Gray</div>
-            <div style="background: #000000; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Black</div>
+            <div class="color-test-box" style="background: #FF0000 !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Red</div>
+            <div class="color-test-box" style="background: #00FF00 !important; color: black !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Green</div>
+            <div class="color-test-box" style="background: #0000FF !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Blue</div>
+            <div class="color-test-box" style="background: #FFFF00 !important; color: black !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Yellow</div>
+            <div class="color-test-box" style="background: #FF00FF !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Magenta</div>
+            <div class="color-test-box" style="background: #00FFFF !important; color: black !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Cyan</div>
+            <div class="color-test-box" style="background: #FFA500 !important; color: black !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Orange</div>
+            <div class="color-test-box" style="background: #800080 !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Purple</div>
+            <div class="color-test-box" style="background: #FFC0CB !important; color: black !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Pink</div>
+            <div class="color-test-box" style="background: #A52A2A !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Brown</div>
+            <div class="color-test-box" style="background: #808080 !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Gray</div>
+            <div class="color-test-box" style="background: #000000 !important; color: white !important; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; min-height: 50px; display: flex; align-items: center; justify-content: center;">Black</div>
         </div>
         
         <div style="margin: 20px 0; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px;">
@@ -268,5 +285,15 @@
             <p style="margin-bottom: 0;">Select a filter from the dropdown above to see how these colors appear to users with different types of color blindness.</p>
         </div>
     </div>
+    
+    <!-- Additional style to protect colors from contrast mode overrides -->
+    <style id="color-box-protection">
+        /* This style block ensures color boxes maintain their colors */
+        .color-test-box {
+            /* Inline styles with !important will override this, preserving the colors */
+            background-color: inherit !important;
+            color: inherit !important;
+        }
+    </style>
 </body>
 </html>
