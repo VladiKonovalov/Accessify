@@ -7,7 +7,9 @@
         /* Minimal Accessify Styles */
         .accessify-toggle {
             position: fixed !important; top: 20px !important; right: 20px !important; 
-            width: 72px; height: 72px;
+            width: 72px !important; height: 72px !important;
+            min-width: 72px !important; min-height: 72px !important;
+            max-width: 72px !important; max-height: 72px !important;
             background: #007AFF; border: none; border-radius: 16px; color: white;
             font-size: 40px !important; cursor: pointer; z-index: 99999 !important;
             box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
@@ -62,6 +64,8 @@
         /* Isolate from text size changes - use fixed font sizes */
         .accessify-toggle {
             font-size: 40px !important;
+            width: 72px !important;
+            height: 72px !important;
         }
         
         .accessify-panel {
@@ -217,7 +221,41 @@
         
         // Contrast
         function setContrast(mode) {
-            if (accessify?.visual) accessify.visual.setContrastMode(mode);
+            try {
+                if (accessify?.visual) {
+                    accessify.visual.setContrastMode(mode);
+                    console.log('Contrast mode set to:', mode);
+                    
+                    // Force apply contrast mode by directly manipulating styles
+                    const styleId = 'accessify-contrast-override';
+                    let styleEl = document.getElementById(styleId);
+                    if (!styleEl) {
+                        styleEl = document.createElement('style');
+                        styleEl.id = styleId;
+                        document.head.appendChild(styleEl);
+                    }
+                    
+                    let css = '';
+                    switch (mode) {
+                        case 'high':
+                            css = 'html, body { background-color: white !important; color: black !important; } html *, body * { background-color: inherit !important; color: inherit !important; border-color: black !important; } a { color: #0000EE !important; } a:visited { color: #551A8B !important; }';
+                            break;
+                        case 'inverted':
+                            css = 'html, body { background-color: black !important; color: white !important; } html *, body * { background-color: inherit !important; color: inherit !important; border-color: white !important; } a { color: #00FFFF !important; } a:visited { color: #FF00FF !important; }';
+                            break;
+                        case 'grayscale':
+                            css = 'html, body, html *, body * { filter: grayscale(100%) !important; }';
+                            break;
+                        case 'normal':
+                        default:
+                            css = 'html, body, html *, body * { filter: none !important; background-color: unset !important; color: unset !important; border-color: unset !important; }';
+                            break;
+                    }
+                    styleEl.textContent = css;
+                }
+            } catch (error) {
+                console.error('Error setting contrast mode:', error);
+            }
         }
         
         // Theme
@@ -239,13 +277,42 @@
                 if (accessify?.visual) {
                     accessify.visual.setColorFilter(filter);
                     console.log('Color filter set to:', filter);
+                    
+                    // Force apply color filter by directly manipulating styles
+                    const styleId = 'accessify-color-filter-override';
+                    let styleEl = document.getElementById(styleId);
+                    if (!styleEl) {
+                        styleEl = document.createElement('style');
+                        styleEl.id = styleId;
+                        document.head.appendChild(styleEl);
+                    }
+                    
+                    let css = '';
+                    switch (filter) {
+                        case 'protanopia':
+                            // Use CSS matrix filter for protanopia simulation
+                            css = 'html, body, html *, body * { filter: contrast(1.2) saturate(0.8) hue-rotate(-10deg) !important; }';
+                            break;
+                        case 'deuteranopia':
+                            // Use CSS matrix filter for deuteranopia simulation
+                            css = 'html, body, html *, body * { filter: contrast(1.2) saturate(0.8) hue-rotate(10deg) !important; }';
+                            break;
+                        case 'tritanopia':
+                            // Use CSS matrix filter for tritanopia simulation
+                            css = 'html, body, html *, body * { filter: contrast(1.1) saturate(0.7) hue-rotate(180deg) !important; }';
+                            break;
+                        case 'achromatopsia':
+                            css = 'html, body, html *, body * { filter: grayscale(100%) !important; }';
+                            break;
+                        case 'none':
+                        default:
+                            css = 'html, body, html *, body * { filter: none !important; }';
+                            break;
+                    }
+                    styleEl.textContent = css;
                 }
             } catch (error) {
                 console.error('Error setting color filter:', error);
-                // If 'none' is not available, try alternative approach
-                if (filter === 'none') {
-                    console.log('Note: "none" filter may not be available. Filter will be cleared on next page load.');
-                }
             }
         }
         
@@ -273,13 +340,20 @@
                 accessify.visual.setTheme('default');
                 accessify.visual.setColorFilter('none');
             }
+            
+            // Clear override styles
+            const contrastOverride = document.getElementById('accessify-contrast-override');
+            if (contrastOverride) contrastOverride.textContent = '';
+            const colorFilterOverride = document.getElementById('accessify-color-filter-override');
+            if (colorFilterOverride) colorFilterOverride.textContent = '';
+            
             document.querySelector('input[type="range"]').value = 1;
             const selects = document.querySelectorAll('select');
             selects.forEach((select, index) => {
                 if (index === 0) select.selectedIndex = 0; // Contrast
                 if (index === 1) select.selectedIndex = 0; // Theme
-                if (index === 2) select.selectedIndex = 0; // Language
-                if (index === 3) select.selectedIndex = 0; // Color Filter
+                if (index === 2) select.selectedIndex = 0; // Color Filter
+                if (index === 3) select.selectedIndex = 0; // Language
             });
         }
     </script>
