@@ -6,18 +6,31 @@
     <style>
         /* Minimal Accessify Styles */
         .accessify-toggle {
-            position: fixed; top: 20px; right: 20px; width: 72px; height: 72px;
+            position: fixed !important; top: 20px !important; right: 20px !important; 
+            width: 72px; height: 72px;
             background: #007AFF; border: none; border-radius: 16px; color: white;
-            font-size: 40px !important; cursor: pointer; z-index: 10001;
+            font-size: 40px !important; cursor: pointer; z-index: 99999 !important;
             box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
-            display: flex; align-items: center; justify-content: center;
+            display: flex !important; align-items: center; justify-content: center;
         }
         .accessify-toggle::before { content: "♿"; }
         .accessify-panel {
-            position: fixed; top: 20px; right: 20px; width: 300px; max-width: 90vw;
+            position: fixed !important; top: 20px !important; right: 20px !important; 
+            width: 300px; max-width: 90vw;
             background: white; border: 1px solid rgba(0,0,0,0.15); border-radius: 16px;
             padding: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            z-index: 10000; font-family: system-ui, sans-serif;
+            z-index: 99998 !important; font-family: system-ui, sans-serif;
+        }
+        
+        /* Ensure fixed positioning works even with parent transforms */
+        html, body {
+            position: relative;
+        }
+        
+        /* Prevent any parent from affecting fixed positioning */
+        .accessify-toggle,
+        .accessify-panel {
+            position: fixed !important;
         }
         .accessify-panel.hidden { display: none; }
         .accessify-control { margin: 8px 0; padding: 12px; background: #f8f9fa;
@@ -32,8 +45,8 @@
         /* Isolate from text size changes */
         .accessify-toggle, .accessify-panel, .accessify-panel * { font-size: inherit !important; }
         /* RTL Support */
-        .accessify-rtl .accessify-panel { right: auto; left: 20px; }
-        .accessify-rtl .accessify-toggle { right: auto; left: 20px; }
+        .accessify-rtl .accessify-panel { right: auto !important; left: 20px !important; }
+        .accessify-rtl .accessify-toggle { right: auto !important; left: 20px !important; }
         @media (max-width: 768px) {
             .accessify-panel { width: calc(100vw - 40px); }
             .accessify-toggle { width: 64px; height: 64px; font-size: 36px !important; }

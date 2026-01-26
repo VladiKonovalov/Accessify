@@ -14,9 +14,9 @@
         
         /* Dashboard Toggle Button */
         .accessify-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
             background: #007AFF;
             border: none;
             border-radius: 16px;
@@ -26,9 +26,9 @@
             font-size: 40px !important;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
-            z-index: 10001;
+            z-index: 99999 !important;
             transition: all 0.3s ease;
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
             transform: translateY(0);
@@ -51,15 +51,15 @@
         
         /* Accessibility Controls Panel */
         .accessify-panel {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
             background: #ffffff;
             border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 16px;
             padding: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            z-index: 10000;
+            z-index: 99998 !important;
             width: 300px;
             max-width: 90vw;
             max-height: 80vh;
@@ -297,13 +297,36 @@
         }
         
         .accessify-rtl .accessify-panel {
-            right: auto;
-            left: 20px;
+            right: auto !important;
+            left: 20px !important;
         }
         
         .accessify-rtl .accessify-toggle {
-            right: auto;
-            left: 20px;
+            right: auto !important;
+            left: 20px !important;
+        }
+        
+        /* Ensure fixed positioning works even with parent transforms */
+        html, body {
+            position: relative;
+        }
+        
+        /* Prevent any parent from affecting fixed positioning */
+        .accessify-toggle {
+            position: fixed !important;
+        }
+        
+        .accessify-panel {
+            position: fixed !important;
+        }
+        
+        /* Ensure hover transforms still work */
+        .accessify-toggle:hover {
+            transform: scale(1.05) !important;
+        }
+        
+        .accessify-panel:hover {
+            transform: translateY(-2px) !important;
         }
         
         /* Isolate accessibility tool from text size changes */
