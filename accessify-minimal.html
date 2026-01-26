@@ -71,7 +71,18 @@
                 <option value="default">Default</option>
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
-                <option value="colorblind">Colorblind</option>
+                <option value="colorblind-friendly">Colorblind Friendly</option>
+            </select>
+        </div>
+        
+        <div class="accessify-control">
+            <label>🌈</label>
+            <select onchange="setColorFilter(this.value)">
+                <option value="none">No Filter</option>
+                <option value="protanopia">Protanopia</option>
+                <option value="deuteranopia">Deuteranopia</option>
+                <option value="tritanopia">Tritanopia</option>
+                <option value="achromatopsia">Achromatopsia</option>
             </select>
         </div>
         
@@ -136,7 +147,31 @@
         
         // Theme
         function setTheme(theme) {
-            if (accessify?.visual) accessify.visual.setTheme(theme);
+            try {
+                if (accessify?.visual) {
+                    accessify.visual.setTheme(theme);
+                    console.log('Theme set to:', theme);
+                }
+            } catch (error) {
+                console.error('Error setting theme:', error);
+                alert('Invalid theme. Please select a valid option.');
+            }
+        }
+        
+        // Color Filter
+        function setColorFilter(filter) {
+            try {
+                if (accessify?.visual) {
+                    accessify.visual.setColorFilter(filter);
+                    console.log('Color filter set to:', filter);
+                }
+            } catch (error) {
+                console.error('Error setting color filter:', error);
+                // If 'none' is not available, try alternative approach
+                if (filter === 'none') {
+                    console.log('Note: "none" filter may not be available. Filter will be cleared on next page load.');
+                }
+            }
         }
         
         // Language
@@ -161,9 +196,16 @@
                 accessify.visual.resetTextSize();
                 accessify.visual.setContrastMode('normal');
                 accessify.visual.setTheme('default');
+                accessify.visual.setColorFilter('none');
             }
             document.querySelector('input[type="range"]').value = 1;
-            document.querySelector('select').selectedIndex = 0;
+            const selects = document.querySelectorAll('select');
+            selects.forEach((select, index) => {
+                if (index === 0) select.selectedIndex = 0; // Contrast
+                if (index === 1) select.selectedIndex = 0; // Theme
+                if (index === 2) select.selectedIndex = 0; // Language
+                if (index === 3) select.selectedIndex = 0; // Color Filter
+            });
         }
     </script>
     
@@ -184,6 +226,34 @@
         
         <button onclick="alert('Test button')">Test Button</button>
         <input type="text" placeholder="Test input">
+        
+        <h2>Color Testing</h2>
+        <p>Use the color filter dropdown above to test how colors appear for users with different types of color blindness:</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 20px 0;">
+            <div style="background: #FF0000; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Red</div>
+            <div style="background: #00FF00; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Green</div>
+            <div style="background: #0000FF; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Blue</div>
+            <div style="background: #FFFF00; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Yellow</div>
+            <div style="background: #FF00FF; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Magenta</div>
+            <div style="background: #00FFFF; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Cyan</div>
+            <div style="background: #FFA500; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Orange</div>
+            <div style="background: #800080; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Purple</div>
+            <div style="background: #FFC0CB; color: black; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Pink</div>
+            <div style="background: #A52A2A; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Brown</div>
+            <div style="background: #808080; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Gray</div>
+            <div style="background: #000000; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">Black</div>
+        </div>
+        
+        <div style="margin: 20px 0; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px;">
+            <h3 style="color: white; margin-top: 0;">Color Blindness Types</h3>
+            <ul style="margin: 10px 0;">
+                <li><strong>Protanopia:</strong> Red-green color blindness (cannot see red)</li>
+                <li><strong>Deuteranopia:</strong> Red-green color blindness (cannot see green)</li>
+                <li><strong>Tritanopia:</strong> Blue-yellow color blindness</li>
+                <li><strong>Achromatopsia:</strong> Complete color blindness (grayscale)</li>
+            </ul>
+            <p style="margin-bottom: 0;">Select a filter from the dropdown above to see how these colors appear to users with different types of color blindness.</p>
+        </div>
     </div>
 </body>
 </html>

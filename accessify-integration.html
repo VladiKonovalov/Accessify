@@ -193,6 +193,9 @@
             min-width: 0;
             cursor: pointer;
             transition: all 0.2s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
         
         .accessify-control-group select:hover {
@@ -200,14 +203,27 @@
         }
         
         .accessify-control-group select:focus {
-            outline: none;
+            outline: none !important;
             border-color: #007AFF;
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        .accessify-control-group select:focus-visible {
+            outline: none !important;
         }
         
         .accessify-control-group select option {
             background: white;
             color: #1a1a1a;
+            outline: none !important;
+            border: none !important;
+        }
+        
+        .accessify-control-group select option:hover,
+        .accessify-control-group select option:focus {
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
         }
         
         /* Buttons */
@@ -1027,8 +1043,15 @@
         }
         
         function accessifySetContrast(mode) {
-            if (accessifyInstance && accessifyInstance.visual) {
-                accessifyInstance.visual.setContrastMode(mode);
+            try {
+                if (accessifyInstance && accessifyInstance.visual) {
+                    accessifyInstance.visual.setContrastMode(mode);
+                    console.log('Contrast mode set to:', mode);
+                } else {
+                    console.error('Accessify instance or visual component not available');
+                }
+            } catch (error) {
+                console.error('Error setting contrast mode:', error);
             }
         }
         
@@ -1356,6 +1379,32 @@
         <div style="margin: 20px 0;">
             <div style="width: 100px; height: 100px; background: #007AFF; border-radius: 50%; animation: spin 2s linear infinite; display: inline-block;"></div>
             <p style="display: inline-block; margin-left: 20px;">This spinning circle tests the animation stop feature. Use Alt + A to pause/resume animations.</p>
+        </div>
+        
+        <h3>Color Palette</h3>
+        <p>This section demonstrates a full color palette for testing color filters and contrast modes:</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 30px 0;">
+            <div style="background: #FF0000; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Red</div>
+            <div style="background: #00FF00; color: black; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Green</div>
+            <div style="background: #0000FF; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Blue</div>
+            <div style="background: #FFFF00; color: black; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Yellow</div>
+            <div style="background: #FF00FF; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Magenta</div>
+            <div style="background: #00FFFF; color: black; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Cyan</div>
+            <div style="background: #FFA500; color: black; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Orange</div>
+            <div style="background: #800080; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Purple</div>
+            <div style="background: #FFC0CB; color: black; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Pink</div>
+            <div style="background: #A52A2A; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Brown</div>
+            <div style="background: #808080; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Gray</div>
+            <div style="background: #000000; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Black</div>
+            <div style="background: #FFFFFF; color: black; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; border: 2px solid #ccc;">White</div>
+            <div style="background: linear-gradient(45deg, #FF0000, #00FF00, #0000FF); color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Gradient</div>
+            <div style="background: #4CAF50; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Teal Green</div>
+            <div style="background: #2196F3; color: white; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold;">Sky Blue</div>
+        </div>
+        
+        <div style="margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px;">
+            <h3 style="color: white; margin-top: 0;">Color Contrast Testing</h3>
+            <p>Try different contrast modes using the controls above to see how these colors appear under various contrast settings. This helps test accessibility for users with different visual needs.</p>
         </div>
         
         <style>
