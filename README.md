@@ -1,4 +1,7 @@
+
+
 # Accessify - Accessibility Tool
+Live demo : site is live at https://vladikonovalov.github.io/Accessify/ 
 
 A simple, powerful accessibility tool that makes any website more accessible for users with disabilities. Meets WCAG 2.1 AA standards.
 
