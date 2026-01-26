@@ -5,9 +5,9 @@ A simple, powerful accessibility tool that makes any website more accessible for
 ## 🚀 Quick Start
 
 ### 1. Download Files
-- `accessify-integration.html` - Full integration template
-- `accessify-minimal.html` - Lightweight version
-- `dist/accessify.min.js` - Main library
+- [`accessify-integration.html`](accessify-integration.html) - Full integration template
+- [`accessify-minimal.html`](accessify-minimal.html) - Lightweight version
+- [`dist/accessify.min.js`](dist/accessify.min.js) - Main library
 
 ### 2. Add to Your Website
 
@@ -17,7 +17,7 @@ A simple, powerful accessibility tool that makes any website more accessible for
 ```
 
 **Copy the code:**
-1. **CSS** - Copy styles from `accessify-integration.html`
+1. **CSS** - Copy styles from [`accessify-integration.html`](accessify-integration.html)
 2. **HTML** - Copy the accessibility controls HTML
 3. **JavaScript** - Copy the initialization and control functions
 
@@ -139,8 +139,8 @@ const accessifyTranslations = {
 
 ## 🆘 Support
 
-- **Documentation**: See `INTEGRATION_GUIDE.md` for detailed instructions
-- **Examples**: Check `example.html` for a working demo
+- **Documentation**: See [`INTEGRATION_GUIDE.md`](INTEGRATION_GUIDE.md) for detailed instructions
+- **Examples**: Check [`example.html`](example.html) for a working demo
 - **Issues**: Report problems in the project repository
 
 ## 📄 License
