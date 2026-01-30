@@ -167,7 +167,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #007AFF;
+            background: transparent;
             border: none;
             border-radius: 16px;
             width: 72px;
@@ -183,6 +183,10 @@
             justify-content: center;
             transform: translateY(0);
             will-change: transform;
+            background-image: url('assets/accessify-icon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         
         .dashboard-toggle:hover {
@@ -196,7 +200,7 @@
         }
         
         .dashboard-toggle::before {
-            content: "♿";
+            display: none;
         }
         
         /* Pin button for accessibility controls */

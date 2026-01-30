@@ -17,7 +17,7 @@
             position: fixed !important;
             top: 20px !important;
             right: 20px !important;
-            background: #007AFF;
+            background: transparent;
             border: none;
             border-radius: 16px;
             width: 72px !important;
@@ -33,6 +33,10 @@
             justify-content: center;
             transform: translateY(0);
             will-change: transform;
+            background-image: url('assets/accessify-icon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         
         .accessify-toggle:hover {
@@ -46,7 +50,7 @@
         }
         
         .accessify-toggle::before {
-            content: "♿";
+            display: none;
         }
         
         /* Accessibility Controls Panel */

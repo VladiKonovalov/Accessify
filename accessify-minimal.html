@@ -10,12 +10,19 @@
             width: 72px !important; height: 72px !important;
             min-width: 72px !important; min-height: 72px !important;
             max-width: 72px !important; max-height: 72px !important;
-            background: #007AFF; border: none; border-radius: 16px; color: white;
+            background: transparent; border: none; border-radius: 16px; color: white;
             font-size: 40px !important; cursor: pointer; z-index: 99999 !important;
             box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
             display: flex !important; align-items: center; justify-content: center;
+            background-image: url('assets/accessify-icon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
-        .accessify-toggle::before { content: "♿"; }
+        
+        .accessify-toggle::before {
+            display: none;
+        }
         .accessify-panel {
             position: fixed !important; top: 20px !important; right: 20px !important; 
             width: 300px; max-width: 90vw;
