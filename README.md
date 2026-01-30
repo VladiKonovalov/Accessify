@@ -27,6 +27,31 @@ A simple, powerful accessibility tool that makes any website more accessible for
 ### 3. That's It!
 The accessibility tool will automatically appear on your website with a ♿ button in the top-right corner.
 
+### Using with Maven/Gradle (Java Projects)
+
+Accessify is available as a WebJar for Java projects using Maven or Gradle.
+
+**Maven:**
+```xml
+<dependency>
+    <groupId>org.webjars</groupId>
+    <artifactId>accessify</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+**Gradle:**
+```groovy
+implementation 'org.webjars:accessify:1.0.0'
+```
+
+Then include in your HTML:
+```html
+<script src="/webjars/accessify/1.0.0/accessify.min.js"></script>
+```
+
+For detailed setup instructions, see [MAVEN_GRADLE_SETUP.md](MAVEN_GRADLE_SETUP.md).
+
 ## 🎯 Features
 
 ### Visual Accessibility

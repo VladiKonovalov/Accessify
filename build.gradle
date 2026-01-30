@@ -1,0 +1,106 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'org.webjars'
+version = '1.0.0'
+archivesBaseName = 'accessify'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // No dependencies - this is a JavaScript library packaged as a JAR
+}
+
+// Copy dist files to WebJar structure
+processResources {
+    from('dist') {
+        into "META-INF/resources/webjars/${project.name}/${project.version}"
+        include '**/*.js'
+        include '**/*.js.map'
+    }
+}
+
+jar {
+    archiveBaseName = 'accessify'
+    archiveVersion = project.version
+    manifest {
+        attributes(
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': 'Accessify Team'
+        )
+    }
+}
+
+// Create source JAR
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+// Publishing configuration
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            
+            pom {
+                name = 'Accessify'
+                description = 'A modular, reusable web accessibility toolkit supporting WCAG 2.0/2.1 AA and Israeli Standard 5568'
+                url = 'https://github.com/vladikonovalov/Accessify'
+                
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                        distribution = 'repo'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        name = 'Accessify Team'
+                    }
+                }
+                
+                scm {
+                    url = 'https://github.com/vladikonovalov/Accessify'
+                    connection = 'scm:git:git://github.com/vladikonovalov/Accessify.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:vladikonovalov/Accessify.git'
+                }
+            }
+        }
+    }
+    
+    repositories {
+        maven {
+            // Configure your repository here
+            // For Maven Central, use: https://oss.sonatype.org/service/local/staging/deploy/maven2/
+            // For local testing: mavenLocal()
+            url = project.hasProperty('repositoryUrl') ? project.property('repositoryUrl') : 'mavenLocal()'
+            
+            if (project.hasProperty('repositoryUsername') && project.hasProperty('repositoryPassword')) {
+                credentials {
+                    username = project.property('repositoryUsername')
+                    password = project.property('repositoryPassword')
+                }
+            }
+        }
+    }
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("publish") }
+    sign publishing.publications.mavenJava
+}
