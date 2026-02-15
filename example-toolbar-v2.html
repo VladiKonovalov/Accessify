@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessify — Accessibility Demo</title>
+  <style>
+    /* Figma design system: gray-900, blue-600, blue-50, gray-200, semibold, 16px gaps */
+    :root {
+      --color-text: #111827;       /* gray-900 */
+      --color-text-muted: #4b5563; /* gray-600 */
+      --color-accent: #2563eb;     /* blue-600 */
+      --color-accent-hover: #1d4ed8; /* blue-700 */
+      --color-bg-subtle: #eff6ff;  /* blue-50 */
+      --color-border: #e5e7eb;     /* gray-200 */
+      --color-bg: #ffffff;
+      --gap-section: 16px;
+      --gap-inline: 8px;
+      --radius: 8px;
+      --touch-min: 44px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      color: var(--color-text);
+      background: var(--color-bg);
+      font-size: 100%;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* Header — aligned with panel header (blue-50, gray-900 title) */
+    .page-header {
+      background: var(--color-bg-subtle);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: var(--gap-inline);
+    }
+
+    .page-header .icon {
+      width: 24px;
+      height: 24px;
+      color: var(--color-accent);
+      flex-shrink: 0;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    /* Section labels: extra-small, semibold, gray-600, uppercase */
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--gap-inline);
+      display: block;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin: 0 0 var(--gap-inline);
+    }
+
+    .intro {
+      margin-bottom: 24px;
+    }
+
+    .intro p {
+      margin: 0 0 0.75em;
+      color: var(--color-text);
+    }
+
+    .intro p:last-child { margin-bottom: 0; }
+
+    .intro a {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .intro a:hover { text-decoration: underline; }
+    .intro a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    /* Feature list — same spacing as panel sections */
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+    }
+
+    .features li {
+      padding: 12px 16px;
+      margin-bottom: var(--gap-section);
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      font-weight: 500;
+      color: var(--color-text);
+      min-height: var(--touch-min);
+      display: flex;
+      align-items: center;
+    }
+
+    .features li:hover { border-color: var(--color-accent); background: var(--color-bg-subtle); }
+
+    .features strong { color: var(--color-text); }
+
+    /* Sample content block */
+    .sample-content {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid var(--color-border);
+    }
+
+    .sample-content .section-label { margin-top: 0; }
+
+    .sample-content p {
+      margin: 0 0 1em;
+      color: var(--color-text);
+    }
+
+    .sample-content p:last-child { margin-bottom: 0; }
+
+    .sample-content a {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .sample-content a:hover { text-decoration: underline; }
+    .sample-content a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    code {
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    /* Contrast Dark: overrides so all content gets dark bg and light text (toolbar applies .contrast-dark to content wrapper) */
+    .contrast-dark .page {
+      background-color: transparent;
+      color: #e5e7eb;
+    }
+    .contrast-dark .page-header {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .contrast-dark .page-header .icon {
+      color: #93c5fd;
+    }
+    .contrast-dark .page-header h1 {
+      color: #e5e7eb;
+    }
+    .contrast-dark .section-label {
+      color: #9ca3af;
+    }
+    .contrast-dark .intro p,
+    .contrast-dark .sample-content p {
+      color: #e5e7eb;
+    }
+    .contrast-dark .intro a,
+    .contrast-dark .sample-content a {
+      color: #93c5fd;
+    }
+    .contrast-dark .features li {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .contrast-dark .features li:hover {
+      border-color: #93c5fd;
+      background-color: #4b5563;
+    }
+    .contrast-dark .features strong {
+      color: #e5e7eb;
+    }
+    .contrast-dark .sample-content {
+      border-top-color: #4b5563;
+    }
+    .contrast-dark .color-demo {
+      border-top-color: #4b5563;
+    }
+    .contrast-dark .color-demo-intro {
+      color: #e5e7eb;
+    }
+    .contrast-dark .color-demo-intro strong {
+      color: #e5e7eb;
+    }
+    .contrast-dark code {
+      background-color: #4b5563;
+      border-color: #6b7280;
+      color: #e5e7eb;
+    }
+
+    /* Color demo — vivid swatches and bands to test Color Adjustments */
+    .color-demo {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid var(--color-border);
+    }
+    .color-demo .section-label { margin-top: 0; }
+    .color-demo-intro {
+      margin: 0 0 16px;
+      color: var(--color-text);
+    }
+    .color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .swatch {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      min-width: 80px;
+      text-align: center;
+    }
+    .swatch-red   { background: #dc2626; }
+    .swatch-orange { background: #ea580c; }
+    .swatch-yellow { background: #ca8a04; color: #1c1917; text-shadow: none; }
+    .swatch-green { background: #16a34a; }
+    .swatch-cyan  { background: #0891b2; }
+    .swatch-blue  { background: #2563eb; }
+    .swatch-purple { background: #7c3aed; }
+    .swatch-magenta { background: #c026d3; }
+    .color-bands {
+      display: flex;
+      gap: 8px;
+      height: 48px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .band {
+      flex: 1;
+      min-width: 0;
+    }
+    .band-1 { background: linear-gradient(90deg, #ef4444, #f97316); }
+    .band-2 { background: linear-gradient(90deg, #eab308, #22c55e); }
+    .band-3 { background: linear-gradient(90deg, #06b6d4, #3b82f6); }
+    .band-4 { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+    .band-5 { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header" role="banner">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="4" r="2"/><path d="m15 22 2-6 2 6"/><path d="m7 22-2-6-2 6"/><path d="M12 6v14"/><path d="M8 14h8"/>
+      </svg>
+      <h1>Accessibility</h1>
+    </header>
+
+    <main class="intro" id="main-content">
+      <p>
+        Use the <strong>accessibility button</strong> (top-right) to open the panel.
+        All settings are saved in <code>localStorage</code> under <code>accessify-settings</code>.
+      </p>
+      <p>
+        Features: <strong>Text size</strong> (80%–200%), <strong>Contrast</strong> (Normal / High / Dark),
+        <strong>Spacing</strong> (Normal / Wide), <strong>Font</strong> (Default / Dyslexia),
+        <strong>Links</strong> (highlight on/off), <strong>Cursor</strong> (highlight circle on/off), <strong>Reset</strong>.
+      </p>
+    </main>
+
+    <section aria-labelledby="features-heading">
+      <span class="section-label" id="features-heading">Features</span>
+      <ul class="features">
+        <li><strong>Text size</strong> — Decrease or increase page text (80%–200%).</li>
+        <li><strong>Contrast</strong> — Cycle Normal, High, and Dark modes.</li>
+        <li><strong>Spacing</strong> — Toggle Normal or Wide text spacing.</li>
+        <li><strong>Font</strong> — Switch between Default and Dyslexia-friendly font.</li>
+        <li><strong>Links</strong> — Turn link highlighting on or off.</li>
+        <li><strong>Cursor</strong> — Show a focus circle that follows the pointer.</li>
+        <li><strong>Reset</strong> — Restore all settings to defaults.</li>
+      </ul>
+    </section>
+
+    <section class="sample-content" aria-labelledby="sample-heading">
+      <span class="section-label" id="sample-heading">Sample content</span>
+      <p>
+        This is a <a href="#">sample link</a> to test link highlighting when the toolbar option is on.
+        You can try different text sizes and contrast modes to see how the page adapts.
+      </p>
+      <p>
+        The toolbar is fixed in the top-right. Open it with the blue button, adjust settings, and close with the X or by pressing Escape.
+      </p>
+    </section>
+
+    <section class="color-demo" aria-labelledby="color-demo-heading">
+      <span class="section-label" id="color-demo-heading">Color test — try Color Adjustments (grayscale, sepia, invert)</span>
+      <p class="color-demo-intro">Use <strong>Show or hide tools</strong> to enable <strong>Color Adjustments</strong>, then cycle through filters to see the effect on the swatches below.</p>
+      <div class="color-swatches" aria-hidden="true">
+        <span class="swatch swatch-red" title="Red">Red</span>
+        <span class="swatch swatch-orange" title="Orange">Orange</span>
+        <span class="swatch swatch-yellow" title="Yellow">Yellow</span>
+        <span class="swatch swatch-green" title="Green">Green</span>
+        <span class="swatch swatch-cyan" title="Cyan">Cyan</span>
+        <span class="swatch swatch-blue" title="Blue">Blue</span>
+        <span class="swatch swatch-purple" title="Purple">Purple</span>
+        <span class="swatch swatch-magenta" title="Magenta">Magenta</span>
+      </div>
+      <div class="color-bands">
+        <div class="band band-1"></div>
+        <div class="band band-2"></div>
+        <div class="band band-3"></div>
+        <div class="band band-4"></div>
+        <div class="band band-5"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="dist/accessify.min.js"></script>
+  <script>
+    (function () {
+      if (typeof Accessify === 'undefined' || !Accessify.ToolbarV2) {
+        console.error('Accessify.ToolbarV2 not found. Run: npm run build');
+        return;
+      }
+      var toolbar = new Accessify.ToolbarV2();
+      toolbar.init();
+      window.accessifyToolbarV2 = toolbar;
+    })();
+  </script>
+</body>
+</html>

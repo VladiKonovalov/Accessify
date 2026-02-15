@@ -21,6 +21,7 @@ import { MultilingualSupport } from './components/MultilingualSupport.js';
 import { ARIAEnhancement } from './components/ARIAEnhancement.js';
 import { ReadingGuide } from './components/ReadingGuide.js';
 import { ScreenReaderOptimization } from './components/ScreenReaderOptimization.js';
+import { ToolbarV2 } from './toolbar-v2/index.js';
 
 // Built-in plugins
 import { TextToSpeechPlugin } from './plugins/TextToSpeechPlugin.js';
@@ -329,6 +330,9 @@ class Accessify {
     return Math.round((enabledFeatures / totalFeatures) * 100);
   }
 }
+
+// Attach Toolbar V2 for integration (Figma-based accessibility toolbar)
+Accessify.ToolbarV2 = ToolbarV2;
 
 // Export for different module systems
 export default Accessify;

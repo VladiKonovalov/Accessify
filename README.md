@@ -127,6 +127,15 @@ const accessifyTranslations = {
 };
 ```
 
+**Toolbar V2 (customizable controls):**  
+If you use `Accessify.ToolbarV2`, the site author can limit which controls are available; the end user chooses which of those are visible (persisted in `localStorage`). Example:
+```javascript
+// Only offer text size, contrast, and reset (user can still show/hide the first two via "Show or hide tools")
+var toolbar = new Accessify.ToolbarV2({ availableControls: ['textSize', 'contrast', 'reset'] });
+toolbar.init();
+```
+Control ids: `textSize`, `contrast`, `spacing`, `font`, `links`, `cursor`, `reset`. Omit `availableControls` to show all. Users toggle visibility in the panel under "Show or hide tools".
+
 ## 📋 Requirements
 
 - Modern web browser (Chrome, Firefox, Safari, Edge)

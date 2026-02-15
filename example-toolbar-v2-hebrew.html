@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessify — הדגמת נגישות</title>
+  <style>
+    /* Figma design system: gray-900, blue-600, blue-50, gray-200, semibold, 16px gaps — RTL-aware */
+    :root {
+      --color-text: #111827;       /* gray-900 */
+      --color-text-muted: #4b5563; /* gray-600 */
+      --color-accent: #2563eb;     /* blue-600 */
+      --color-accent-hover: #1d4ed8; /* blue-700 */
+      --color-bg-subtle: #eff6ff;  /* blue-50 */
+      --color-border: #e5e7eb;     /* gray-200 */
+      --color-bg: #ffffff;
+      --gap-section: 16px;
+      --gap-inline: 8px;
+      --radius: 8px;
+      --touch-min: 44px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'David', 'Times New Roman', serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      color: var(--color-text);
+      background: var(--color-bg);
+      font-size: 100%;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* Header — aligned with panel header (blue-50, gray-900 title) */
+    .page-header {
+      background: var(--color-bg-subtle);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: var(--gap-inline);
+    }
+
+    .page-header .icon {
+      width: 24px;
+      height: 24px;
+      color: var(--color-accent);
+      flex-shrink: 0;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    /* Section labels: extra-small, semibold, gray-600, uppercase */
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--gap-inline);
+      display: block;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin: 0 0 var(--gap-inline);
+    }
+
+    .intro {
+      margin-bottom: 24px;
+    }
+
+    .intro p {
+      margin: 0 0 0.75em;
+      color: var(--color-text);
+    }
+
+    .intro p:last-child { margin-bottom: 0; }
+
+    .intro a {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .intro a:hover { text-decoration: underline; }
+    .intro a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    /* Feature list — same spacing as panel sections */
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+    }
+
+    .features li {
+      padding: 12px 16px;
+      margin-bottom: var(--gap-section);
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      font-weight: 500;
+      color: var(--color-text);
+      min-height: var(--touch-min);
+      display: flex;
+      align-items: center;
+    }
+
+    .features li:hover { border-color: var(--color-accent); background: var(--color-bg-subtle); }
+
+    .features strong { color: var(--color-text); }
+
+    /* Sample content block */
+    .sample-content {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid var(--color-border);
+    }
+
+    .sample-content .section-label { margin-top: 0; }
+
+    .sample-content p {
+      margin: 0 0 1em;
+      color: var(--color-text);
+    }
+
+    .sample-content p:last-child { margin-bottom: 0; }
+
+    .sample-content a {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .sample-content a:hover { text-decoration: underline; }
+    .sample-content a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    code {
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    /* Contrast Dark: overrides so all content gets dark bg and light text (toolbar applies .contrast-dark to content wrapper) */
+    .contrast-dark .page {
+      background-color: transparent;
+      color: #e5e7eb;
+    }
+    .contrast-dark .page-header {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .contrast-dark .page-header .icon {
+      color: #93c5fd;
+    }
+    .contrast-dark .page-header h1 {
+      color: #e5e7eb;
+    }
+    .contrast-dark .section-label {
+      color: #9ca3af;
+    }
+    .contrast-dark .intro p,
+    .contrast-dark .sample-content p {
+      color: #e5e7eb;
+    }
+    .contrast-dark .intro a,
+    .contrast-dark .sample-content a {
+      color: #93c5fd;
+    }
+    .contrast-dark .features li {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .contrast-dark .features li:hover {
+      border-color: #93c5fd;
+      background-color: #4b5563;
+    }
+    .contrast-dark .features strong {
+      color: #e5e7eb;
+    }
+    .contrast-dark .sample-content {
+      border-top-color: #4b5563;
+    }
+    .contrast-dark code {
+      background-color: #4b5563;
+      border-color: #6b7280;
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header" role="banner">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="4" r="2"/><path d="m15 22 2-6 2 6"/><path d="m7 22-2-6-2 6"/><path d="M12 6v14"/><path d="M8 14h8"/>
+      </svg>
+      <h1>נגישות</h1>
+    </header>
+
+    <main class="intro" id="main-content">
+      <p>
+        השתמשו ב<strong>כפתור הנגישות</strong> (למעלה בצד) כדי לפתוח את הלוח.
+        כל ההגדרות נשמרות ב־<code>localStorage</code> תחת <code>accessify-settings</code>.
+      </p>
+      <p>
+        אפשרויות: <strong>גודל טקסט</strong> (80%–200%), <strong>ניגודיות</strong> (רגיל / גבוה / כהה),
+        <strong>ריווח</strong> (רגיל / רחב), <strong>גופן</strong> (ברירת מחדל / דיסלקסיה),
+        <strong>קישורים</strong> (הדגשה כבויה/דלוקה), <strong>סמן</strong> (עיגול הדגשה כבוי/דלוק), <strong>איפוס</strong>.
+      </p>
+    </main>
+
+    <section aria-labelledby="features-heading">
+      <span class="section-label" id="features-heading">אפשרויות</span>
+      <ul class="features">
+        <li><strong>גודל טקסט</strong> — הקטנה או הגדלה של טקסט הדף (80%–200%).</li>
+        <li><strong>ניגודיות</strong> — מעבר בין מצבים: רגיל, גבוה וכהה.</li>
+        <li><strong>ריווח</strong> — החלפה בין ריווח רגיל לריווח רחב.</li>
+        <li><strong>גופן</strong> — מעבר בין גופן רגיל לגופן מותאם דיסלקסיה.</li>
+        <li><strong>קישורים</strong> — הפעלה או כיבוי של הדגשת קישורים.</li>
+        <li><strong>סמן</strong> — הצגת עיגול מיקוד שעוקב אחרי הסמן.</li>
+        <li><strong>איפוס</strong> — שחזור כל ההגדרות לברירת המחדל.</li>
+      </ul>
+    </section>
+
+    <section class="sample-content" aria-labelledby="sample-heading">
+      <span class="section-label" id="sample-heading">תוכן לדוגמה</span>
+      <p>
+        זה <a href="#">קישור לדוגמה</a> לבדיקת הדגשת קישורים כשהאפשרות בלוח דלוקה.
+        אפשר לנסות גדלי טקסט ומצבי ניגודיות שונים ולראות איך הדף מתאים את עצמו.
+      </p>
+      <p>
+        לוח הנגישות קבוע בצד העליון. פתחו אותו עם הכפתור הכחול, התאימו הגדרות וסגרו עם X או עם מקש Escape.
+      </p>
+    </section>
+  </div>
+
+  <script src="dist/accessify.min.js"></script>
+  <script>
+    (function () {
+      if (typeof Accessify === 'undefined' || !Accessify.ToolbarV2) {
+        console.error('Accessify.ToolbarV2 not found. Run: npm run build');
+        return;
+      }
+      var toolbar = new Accessify.ToolbarV2();
+      toolbar.init();
+      window.accessifyToolbarV2 = toolbar;
+    })();
+  </script>
+</body>
+</html>
