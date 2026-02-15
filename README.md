@@ -4,6 +4,8 @@ A modular accessibility toolbar for the web. Supports WCAG 2.1 AA, RTL (e.g. Heb
 
 **Note:** Legacy Toolbar V1 has been removed. This library is v2-only.
 
+live demo to see - https://vladikonovalov.github.io/Accessify/example.html
+
 ## Installation
 
 ### npm
