@@ -1,6 +1,6 @@
 {
   "name": "accessify",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "description": "A modular, reusable web accessibility toolkit supporting WCAG 2.0/2.1 AA and Israeli Standard 5568",
   "main": "dist/accessify.js",
@@ -41,12 +41,14 @@
   "author": "Accessify Team",
   "license": "MIT",
   "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/jest": "^29.5.8",
     "eslint": "^8.54.0",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0",
     "rollup": "^4.6.1",
     "typescript": "^5.3.2"
   },

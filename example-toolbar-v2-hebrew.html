@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accessify — Accessibility Demo</title>
+  <title>Accessify — הדגמת נגישות</title>
   <style>
-    /* Figma design system: gray-900, blue-600, blue-50, gray-200, semibold, 16px gaps */
+    /* Figma design system: gray-900, blue-600, blue-50, gray-200, semibold, 16px gaps — RTL-aware */
     :root {
       --color-text: #111827;       /* gray-900 */
       --color-text-muted: #4b5563; /* gray-600 */
@@ -27,7 +27,7 @@
     * { box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'David', 'Times New Roman', serif;
       line-height: 1.6;
       margin: 0;
       padding: 0;
@@ -203,72 +203,11 @@
     .contrast-dark .sample-content {
       border-top-color: #4b5563;
     }
-    .contrast-dark .color-demo {
-      border-top-color: #4b5563;
-    }
-    .contrast-dark .color-demo-intro {
-      color: #e5e7eb;
-    }
-    .contrast-dark .color-demo-intro strong {
-      color: #e5e7eb;
-    }
     .contrast-dark code {
       background-color: #4b5563;
       border-color: #6b7280;
       color: #e5e7eb;
     }
-
-    /* Color demo — vivid swatches and bands to test Color Adjustments */
-    .color-demo {
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 2px solid var(--color-border);
-    }
-    .color-demo .section-label { margin-top: 0; }
-    .color-demo-intro {
-      margin: 0 0 16px;
-      color: var(--color-text);
-    }
-    .color-swatches {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .swatch {
-      padding: 12px 16px;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-      min-width: 80px;
-      text-align: center;
-    }
-    .swatch-red   { background: #dc2626; }
-    .swatch-orange { background: #ea580c; }
-    .swatch-yellow { background: #ca8a04; color: #1c1917; text-shadow: none; }
-    .swatch-green { background: #16a34a; }
-    .swatch-cyan  { background: #0891b2; }
-    .swatch-blue  { background: #2563eb; }
-    .swatch-purple { background: #7c3aed; }
-    .swatch-magenta { background: #c026d3; }
-    .color-bands {
-      display: flex;
-      gap: 8px;
-      height: 48px;
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .band {
-      flex: 1;
-      min-width: 0;
-    }
-    .band-1 { background: linear-gradient(90deg, #ef4444, #f97316); }
-    .band-2 { background: linear-gradient(90deg, #eab308, #22c55e); }
-    .band-3 { background: linear-gradient(90deg, #06b6d4, #3b82f6); }
-    .band-4 { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
-    .band-5 { background: linear-gradient(90deg, #ec4899, #f43f5e); }
   </style>
 </head>
 <body>
@@ -277,65 +216,43 @@
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="4" r="2"/><path d="m15 22 2-6 2 6"/><path d="m7 22-2-6-2 6"/><path d="M12 6v14"/><path d="M8 14h8"/>
       </svg>
-      <h1>Accessibility</h1>
+      <h1>נגישות</h1>
     </header>
 
     <main class="intro" id="main-content">
       <p>
-        Use the <strong>accessibility button</strong> (top-right) to open the panel.
-        All settings are saved in <code>localStorage</code> under <code>accessify-settings</code>.
+        השתמשו ב<strong>כפתור הנגישות</strong> (למעלה בצד) כדי לפתוח את הלוח.
+        כל ההגדרות נשמרות ב־<code>localStorage</code> תחת <code>accessify-settings</code>.
       </p>
       <p>
-        Features: <strong>Text size</strong> (80%–200%), <strong>Contrast</strong> (Normal / High / Dark),
-        <strong>Spacing</strong> (Normal / Wide), <strong>Font</strong> (Default / Dyslexia),
-        <strong>Links</strong> (highlight on/off), <strong>Cursor</strong> (highlight circle on/off), <strong>Reset</strong>.
+        אפשרויות: <strong>גודל טקסט</strong> (80%–200%), <strong>ניגודיות</strong> (רגיל / גבוה / כהה),
+        <strong>ריווח</strong> (רגיל / רחב), <strong>גופן</strong> (ברירת מחדל / דיסלקסיה),
+        <strong>קישורים</strong> (הדגשה כבויה/דלוקה), <strong>סמן</strong> (עיגול הדגשה כבוי/דלוק), <strong>איפוס</strong>.
       </p>
     </main>
 
     <section aria-labelledby="features-heading">
-      <span class="section-label" id="features-heading">Features</span>
+      <span class="section-label" id="features-heading">אפשרויות</span>
       <ul class="features">
-        <li><strong>Text size</strong> — Decrease or increase page text (80%–200%).</li>
-        <li><strong>Contrast</strong> — Cycle Normal, High, and Dark modes.</li>
-        <li><strong>Spacing</strong> — Toggle Normal or Wide text spacing.</li>
-        <li><strong>Font</strong> — Switch between Default and Dyslexia-friendly font.</li>
-        <li><strong>Links</strong> — Turn link highlighting on or off.</li>
-        <li><strong>Cursor</strong> — Show a focus circle that follows the pointer.</li>
-        <li><strong>Reset</strong> — Restore all settings to defaults.</li>
+        <li><strong>גודל טקסט</strong> — הקטנה או הגדלה של טקסט הדף (80%–200%).</li>
+        <li><strong>ניגודיות</strong> — מעבר בין מצבים: רגיל, גבוה וכהה.</li>
+        <li><strong>ריווח</strong> — החלפה בין ריווח רגיל לריווח רחב.</li>
+        <li><strong>גופן</strong> — מעבר בין גופן רגיל לגופן מותאם דיסלקסיה.</li>
+        <li><strong>קישורים</strong> — הפעלה או כיבוי של הדגשת קישורים.</li>
+        <li><strong>סמן</strong> — הצגת עיגול מיקוד שעוקב אחרי הסמן.</li>
+        <li><strong>איפוס</strong> — שחזור כל ההגדרות לברירת המחדל.</li>
       </ul>
     </section>
 
     <section class="sample-content" aria-labelledby="sample-heading">
-      <span class="section-label" id="sample-heading">Sample content</span>
+      <span class="section-label" id="sample-heading">תוכן לדוגמה</span>
       <p>
-        This is a <a href="#">sample link</a> to test link highlighting when the toolbar option is on.
-        You can try different text sizes and contrast modes to see how the page adapts.
+        זה <a href="#">קישור לדוגמה</a> לבדיקת הדגשת קישורים כשהאפשרות בלוח דלוקה.
+        אפשר לנסות גדלי טקסט ומצבי ניגודיות שונים ולראות איך הדף מתאים את עצמו.
       </p>
       <p>
-        The toolbar is fixed in the top-right. Open it with the blue button, adjust settings, and close with the X or by pressing Escape.
+        לוח הנגישות קבוע בצד העליון. פתחו אותו עם הכפתור הכחול, התאימו הגדרות וסגרו עם X או עם מקש Escape.
       </p>
-    </section>
-
-    <section class="color-demo" aria-labelledby="color-demo-heading">
-      <span class="section-label" id="color-demo-heading">Color test — try Color Adjustments (grayscale, sepia, invert)</span>
-      <p class="color-demo-intro">Use <strong>Show or hide tools</strong> to enable <strong>Color Adjustments</strong>, then cycle through filters to see the effect on the swatches below.</p>
-      <div class="color-swatches" aria-hidden="true">
-        <span class="swatch swatch-red" title="Red">Red</span>
-        <span class="swatch swatch-orange" title="Orange">Orange</span>
-        <span class="swatch swatch-yellow" title="Yellow">Yellow</span>
-        <span class="swatch swatch-green" title="Green">Green</span>
-        <span class="swatch swatch-cyan" title="Cyan">Cyan</span>
-        <span class="swatch swatch-blue" title="Blue">Blue</span>
-        <span class="swatch swatch-purple" title="Purple">Purple</span>
-        <span class="swatch swatch-magenta" title="Magenta">Magenta</span>
-      </div>
-      <div class="color-bands">
-        <div class="band band-1"></div>
-        <div class="band band-2"></div>
-        <div class="band band-3"></div>
-        <div class="band band-4"></div>
-        <div class="band band-5"></div>
-      </div>
     </section>
   </div>
 

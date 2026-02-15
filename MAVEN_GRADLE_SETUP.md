@@ -47,7 +47,7 @@ Add the following to your `pom.xml`:
     <dependency>
         <groupId>org.webjars</groupId>
         <artifactId>accessify</artifactId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </dependency>
 </dependencies>
 ```
@@ -58,7 +58,7 @@ Add the following to your `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'org.webjars:accessify:1.0.0'
+    implementation 'org.webjars:accessify:2.0.0'
 }
 ```
 
@@ -66,7 +66,7 @@ Or in Kotlin DSL (`build.gradle.kts`):
 
 ```kotlin
 dependencies {
-    implementation("org.webjars:accessify:1.0.0")
+    implementation("org.webjars:accessify:2.0.0")
 }
 ```
 
@@ -85,12 +85,12 @@ In Spring Boot, WebJars are automatically available. Include the script in your 
 <body>
     <h1>Welcome</h1>
     
-    <!-- Accessify will be available at /webjars/accessify/1.0.0/accessify.min.js -->
-    <script src="/webjars/accessify/1.0.0/accessify.min.js"></script>
+    <!-- Accessify will be available at /webjars/accessify/2.0.0/accessify.min.js -->
+    <script src="/webjars/accessify/2.0.0/accessify.min.js"></script>
     <script>
-        // Initialize Accessify
-        const accessify = new Accessify();
-        accessify.init();
+        // Initialize Accessify Toolbar V2
+        var toolbar = new Accessify.ToolbarV2();
+        toolbar.init();
     </script>
 </body>
 </html>
@@ -129,7 +129,7 @@ Configure in `web.xml`:
 Then reference in your HTML:
 
 ```html
-<script src="/webjars/accessify/1.0.0/accessify.min.js"></script>
+<script src="/webjars/accessify/2.0.0/accessify.min.js"></script>
 ```
 
 **Option 2: Manual Extraction**
@@ -139,7 +139,7 @@ Extract files from the JAR and serve them statically:
 ```java
 // Example: Extract and serve files
 InputStream is = getClass().getResourceAsStream(
-    "/META-INF/resources/webjars/accessify/1.0.0/accessify.min.js"
+    "/META-INF/resources/webjars/accessify/2.0.0/accessify.min.js"
 );
 // Copy to your webapp directory or serve directly
 ```
@@ -155,10 +155,10 @@ InputStream is = getClass().getResourceAsStream(
 <body>
     <h1>Welcome</h1>
     
-    <script th:src="@{/webjars/accessify/1.0.0/accessify.min.js}"></script>
+    <script th:src="@{/webjars/accessify/2.0.0/accessify.min.js}"></script>
     <script>
-        const accessify = new Accessify();
-        accessify.init();
+        var toolbar = new Accessify.ToolbarV2();
+        toolbar.init();
     </script>
 </body>
 </html>
@@ -271,10 +271,10 @@ Ensure `npm run build` has been executed and `dist/` directory contains the buil
 
 After packaging, the following files will be available:
 
-- `/webjars/accessify/1.0.0/accessify.js` - UMD build (development)
-- `/webjars/accessify/1.0.0/accessify.min.js` - UMD build (production)
-- `/webjars/accessify/1.0.0/accessify.esm.js` - ES Module build
-- `/webjars/accessify/1.0.0/accessify.cjs.js` - CommonJS build
+- `/webjars/accessify/2.0.0/accessify.js` - UMD build (development)
+- `/webjars/accessify/2.0.0/accessify.min.js` - UMD build (production)
+- `/webjars/accessify/2.0.0/accessify.esm.js` - ES Module build
+- `/webjars/accessify/2.0.0/accessify.cjs.js` - CommonJS build
 - Source maps (`.js.map`) for debugging
 
 ## Additional Resources

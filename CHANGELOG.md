@@ -95,41 +95,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Browser support information
 - Troubleshooting guide
 
+## [2.0.0] - 2025-02-15
+
+### Changed
+- **BREAKING**: Replaced legacy Toolbar V1 with Toolbar V2
+- Simplified API: `new Accessify.ToolbarV2()` with `init()` and `destroy()`
+- Streamlined feature set focused on WCAG 2.1 AA–oriented controls
+
+### Added
+- Figma-based Toolbar V2 with modern UI
+- Text size control (80%–200%)
+- Contrast modes: Normal, High, Dark
+- Text spacing: Normal / Wide
+- Dyslexia-friendly font toggle
+- Link highlighting toggle
+- Cursor highlight (focus circle)
+- Color adjustments: grayscale, invert
+- Language control (English, Hebrew)
+- Customize section: show/hide individual controls
+- Settings persisted in `localStorage`
+- RTL support (Hebrew)
+- `syncWithPageLanguage` option for lang/dir sync
+- `availableControls` option to limit which controls are available
+- `getSettings()` API for integration
+- TypeScript definitions for ToolbarV2
+
+### Removed
+- Legacy Toolbar V1
+- Plugin system (Text-to-Speech, Voice Commands, Switch Navigation)
+- accessify-integration.html
+- Previous component architecture (VisualAccessibility, NavigationAccessibility, etc.)
+
+### Technical
+- Vanilla JavaScript ES6+ modules
+- Rollup build: UMD, ESM, CJS
+- npm, Maven, Gradle packaging
+- Jest tests for ToolbarV2
+
 ## [Unreleased]
 
-### Planned Features
-- Additional language support
-- More dyslexia-friendly fonts
-- Enhanced gesture recognition
-- Advanced voice command processing
-- Machine learning-based accessibility recommendations
-- Integration with popular frameworks (React, Vue, Angular)
-- Advanced testing tools
-- Performance monitoring
-- Analytics and usage tracking
-- Cloud-based configuration management
-- Team collaboration features
-- Accessibility audit tools
-- Automated remediation suggestions
-
-### Planned Improvements
-- Performance optimizations
-- Memory usage improvements
-- Bundle size reduction
-- Enhanced error handling
-- Better browser compatibility
-- Improved documentation
-- More comprehensive testing
-- Enhanced plugin system
-- Better TypeScript support
-- Improved accessibility compliance
-- Enhanced RTL support
-- Better mobile experience
-- Improved voice recognition
-- Enhanced text-to-speech
-- Better gesture recognition
-- Improved switch navigation
-- Enhanced testing tools
-- Better compliance reporting
-- Improved error recovery
-- Enhanced user experience
+### Planned
+- Additional languages
+- More accessibility controls

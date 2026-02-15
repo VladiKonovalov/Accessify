@@ -52,7 +52,7 @@ export default [
       file: 'dist/accessify.cjs.js',
       format: 'cjs',
       sourcemap: true,
-      exports: 'default'
+      exports: 'named'
     },
     plugins: [
       nodeResolve(),
