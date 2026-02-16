@@ -8,6 +8,8 @@ import { t } from './i18n.js';
 
 /** V1 toggle icon URL; same as version 1 dashboard toggle */
 const V1_TRIGGER_ICON_URL = 'assets/accessify-icon.png';
+/** Fallback when local path not found (e.g. when used in another project) */
+const FALLBACK_ICON_URL = 'https://github.com/VladiKonovalov/Accessify/blob/main/assets/accessify-icon.png?raw=true';
 
 export function createTrigger(onToggle, getOpen) {
   const btn = document.createElement('button');
@@ -26,8 +28,14 @@ export function createTrigger(onToggle, getOpen) {
   const fallbackIcon = iconElement(icons.accessibility);
   fallbackIcon.classList.add('accessify-toolbar-v2-trigger-fallback');
 
+  let triedFallbackUrl = false;
   img.onerror = () => {
-    if (img.parentNode === btn) btn.removeChild(img);
+    if (!triedFallbackUrl) {
+      triedFallbackUrl = true;
+      img.src = FALLBACK_ICON_URL;
+    } else if (img.parentNode === btn) {
+      btn.removeChild(img);
+    }
   };
 
   btn.appendChild(img);

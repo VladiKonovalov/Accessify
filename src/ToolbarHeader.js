@@ -8,6 +8,8 @@ import { t } from './i18n.js';
 
 /** Same as trigger; shared icon URL */
 const ICON_URL = 'assets/accessify-icon.png';
+/** Fallback when local path not found (e.g. when used in another project) */
+const FALLBACK_ICON_URL = 'https://github.com/VladiKonovalov/Accessify/blob/main/assets/accessify-icon.png?raw=true';
 
 function createTitleIcon() {
   const wrap = document.createElement('span');
@@ -22,8 +24,14 @@ function createTitleIcon() {
   const fallbackIcon = iconElement(icons.accessibility);
   fallbackIcon.classList.add('accessify-toolbar-v2-header-title-icon-fallback');
 
+  let triedFallbackUrl = false;
   img.onerror = () => {
-    if (img.parentNode === wrap) wrap.removeChild(img);
+    if (!triedFallbackUrl) {
+      triedFallbackUrl = true;
+      img.src = FALLBACK_ICON_URL;
+    } else if (img.parentNode === wrap) {
+      wrap.removeChild(img);
+    }
   };
 
   wrap.appendChild(img);

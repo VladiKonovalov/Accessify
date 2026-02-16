@@ -944,6 +944,8 @@ function fontDBadge() {
 
 /** V1 toggle icon URL; same as version 1 dashboard toggle */
 const V1_TRIGGER_ICON_URL = 'assets/accessify-icon.png';
+/** Fallback when local path not found (e.g. when used in another project) */
+const FALLBACK_ICON_URL$1 = 'https://github.com/VladiKonovalov/Accessify/blob/main/assets/accessify-icon.png?raw=true';
 
 function createTrigger(onToggle, getOpen) {
   const btn = document.createElement('button');
@@ -962,8 +964,14 @@ function createTrigger(onToggle, getOpen) {
   const fallbackIcon = iconElement(icons.accessibility);
   fallbackIcon.classList.add('accessify-toolbar-v2-trigger-fallback');
 
+  let triedFallbackUrl = false;
   img.onerror = () => {
-    if (img.parentNode === btn) btn.removeChild(img);
+    if (!triedFallbackUrl) {
+      triedFallbackUrl = true;
+      img.src = FALLBACK_ICON_URL$1;
+    } else if (img.parentNode === btn) {
+      btn.removeChild(img);
+    }
   };
 
   btn.appendChild(img);
@@ -994,6 +1002,8 @@ function createTrigger(onToggle, getOpen) {
 
 /** Same as trigger; shared icon URL */
 const ICON_URL = 'assets/accessify-icon.png';
+/** Fallback when local path not found (e.g. when used in another project) */
+const FALLBACK_ICON_URL = 'https://github.com/VladiKonovalov/Accessify/blob/main/assets/accessify-icon.png?raw=true';
 
 function createTitleIcon() {
   const wrap = document.createElement('span');
@@ -1008,8 +1018,14 @@ function createTitleIcon() {
   const fallbackIcon = iconElement(icons.accessibility);
   fallbackIcon.classList.add('accessify-toolbar-v2-header-title-icon-fallback');
 
+  let triedFallbackUrl = false;
   img.onerror = () => {
-    if (img.parentNode === wrap) wrap.removeChild(img);
+    if (!triedFallbackUrl) {
+      triedFallbackUrl = true;
+      img.src = FALLBACK_ICON_URL;
+    } else if (img.parentNode === wrap) {
+      wrap.removeChild(img);
+    }
   };
 
   wrap.appendChild(img);
