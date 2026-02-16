@@ -83,7 +83,7 @@ export function getToolbarStyles() {
   overflow: hidden;
 }
 .accessify-toolbar-v2-panel-body {
-  padding: 16px 8px;
+  padding: 16px 8px 4px 8px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -346,7 +346,8 @@ export function getToolbarStyles() {
 /* Reset button */
 .accessify-toolbar-v2-reset {
   margin-top: 8px;
-  padding-top: 16px;
+  margin-bottom: 0;
+  padding-top: 10px;
   border-top: 2px solid #e5e7eb;
 }
 .accessify-toolbar-v2-reset .accessify-toolbar-v2-btn {
@@ -361,6 +362,33 @@ export function getToolbarStyles() {
 }
 .accessify-toolbar-v2-reset .accessify-toolbar-v2-btn:focus-visible {
   box-shadow: 0 0 0 2px #ef4444;
+}
+
+/* Footer: Powered by Accessify link - no top padding so text sticks to border, no bottom padding to avoid scroll */
+.accessify-toolbar-v2-footer {
+  margin-top: 1px;
+  padding: 0;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+.accessify-toolbar-v2-footer a {
+  display: inline-block;
+  font-size: 11px;
+  color: #6b7280;
+  text-decoration: none;
+  line-height: 1.2;
+}
+.accessify-toolbar-v2-footer a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.accessify-toolbar-v2-footer a:focus {
+  outline: none;
+}
+.accessify-toolbar-v2-footer a:focus-visible {
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
 }
 
 /* Cursor highlight circle (centered on pointer) - above toolbar so it stays visible */

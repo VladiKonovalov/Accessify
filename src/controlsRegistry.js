@@ -67,18 +67,18 @@ const REGISTRY = [
     create: (getState, h) => createColorAdjustmentsControl(getState, h.onColorFilterCycle)
   },
   {
-    id: 'reset',
-    labelKey: 'controlReset',
-    defaultVisible: true,
-    customizable: false,
-    create: (_getState, h) => createResetControl(h.onReset)
-  },
-  {
     id: 'language',
     labelKey: 'controlLanguage',
     defaultVisible: false,
     customizable: true,
     create: (getState, h) => createLanguageControl(getState, h)
+  },
+  {
+    id: 'reset',
+    labelKey: 'controlReset',
+    defaultVisible: true,
+    customizable: false,
+    create: (_getState, h) => createResetControl(h.onReset)
   }
 ];
 

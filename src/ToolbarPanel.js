@@ -22,6 +22,18 @@ export function createPanel(sectionElements, onClose) {
   sectionElements.forEach((el) => {
     if (el && el.nodeType === Node.ELEMENT_NODE) body.appendChild(el);
   });
+
+  const footer = document.createElement('div');
+  footer.className = 'accessify-toolbar-v2-footer';
+  const footerLink = document.createElement('a');
+  footerLink.href = 'https://github.com/VladiKonovalov/Accessify';
+  footerLink.target = '_blank';
+  footerLink.rel = 'noopener noreferrer';
+  footerLink.textContent = 'Powered by Accessify';
+  footerLink.setAttribute('aria-label', 'Accessify on GitHub (opens in new tab)');
+  footer.appendChild(footerLink);
+  body.appendChild(footer);
+
   panel.appendChild(body);
 
   return {
