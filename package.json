@@ -14,9 +14,6 @@
   "scripts": {
     "build": "node scripts/build.js",
     "build:rollup": "rollup -c",
-    "build:maven": "npm run build && mvn clean package",
-    "build:gradle": "npm run build && gradle clean build",
-    "build:webjar": "npm run build:maven",
     "dev": "rollup -c -w",
     "test": "jest",
     "test:watch": "jest --watch",
