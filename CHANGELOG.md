@@ -129,7 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Technical
 - Vanilla JavaScript ES6+ modules
 - Rollup build: UMD, ESM, CJS
-- npm, Maven, Gradle packaging
+- npm packaging
 - Jest tests for ToolbarV2
 
 ## [Unreleased]
