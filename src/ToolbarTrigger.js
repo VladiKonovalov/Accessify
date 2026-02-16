@@ -1,13 +1,11 @@
 /**
  * Toolbar V2 — Floating trigger button (opens/closes panel)
- * Uses the same icon as version 1 (assets/accessify-icon.png) with SVG fallback.
+ * Uses embedded icon (base64 data URL) with SVG fallback.
  */
 
 import { icons, iconElement } from './icons.js';
 import { t } from './i18n.js';
-
-/** V1 toggle icon URL; same as version 1 dashboard toggle */
-const V1_TRIGGER_ICON_URL = 'assets/accessify-icon.png';
+import { ACCESSIFY_ICON_DATA_URL } from './iconDataUrl.js';
 
 export function createTrigger(onToggle, getOpen) {
   const btn = document.createElement('button');
@@ -18,7 +16,7 @@ export function createTrigger(onToggle, getOpen) {
   btn.setAttribute('aria-expanded', 'false');
 
   const img = document.createElement('img');
-  img.src = V1_TRIGGER_ICON_URL;
+  img.src = ACCESSIFY_ICON_DATA_URL;
   img.alt = '';
   img.className = 'accessify-toolbar-v2-trigger-icon-img';
   img.setAttribute('aria-hidden', 'true');

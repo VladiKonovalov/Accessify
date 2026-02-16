@@ -1,20 +1,18 @@
 /**
  * Toolbar V2 — Panel header: icon + "Accessibility" + close button
- * Uses the same icon as the trigger (assets/accessify-icon.png) with SVG fallback.
+ * Uses embedded icon (base64 data URL) with SVG fallback.
  */
 
 import { icons, iconElement } from './icons.js';
 import { t } from './i18n.js';
-
-/** Same as trigger; shared icon URL */
-const ICON_URL = 'assets/accessify-icon.png';
+import { ACCESSIFY_ICON_DATA_URL } from './iconDataUrl.js';
 
 function createTitleIcon() {
   const wrap = document.createElement('span');
   wrap.className = 'accessify-toolbar-v2-header-title-icon';
 
   const img = document.createElement('img');
-  img.src = ICON_URL;
+  img.src = ACCESSIFY_ICON_DATA_URL;
   img.alt = '';
   img.className = 'accessify-toolbar-v2-header-title-icon-img';
   img.setAttribute('aria-hidden', 'true');
