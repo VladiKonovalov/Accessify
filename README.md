@@ -7,7 +7,7 @@ A modular accessibility toolbar for the web. Supports WCAG 2.1 AA, RTL (e.g. Heb
 live demo to see - https://vladikonovalov.github.io/Accessify/example.html
 
 VERSION DIFFERENCE  
-<img width="1080" height="1080" alt="photo-collage png" src="https://github.com/user-attachments/assets/68ade9dd-c951-4d0b-91cb-8a03c15bf86d" />
+<img width="500" height="500" alt="photo-collage png" src="https://github.com/user-attachments/assets/68ade9dd-c951-4d0b-91cb-8a03c15bf86d" />
 
 
 ## Installation
