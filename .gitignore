@@ -9,6 +9,9 @@ yarn-error.log*
 build/
 coverage/
 
+# Gradle (not used by this project; ignore if created by IDE or accident)
+.gradle/
+
 # Environment variables
 .env
 .env.local
