@@ -8,8 +8,8 @@ export function getToolbarStyles() {
 /* ---- Toolbar V2: Trigger (bottom; left for RTL/hebrew, right for LTR/english) ---- */
 .accessify-toolbar-v2-trigger {
   position: fixed;
-  bottom: 1rem;
-  inset-inline-end: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  inset-inline-end: max(1rem, env(safe-area-inset-inline-end, 0px));
   z-index: 10002;
   width: 48px;
   height: 48px;
@@ -26,6 +26,7 @@ export function getToolbarStyles() {
   justify-content: center;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
   transition: transform 0.3s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.2);
 }
 .accessify-toolbar-v2-trigger[aria-expanded="false"] {
   transform: rotate(180deg);
@@ -60,6 +61,10 @@ export function getToolbarStyles() {
 }
 .accessify-toolbar-v2-trigger .accessify-toolbar-v2-trigger-fallback {
   display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
 }
 .accessify-toolbar-v2-trigger:not(:has(.accessify-toolbar-v2-trigger-icon-img)) .accessify-toolbar-v2-trigger-fallback {
   display: flex;
@@ -68,12 +73,14 @@ export function getToolbarStyles() {
 /* ---- Toolbar V2: Panel (bottom, same side as trigger; dir set in JS for inset-inline-end) ---- */
 .accessify-toolbar-v2-panel {
   position: fixed;
-  bottom: 5rem;
-  inset-inline-end: 1rem;
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  inset-inline-end: max(1rem, env(safe-area-inset-inline-end, 0px));
+  inset-inline-start: auto;
   z-index: 10001;
   width: 260px;
-  max-width: calc(100vw - 2rem);
-  max-height: calc(100vh - 7rem);
+  max-width: min(260px, calc(100vw - 2rem - env(safe-area-inset-inline-start, 0px) - env(safe-area-inset-inline-end, 0px)));
+  max-height: calc(100vh - 7rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  min-height: 0;
   background: #fff;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
@@ -83,9 +90,11 @@ export function getToolbarStyles() {
   overflow: hidden;
 }
 .accessify-toolbar-v2-panel-body {
-  padding: 16px 8px 4px 8px;
+  padding: 16px 8px;
   overflow-y: auto;
   overflow-x: hidden;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ---- Toolbar V2: Header ---- */
@@ -105,11 +114,18 @@ export function getToolbarStyles() {
   font-size: 1rem;
   font-weight: 600;
   color: #111827;
+  min-width: 0;
+  overflow: hidden;
 }
 .accessify-toolbar-v2-header-title .accessify-toolbar-v2-header-title-icon {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+}
+.accessify-toolbar-v2-header-title .accessify-toolbar-v2-header-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .accessify-toolbar-v2-header-title .accessify-toolbar-v2-header-title-icon-img {
   width: 20px;
@@ -157,6 +173,11 @@ export function getToolbarStyles() {
   width: 20px;
   height: 20px;
 }
+.accessify-toolbar-v2-close,
+.accessify-toolbar-v2-btn,
+.accessify-toolbar-v2-customize-header {
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.15);
+}
 
 /* ---- Toolbar V2: Section ---- */
 .accessify-toolbar-v2-section {
@@ -177,13 +198,21 @@ export function getToolbarStyles() {
 .accessify-toolbar-v2-section-controls {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   width: 100%;
 }
 .accessify-toolbar-v2-section-controls > .accessify-toolbar-v2-btn,
 .accessify-toolbar-v2-section-controls > div {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+}
+/* Keep touch-friendly min width so controls wrap on narrow panel instead of squashing */
+@media (max-width: 320px) {
+  .accessify-toolbar-v2-section-controls > .accessify-toolbar-v2-btn,
+  .accessify-toolbar-v2-section-controls > div {
+    min-width: min(100%, 120px);
+  }
 }
 
 /* ---- Toolbar V2: Customize (show/hide tools, collapsible) ---- */
@@ -346,8 +375,7 @@ export function getToolbarStyles() {
 /* Reset button */
 .accessify-toolbar-v2-reset {
   margin-top: 8px;
-  margin-bottom: 0;
-  padding-top: 10px;
+  padding-top: 16px;
   border-top: 2px solid #e5e7eb;
 }
 .accessify-toolbar-v2-reset .accessify-toolbar-v2-btn {
@@ -362,33 +390,6 @@ export function getToolbarStyles() {
 }
 .accessify-toolbar-v2-reset .accessify-toolbar-v2-btn:focus-visible {
   box-shadow: 0 0 0 2px #ef4444;
-}
-
-/* Footer: Powered by Accessify link - no top padding so text sticks to border, no bottom padding to avoid scroll */
-.accessify-toolbar-v2-footer {
-  margin-top: 1px;
-  padding: 0;
-  border-top: 1px solid #e5e7eb;
-  text-align: center;
-}
-.accessify-toolbar-v2-footer a {
-  display: inline-block;
-  font-size: 11px;
-  color: #6b7280;
-  text-decoration: none;
-  line-height: 1.2;
-}
-.accessify-toolbar-v2-footer a:hover {
-  color: #2563eb;
-  text-decoration: underline;
-}
-.accessify-toolbar-v2-footer a:focus {
-  outline: none;
-}
-.accessify-toolbar-v2-footer a:focus-visible {
-  outline: none;
-  border-radius: 2px;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
 }
 
 /* Cursor highlight circle (centered on pointer) - above toolbar so it stays visible */
@@ -419,6 +420,11 @@ export function getToolbarStyles() {
   border: 0;
 }
 
+/* Content wrapper: reserve space at bottom so trigger does not cover main content */
+#accessify-toolbar-v2-content-wrapper {
+  padding-bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem));
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .accessify-toolbar-v2-trigger,
@@ -428,6 +434,14 @@ export function getToolbarStyles() {
   }
   .accessify-toolbar-v2-cursor-circle {
     transition: none;
+  }
+}
+
+/* Very small viewports: ensure panel and trigger stay within bounds */
+@media (max-width: 360px) {
+  .accessify-toolbar-v2-panel {
+    width: 100%;
+    max-width: calc(100vw - 1rem - env(safe-area-inset-inline-start, 0px) - env(safe-area-inset-inline-end, 0px));
   }
 }
 `;
