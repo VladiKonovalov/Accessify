@@ -19,17 +19,26 @@ import {
   resolveAvailableIds
 } from './controlsRegistry.js';
 import { createCustomizeSection } from './CustomizeSection.js';
+import {
+  resolveTextSizeStrategy,
+  applyTextSize,
+  clearTextSize
+} from './textSizeStrategy.js';
 
 export class ToolbarV2 {
   /**
-   * @param {{ availableControls?: string[], syncWithPageLanguage?: boolean }} [options]
+   * @param {{ availableControls?: string[], syncWithPageLanguage?: boolean, textSizeStrategy?: 'rootFontSize' | 'contentZoom' }} [options]
    * — availableControls: if provided, only these control ids are available; otherwise all.
    * — syncWithPageLanguage: if true, toolbar language syncs with document.documentElement.lang/dir in both directions
    *   (page lang on init/change updates toolbar; toolbar language change updates html lang and dir).
+   * — textSizeStrategy: optional override. When omitted, auto-detects: if page text ignores html
+   *   font-size (px-locked typography), uses contentZoom so content scales without resizing the toolbar.
    */
   constructor(options = {}) {
     this.options = options;
     this.syncWithPageLanguage = !!options.syncWithPageLanguage;
+    /** @type {'rootFontSize' | 'contentZoom' | null} resolved on init when not set explicitly */
+    this.textSizeStrategy = null;
     this.settings = { ...defaultSettings };
     this.isOpen = false;
     this.trigger = null;
@@ -196,6 +205,8 @@ export class ToolbarV2 {
     document.body.appendChild(this.panel);
     this._contentWrapper = contentWrapper;
 
+    this.textSizeStrategy = resolveTextSizeStrategy(this.options, contentWrapper);
+
     this._applyVisibleControls();
     this._applySettingsToDocument();
 
@@ -279,9 +290,13 @@ export class ToolbarV2 {
   }
 
   _applySettingsToDocument() {
-    document.documentElement.style.fontSize = this.settings.textSize + '%';
     const body = document.body;
     const wrapper = this._contentWrapper;
+    applyTextSize({
+      textSize: this.settings.textSize,
+      strategy: this.textSizeStrategy || 'rootFontSize',
+      contentWrapper: wrapper
+    });
     if (wrapper) {
       wrapper.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
       wrapper.classList.add('contrast-' + (this.settings.contrastMode || 'normal'));
@@ -353,7 +368,7 @@ export class ToolbarV2 {
     if (this.trigger && this.trigger.element.parentNode) this.trigger.element.parentNode.removeChild(this.trigger.element);
     if (this.panel && this.panel.parentNode) this.panel.parentNode.removeChild(this.panel);
     this.cursorHighlight.unmount();
-    document.documentElement.style.fontSize = '';
+    clearTextSize(this._contentWrapper);
     document.body.classList.remove('text-spacing-wide', 'font-dyslexia', 'highlight-links', 'highlight-cursor', 'color-filter-none', 'color-filter-grayscale', 'color-filter-invert');
     if (this._contentWrapper && this._contentWrapper.parentNode) {
       const parent = this._contentWrapper.parentNode;
