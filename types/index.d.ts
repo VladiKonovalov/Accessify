@@ -8,6 +8,12 @@ export interface ToolbarV2Options {
   availableControls?: string[];
   /** If true, toolbar language syncs with document lang/dir in both directions. */
   syncWithPageLanguage?: boolean;
+  /**
+   * How text size is applied. When omitted, auto-detects from page CSS:
+   * - rootFontSize: html { font-size: N% } for rem-based pages
+   * - contentZoom: zoom the content wrapper when page text is px-locked
+   */
+  textSizeStrategy?: 'rootFontSize' | 'contentZoom';
 }
 
 export interface ToolbarV2Settings {
