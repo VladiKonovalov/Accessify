@@ -2,6 +2,7 @@
  * Toolbar V2 — Panel container (header + scrollable body with sections)
  */
 
+import { VERSION } from './constants.js';
 import { createHeader } from './ToolbarHeader.js';
 
 export function createPanel(sectionElements, onClose) {
@@ -31,7 +32,11 @@ export function createPanel(sectionElements, onClose) {
   footerLink.rel = 'noopener noreferrer';
   footerLink.textContent = 'Powered by Accessify';
   footerLink.setAttribute('aria-label', 'Accessify on GitHub (opens in new tab)');
+  const footerVersion = document.createElement('span');
+  footerVersion.className = 'accessify-toolbar-v2-footer-version';
+  footerVersion.textContent = `v${VERSION}`;
   footer.appendChild(footerLink);
+  footer.appendChild(footerVersion);
   body.appendChild(footer);
 
   panel.appendChild(body);

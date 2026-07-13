@@ -7,6 +7,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
  * WCAG 2.1 AA aligned (text size 80%–200%, contrast modes, persistence key).
  */
 
+/** Keep in sync with package.json version */
+const VERSION = '2.1.0';
+
 const STORAGE_KEY = 'accessify-settings';
 
 const TEXT_SIZE_MIN = 80;
@@ -137,6 +140,7 @@ function getToolbarStyles() {
   max-height: calc(100vh - 7rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   min-height: 0;
   background: #fff;
+  color: #111827;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
@@ -150,6 +154,32 @@ function getToolbarStyles() {
   overflow-x: hidden;
   min-height: 0;
   -webkit-overflow-scrolling: touch;
+}
+.accessify-toolbar-v2-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+.accessify-toolbar-v2-footer a {
+  color: #6b7280;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+.accessify-toolbar-v2-footer a:hover,
+.accessify-toolbar-v2-footer a:focus-visible {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.accessify-toolbar-v2-footer-version {
+  color: #9ca3af;
+  font-size: 0.6875rem;
+  line-height: 1.2;
 }
 
 /* ---- Toolbar V2: Header ---- */
@@ -1138,7 +1168,11 @@ function createPanel(sectionElements, onClose) {
   footerLink.rel = 'noopener noreferrer';
   footerLink.textContent = 'Powered by Accessify';
   footerLink.setAttribute('aria-label', 'Accessify on GitHub (opens in new tab)');
+  const footerVersion = document.createElement('span');
+  footerVersion.className = 'accessify-toolbar-v2-footer-version';
+  footerVersion.textContent = `v${VERSION}`;
   footer.appendChild(footerLink);
+  footer.appendChild(footerVersion);
   body.appendChild(footer);
 
   panel.appendChild(body);
