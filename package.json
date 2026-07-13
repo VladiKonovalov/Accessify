@@ -62,5 +62,11 @@
     "Firefox >= 55",
     "Safari >= 12",
     "Edge >= 79"
-  ]
+  ],
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
+  },
+  "dependencies": {
+    "accessify": "^0.0.0"
+  }
 }
