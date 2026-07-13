@@ -1,6 +1,6 @@
 {
   "name": "accessify",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
   "description": "A modular, reusable web accessibility toolkit supporting WCAG 2.0/2.1 AA and Israeli Standard 5568",
   "main": "dist/accessify.js",
