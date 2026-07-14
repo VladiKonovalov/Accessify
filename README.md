@@ -12,12 +12,6 @@ VERSION DIFFERENCE
 
 ## Installation
 
-### npm
-
-```bash
-npm install accessify
-```
-
 ### Script tag
 
 ```html
