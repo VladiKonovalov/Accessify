@@ -1,14 +1,24 @@
-# Accessify — Web Accessibility Toolbar V2
+## Accessify ♿
+Make any website more accessible in minutes.
 
-A modular accessibility toolbar for the web. Supports WCAG 2.1 AA, RTL (e.g. Hebrew), and multiple languages.
+A lightweight open-source accessibility widget supporting:
 
-**Note:** Legacy Toolbar V1 has been removed. This library is v2-only.
+✅ WCAG 2.1 AA improvements
 
-live demo to see - https://vladikonovalov.github.io/Accessify/example.html
+✅ Font scaling
 
-VERSION DIFFERENCE  
-<img width="500" height="500" alt="photo-collage png" src="https://github.com/user-attachments/assets/68ade9dd-c951-4d0b-91cb-8a03c15bf86d" />
+✅ Contrast modes
 
+✅ Keyboard navigation
+
+✅ RTL support]
+
+✅ Screen-reader friendly controls
+
+
+Demo:
+[[Live Demo]
+](https://vladikonovalov.github.io/)
 
 ## Installation
 
@@ -24,6 +34,7 @@ VERSION DIFFERENCE
 var toolbar = new Accessify.ToolbarV2();
 toolbar.init();
 ```
+
 
 ## API
 
@@ -67,3 +78,4 @@ toolbar.init();
 ## License
 
 MIT
+Star this repo ⭐ if you find it useful
